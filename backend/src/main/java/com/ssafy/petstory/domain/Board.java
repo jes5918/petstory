@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +27,10 @@ public class Board {
     @Column(name = "board_context")
     private String context;
 
-    private LocalDateTime boardDate; // 글생성 시간
-
     private long likeNum;
     private long reportNum;
 
-//    private long hashtag_id;
+    private long hashtag_id;
 
     // BoardHashtag table에 있는 board field에 의해서 매핑됨(이 값의 변경이 fk에 영향을 미치지 않음)
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -50,10 +47,6 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    // Board와 file는 일대일 관계 -> 여러장 사진 일대다로 바꿔야됨
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "file_id")
-    private File file;
 
     /**
      * Profile과 Board 연관 관계 (편의) 메서드
@@ -61,14 +54,6 @@ public class Board {
     public void setProfile(Profile profile) {
         this.profile = profile;
         profile.getBoards().add(this);
-    }
-
-    /**
-     * Board와 File 연관 관계 (편의) 메서드
-     */
-    public void setFile(File file) {
-        this.file = file;
-        file.setBoard(this);
     }
 
     /**
@@ -82,37 +67,10 @@ public class Board {
     /**
      * Board 생성 메서드
      */
-//    public static Board createBoard(Profile profile, String title, String context, BoardHashtag... boardHashtags) {
-    public static Board createBoard(String title, String context) {
+    public static Board createBoard() {
         Board board = new Board();
-//        board.setProfile(profile);
-
-        board.setTitle(title);
-        board.setContext(context);
-
-        board.setBoardDate(LocalDateTime.now());
-
-
-        // 해쉬태그 추가
-//        for (BoardHashtag boardHashtag : boardHashtags) {
-//            boardHashtag.addBoardhashtag(boardHashtag);
-//        }
-
 
         return board;
     }
-
-    // ==생성 메소드== //
-//    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
-//        Order order = new Order();
-//        order.setMember(member);
-//        order.setDelivery(delivery);
-//        for (OrderItem orderItem : orderItems) {
-//            order.addOrderItem(orderItem);
-//        }
-//        order.setStatus(OrderStatus.ORDER); // 처음 상태로 강제
-//        order.setOrderDate(LocalDateTime.now());
-//        return order;
-//    }
 
 }
