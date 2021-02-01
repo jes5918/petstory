@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import UserProfile from '../../components/ProfileModal/UserProfile';
 import UserFeedsTabs from '../../components/ProfileModal/UserFeedsTabs';
 import Modal from 'react-modal';
 import './Profile.css';
+import axios from 'axios';
 
 Modal.setAppElement('#root');
 // 더미 데이터
@@ -37,19 +39,51 @@ const BOARDS = [
     profile_id: 1,
   },
 ];
-class Profile extends Component {
-  render() {
-    return (
-      <div>
-        <div>
-          <UserProfile profiles={PROFILES} />
-        </div>
-        <div>
-          <UserFeedsTabs feeds={BOARDS} />
-        </div>
-      </div>
-    );
-  }
-}
+// back에 profile 데이터 요청
+function Profile() {
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-export default Profile;
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        setProfile(null);
+        setError(null);
+        setLoading(true);
+        const response = await axios.get(
+          'https://jsonplaceholder.typicode.com/users', // `http://localhost:8080/${profile_id}` profile_id는 session이나 local에서 가져오기
+        );
+        setProfile(response.data); // 응답: profile_id, rank, follower_num, followee_num
+      } catch (e) {
+        setError(e);
+      }
+      setLoading(false);
+    };
+    fetchProfiles();
+  }, []);
+  if (loading) {
+    return <div>로딩중..</div>;
+  }
+  if (error) {
+    return <div>에러 발생</div>;
+  }
+  if (!profile) {
+    return <div>profiles없다</div>;
+  }
+  return (
+    <div className="profileEntire">
+      {/* {profile.map((item) => (
+        <h2 key={item.id}>{item.name}</h2>
+      ))} */}
+      <div>
+        <UserProfile profile={PROFILES} />
+        {/* <UserProfile profile={profile} /> */}
+      </div>
+      <div>
+        <UserFeedsTabs feeds={BOARDS} />
+      </div>
+    </div>
+  );
+}
+export default withRouter(Profile);

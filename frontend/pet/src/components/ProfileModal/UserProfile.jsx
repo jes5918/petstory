@@ -1,8 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProfileModal from './ProfileModal';
+import Follower from './Follower';
 import Modal from 'react-modal';
+import axios from 'axios';
 
 function UserProfile(props) {
+  const [followers, setFollowers] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        setFollowers(null);
+        setError(null);
+        setLoading(true);
+        const response = await axios.get(
+          'https://jsonplaceholder.typicode.com/users', // `http://localhost:8080/profile/followers/${profile_id}` profile_id는 props에서 가져오기
+        );
+        const dummyFollowers = {
+          follower_id: 1,
+          nickname: '연님이',
+        };
+        setFollowers(dummyFollowers);
+        // setFollowers(response.data); // 응답: follower_id, nickname
+      } catch (e) {
+        setError(e);
+      }
+      setLoading(false);
+    };
+    fetchProfiles();
+  }, []);
+  if (loading) {
+    return <div>로딩중..</div>;
+  }
+  if (error) {
+    return <div>에러 발생</div>;
+  }
+  if (!followers) {
+    return <div>followers 없다</div>;
+  }
   // const dispatch = useDispatch();
   const [isFollowerModal, setFollowerModal] = useState(false);
   const [isFolloweeModal, setFolloweeModal] = useState(false);
@@ -90,12 +127,12 @@ function UserProfile(props) {
         />
         <div className="profileInfo">
           <div className="userProfileHeader">
-            <h2 className="rank">rank: {props.profiles.rank}</h2>
-            <h2 className="nickname">닉네임: {props.profiles.nickname}</h2>
+            <h2 className="rank">rank: {props.profile.rank}</h2>
+            <h2 className="nickname">닉네임: {props.profile.nickname}</h2>
           </div>
           <div className="userProfileBody">
             <h3 className="follower" onClick={handleFollowerModal}>
-              팔로워: {props.profiles.follower_num}
+              팔로워: {props.profile.follower_num}
             </h3>
             <Modal
               isOpen={isFollowerModal}
@@ -109,11 +146,13 @@ function UserProfile(props) {
                 },
               }}
             >
-              {followerListInModal}
+              {followers.map((follower) => (
+                <Follower key={follower.id} follower={follower} />
+              ))}
               <button onClick={handleFollowerModal}>닫기</button>
             </Modal>
             <h3 className="following" onClick={handleFolloweeModal}>
-              팔로잉: {props.profiles.followee_num}
+              팔로잉: {props.profile.followee_num}
             </h3>
             <Modal
               isOpen={isFolloweeModal}
