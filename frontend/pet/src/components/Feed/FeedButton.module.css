@@ -4,11 +4,11 @@ button:hover {
   border: 0;
 }
 
-.feed-btn-frame {
+.frame {
   display: none;
 }
 
-.feed-item:hover .feed-btn-frame {
+.frame__hover {
   display: inline-block;
   position: absolute;
   top: 20px;
@@ -18,7 +18,7 @@ button:hover {
   width: fit-content;
 }
 
-.feed-btn {
+.btn {
   text-align: center;
   text-decoration: none;
 
@@ -30,24 +30,24 @@ button:hover {
   cursor: pointer;
 }
 
-.btn-left {
+.left {
   border-radius: 10px 0 0 10px;
 }
 
-.btn-left:hover {
+.left:hover {
   background-color: rgba(245, 245, 245, 0.877);
 }
 
-.btn-text {
+.text {
   margin-right: 10px;
 }
 
-.btn-right {
+.right {
   color: white;
   border-radius: 0 10px 10px 0;
   background-color: red;
 }
 
-.btn-right:hover {
+.right:hover {
   background-color: rgb(197, 2, 2);
 }

@@ -7,6 +7,7 @@ import FeedColumn from './FeedColumn';
 
 // utils
 import splitArray from '../../assets/js/SplitArray';
+import styles from './FeedFrame.module.css';
 
 // css
 import './FeedFrame.css';
@@ -36,9 +37,9 @@ function FeedFrame(props) {
   }
 
   return (
-    <div className="feed-frame">
-      {allItems.map((items) => (
-        <FeedColumn items={items.array} key={items.id} />
+    <div className={styles.frame}>
+      {allItems.map((item) => (
+        <FeedColumn item={item.items} key={item.list_id} />
       ))}
       <button type="button" onClick={callBackBoardAPI}>
         임시 추가
