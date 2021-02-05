@@ -15,7 +15,6 @@ const PROFILES = {
   follower_num: 30,
   followee_num: 50,
   member_id: 1,
-  relation_id: 1,
 };
 const BOARDS = [
   {
@@ -46,7 +45,7 @@ function Profile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const fetchProfile = async () => {
       try {
         setProfile(null);
         setError(null);
@@ -60,7 +59,7 @@ function Profile() {
       }
       setLoading(false);
     };
-    fetchProfiles();
+    fetchProfile();
   }, []);
   if (loading) {
     return <div>로딩중..</div>;
