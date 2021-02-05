@@ -3,6 +3,11 @@ import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../_actions/userAction';
 import toast from 'react-hot-toast';
+<<<<<<< HEAD
+=======
+import kakaoIcon from '../../../assets/kakaotalk.png';
+import { FcGoogle } from 'react-icons/fc';
+>>>>>>> upstream/develop
 // import KaKaoLogins from '../SocialLogin/KakaoLogin';
 // import GoogleLogins from '../SocialLogin/GoogleLogins';
 
@@ -39,8 +44,12 @@ function LoginPage(props) {
       .then((res) => {
         if (res.payload !== undefined) {
           localStorage.setItem('user', JSON.stringify(res.payload));
+<<<<<<< HEAD
           window.location.reload();
+=======
+>>>>>>> upstream/develop
           props.history.push('/');
+          window.location.reload();
         } else {
           toast.error('잘못된 정보를 입력하셧습니다.');
         }
@@ -56,12 +65,23 @@ function LoginPage(props) {
         <form className="acccount__form" onSubmit={onSubmitHandler}>
           <h1>Sign in</h1>
           <div className="social-container">
+<<<<<<< HEAD
             <a className="account__a" href="#" className="social"></a>
             <a className="account__a" href="#" className="social"></a>
           </div>
           <span>or use your account</span>
           {/* <GoogleLogins />
         <KaKaoLogins /> */}
+=======
+            <a className="account__a" href="#" className="social">
+              <img className="account__kakao" src={kakaoIcon} />
+            </a>
+            <a className="account__a" href="#" className="social">
+              <FcGoogle className="account__kakao" />
+            </a>
+          </div>
+          <span>or use your account</span>
+>>>>>>> upstream/develop
           <input
             className="account__input"
             type="email"

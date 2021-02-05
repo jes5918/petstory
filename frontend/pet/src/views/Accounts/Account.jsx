@@ -4,11 +4,19 @@ import './Account.css';
 import RegisterPage from '../../components/Accounts/Register/RegisterPage';
 import LoginPage from '../../components/Accounts/Login/LoginPage';
 import toast, { Toaster } from 'react-hot-toast';
+<<<<<<< HEAD
+=======
+import back from '../../assets/back.mp4';
+>>>>>>> upstream/develop
 
 function Account({ history }) {
   if (localStorage.getItem('user')) {
     history.goBack();
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/develop
   const [isActive, setActive] = useState(false);
   const toggleClass = () => {
     const stateActive = isActive;
@@ -20,6 +28,15 @@ function Account({ history }) {
     }
   };
 
+<<<<<<< HEAD
+=======
+  const [goLogin, setgoLogin] = useState(false);
+  const goLoginHandler = () => {
+    const stategoLogin = goLogin;
+    setgoLogin(!stategoLogin);
+  };
+
+>>>>>>> upstream/develop
   return (
     <>
       <Toaster
@@ -36,8 +53,23 @@ function Account({ history }) {
         }}
       />
       <div className="acoountbody">
+<<<<<<< HEAD
         <div
           className={isActive ? 'container right-panel-active' : 'container'}
+=======
+        <video id="backVideo" src={back} type="video/mp4" autoPlay loop muted />
+        {goLogin ? (
+          ''
+        ) : (
+          <button onClick={goLoginHandler} className="account__gologinbtn">
+            우리 사이트에 들어와볼래?
+          </button>
+        )}
+        <div
+          className={`${
+            isActive ? 'container right-panel-active' : 'container'
+          } ${goLogin ? 'containeractive' : ''}`}
+>>>>>>> upstream/develop
           id="container"
         >
           <RegisterPage toggleClass={toggleClass} />
@@ -52,7 +84,11 @@ function Account({ history }) {
                   id="signIn"
                   onClick={toggleClass}
                 >
+<<<<<<< HEAD
                   로그인
+=======
+                  SIGN IN
+>>>>>>> upstream/develop
                 </button>
               </div>
               <div className="overlay-panel overlay-right">
@@ -63,7 +99,11 @@ function Account({ history }) {
                   id="signUp"
                   onClick={toggleClass}
                 >
+<<<<<<< HEAD
                   회원가입
+=======
+                  SIGN UP
+>>>>>>> upstream/develop
                 </button>
               </div>
             </div>
