@@ -1134,6 +1134,40 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@egjs/component@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@egjs/component/-/component-2.2.2.tgz#b8208ea4ca05f6562a51d58f1e6f9979aad8a9d9"
+  integrity sha512-2m6nu6/Mbs6VnoT4IHFGUBX6V82Zp01zDmlWpIJ3fMatHpe7BB1qUYFgMmSWGY0uOvOl4plvflwbCRUAGMfwWQ==
+
+"@egjs/imready@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@egjs/imready/-/imready-1.1.2.tgz#91f727426fe67654e0a8ad347fc4688d9925d060"
+  integrity sha512-spvuv/hNoyWYdpgYCGt4JIDk0e+3Ce5XcXazSTcF4xBuYKLeKp9tqRRORsPYsaiAfvZR0FKYG8haq0Sx2k+cqQ==
+  dependencies:
+    "@egjs/component" "^2.2.2"
+
+"@egjs/infinitegrid@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@egjs/infinitegrid/-/infinitegrid-3.8.0.tgz#6619238b94f1e4a866a0fae8032a98cc9071b741"
+  integrity sha512-Jsb9iQHADKqPvNbvx14vztMtAcfxVPTZRKPJS+XW85rIkfn9PTtEHSbDbTHKjMkCl0gF8W/gFiS2quQMj4ecWA==
+  dependencies:
+    "@egjs/component" "^2.2.2"
+    "@egjs/imready" "^1.1.2"
+    "@egjs/list-differ" "^1.0.0"
+
+"@egjs/list-differ@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@egjs/list-differ/-/list-differ-1.0.0.tgz#2277aff52e3e4bd9318d5c30ffc3ba3b6216f05e"
+  integrity sha512-HsbMKc0ZAQH+EUeCmI/2PvTYSybmkaWwakU8QGDYYgMVIg9BQ5sM0A0Nnombjxo2+JzXHxmH+jw//yGX+y6GYw==
+
+"@egjs/react-infinitegrid@^3.1.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@egjs/react-infinitegrid/-/react-infinitegrid-3.2.1.tgz#e2726aa045a868c172b612da84e94ff9c8f2f9ee"
+  integrity sha512-5hZyV6syJ2z2/mfVCW79Z+US9ax02DRZpkeEkYvmGePkgpi71yVEwNp1CkkB0nUeH7WPdSemm53Q1T926nD2gw==
+  dependencies:
+    "@egjs/infinitegrid" "^3.8.0"
+    "@egjs/list-differ" "^1.0.0"
+
 "@emotion/hash@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
@@ -1453,6 +1487,13 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
     react-transition-group "^4.4.0"
+
+"@material-ui/icons@^4.11.2":
+  version "4.11.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.11.2.tgz#b3a7353266519cd743b6461ae9fdfcb1b25eb4c5"
+  integrity sha512-fQNsKX2TxBmqIGJCSi3tGTO/gZ+eJgWmMJkgDiOfyNaunNaxcklJQFaFogYcFl0qFuaEz1qaXYXboa/bUXVSOQ==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
 
 "@material-ui/styles@^4.11.3":
   version "4.11.3"
@@ -5804,6 +5845,11 @@ globule@^1.0.0:
     lodash "~4.17.10"
     minimatch "~3.0.2"
 
+goober@^2.0.15:
+  version "2.0.30"
+  resolved "https://registry.yarnpkg.com/goober/-/goober-2.0.30.tgz#fb3034d904002bac17eb2be6a8f1f8daf72a4970"
+  integrity sha512-fVAgCTKFGWw1oBvUSAyLjZJBur/BUn5tmUSaGx5ryPddYJYNrCsvkzSoCnE1O8/5EiDK0UYbWilBUp44hKekRw==
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
@@ -9873,6 +9919,18 @@ react-google-login@^5.2.2:
   dependencies:
     "@types/react" "*"
     prop-types "^15.6.0"
+
+react-hot-toast@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-hot-toast/-/react-hot-toast-1.0.2.tgz#162f020ba7c0b20f2f25bb7738458c435e84107c"
+  integrity sha512-wp89H0WA6EtiexAg5l3ys+WaZ3u0xM/FJWxl6YxR3hlquWhKvO9snBgTe4ATPEcgbS6pbc43RbuBINOkYOzA5A==
+  dependencies:
+    goober "^2.0.15"
+
+react-icons@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.1.0.tgz#9ca9bcbf2e3aee8e86e378bb9d465842947bbfc3"
+  integrity sha512-FCXBg1JbbR0vWALXIxmFAfozHdVIJmmwCD81Jk0EKOt7Ax4AdBNcaRkWhR0NaKy9ugJgoY3fFvo0PHpte55pXg==
 
 react-images-uploading@^3.1.2:
   version "3.1.2"
