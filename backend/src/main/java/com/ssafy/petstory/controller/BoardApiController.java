@@ -69,9 +69,6 @@ public class BoardApiController {
     // @RequestBody : JSON으로 온 body를 Board로 Mapping해서 넣어줌
 //    public CreateBoardResponse createBoard(@RequestParam("profileId") Long profileId, @RequestBody @Valid CreateBoardRequest request) {
     public CreateBoardResponse createBoard(CreateBoardRequest request, List<MultipartFile> files) throws IOException {
-            System.out.println("들어옴!");
-            System.out.println(files.get(0).getName());
-            System.out.println(request.title);
 
 //        Long id = boardService.create(profileId, request.title, request.context);
 
