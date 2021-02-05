@@ -3,14 +3,20 @@ import ProfileModal from './ProfileModal';
 import Follower from './Follower';
 import Modal from 'react-modal';
 import axios from 'axios';
+import ModifyProfile from './ModifyProfile';
 
 function UserProfile(props) {
+  // const dispatch = useDispatch();
+  const [isFollowerModal, setFollowerModal] = useState(false);
+  const [isFolloweeModal, setFolloweeModal] = useState(false);
+  const [isModifyModal, setModifyModal] = useState(false);
+  const [test, setTest] = useState(false);
   const [followers, setFollowers] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const fetchFollowers = async () => {
       try {
         setFollowers(null);
         setError(null);
@@ -18,10 +24,21 @@ function UserProfile(props) {
         const response = await axios.get(
           'https://jsonplaceholder.typicode.com/users', // `http://localhost:8080/profile/followers/${profile_id}` profile_id는 props에서 가져오기
         );
-        const dummyFollowers = {
-          follower_id: 1,
-          nickname: '연님이',
-        };
+        // setFollowers((response.data) => {
+        //   const followerList = response.data.map((follower) => {
+        //     const obj = { followerId, nickname };
+        //     return obj;
+        //   });
+        const dummyFollowers = [
+          {
+            followerId: 1,
+            nickname: '연님이',
+          },
+          {
+            followerId: 3,
+            nickname: '길막이',
+          },
+        ];
         setFollowers(dummyFollowers);
         // setFollowers(response.data); // 응답: follower_id, nickname
       } catch (e) {
@@ -29,7 +46,7 @@ function UserProfile(props) {
       }
       setLoading(false);
     };
-    fetchProfiles();
+    fetchFollowers();
   }, []);
   if (loading) {
     return <div>로딩중..</div>;
@@ -40,10 +57,7 @@ function UserProfile(props) {
   if (!followers) {
     return <div>followers 없다</div>;
   }
-  // const dispatch = useDispatch();
-  const [isFollowerModal, setFollowerModal] = useState(false);
-  const [isFolloweeModal, setFolloweeModal] = useState(false);
-  const [test, setTest] = useState(false);
+
   const handleTest = () => {
     setTest(!test);
   };
@@ -52,12 +66,21 @@ function UserProfile(props) {
     setTest(false);
   };
 
+  const closeModifyModal = () => {
+    setModifyModal(false);
+  };
+
   const handleFollowerModal = () => {
     setFollowerModal(!isFollowerModal);
   };
 
   const handleFolloweeModal = () => {
     setFolloweeModal(!isFolloweeModal);
+  };
+
+  const handleModifyModal = () => {
+    setModifyModal(!isModifyModal);
+    console.log(`isModifyModal ${isModifyModal}`);
   };
 
   // dispatch(ProfileById()).then((res) => {
@@ -146,9 +169,11 @@ function UserProfile(props) {
                 },
               }}
             >
-              {followers.map((follower) => (
-                <Follower key={follower.id} follower={follower} />
-              ))}
+              <ul>
+                {followers.map((follower) => (
+                  <Follower key={follower.followerId} follower={follower} />
+                ))}
+              </ul>
               <button onClick={handleFollowerModal}>닫기</button>
             </Modal>
             <h3 className="following" onClick={handleFolloweeModal}>
@@ -172,7 +197,12 @@ function UserProfile(props) {
           </div>
         </div>
       </div>
-      <button>edit profile</button>
+      <button onClick={handleModifyModal}>edit profile</button>
+      <ModifyProfile
+        profile={props.profile}
+        isOpen={isModifyModal}
+        onModify={closeModifyModal}
+      />
     </div>
   );
 }
