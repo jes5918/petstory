@@ -48,8 +48,6 @@ public class BoardService {
         // 게시물 생성
         Board board = Board.createBoard(request.getTitle(), request.getContext());
 
-        System.out.println("11111111111111111111111111111111111111111111111111111");
-
         // 이미지 정보 생성
         FileDto fileDto = new FileDto();
         if (!inputFiles.get(0).isEmpty()) { // fileService로 옮길까 고민중
@@ -65,8 +63,6 @@ public class BoardService {
             }
         }
 
-        System.out.println("222222222222222222222222222222222222222222222222222222222222222222");
-
         // 해쉬태그 생성 -> 생성시 해쉬태그 중복체크
         List<Hashtag> hashtags = boardHashtagService.save(board, request.getHashtags());
         for (Hashtag hashtag : hashtags) {
@@ -74,8 +70,6 @@ public class BoardService {
             boardHashtag.setBoard(board);
             boardHashtagRepository.save(boardHashtag);
         }
-
-        System.out.println("33333333333333333333333333333333333333333333333333333333333");
 
         // 좋아요 누른 유저 검증 및 상태유지
 
@@ -153,6 +147,7 @@ public class BoardService {
         return boardRepository.findOne(boardId);
     }
 
+
     private class ItemParam {
         private Long id;
         private String image;
@@ -162,11 +157,21 @@ public class BoardService {
     /**
      * 게시물 수정
      */
+//    @Transactional
+//    public void update(Long boardId){
+//        Board board = boardRepository.findBoard(boardId);
+//        board.change(); // dirty checking
+//    }
 
 
     /**
      * 게시물 삭제
      */
+    @Transactional
+    public void delete(Long boardId) {
+        Board board = boardRepository.findBoard(boardId);
+        boardRepository.delete(board);
+    }
 
 
 }
