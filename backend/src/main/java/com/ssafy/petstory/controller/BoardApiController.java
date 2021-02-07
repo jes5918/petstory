@@ -3,6 +3,7 @@ package com.ssafy.petstory.controller;
 import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.dto.CreateBoardRequest;
 import com.ssafy.petstory.dto.FileDto;
+import com.ssafy.petstory.dto.UpdateBoardRequest;
 import com.ssafy.petstory.service.AwsS3Service;
 import com.ssafy.petstory.service.BoardService;
 import com.ssafy.petstory.service.FileService;
@@ -94,14 +95,31 @@ public class BoardApiController {
     // @RequestBody : JSON으로 온 body를 Board로 Mapping해서 넣어줌
 //    public CreateBoardResponse createBoard(@RequestParam("profileId") Long profileId, @RequestBody @Valid CreateBoardRequest request) {
     public CreateBoardResponse createBoardH(CreateBoardRequest request, List<MultipartFile> files) throws IOException {
-
 //        Long id = boardService.create(profileId, request.title, request.context);
-        System.out.println("=-------------------------------------------");
-        System.out.println(request.toString());
 
         Long id = boardService.createH(request, files);
 
         return new CreateBoardResponse(id);
+    }
+
+    /**
+     * 게시물 수정
+     */
+//    @PutMapping
+//    public CreateBoardResponse updateBoard(UpdateBoardRequest request, List<MultipartFile> files){
+//
+//        Long id = boardService.update(request, files);
+//
+//        return new CreateBoardResponse(id);
+//    }
+
+    /**
+     * 게시물 삭제
+     */
+    @DeleteMapping("/api/board/delete/{boardId}")
+    public void deleteBoard(@PathVariable("boardId") Long boardId) {
+
+        boardService.delete(boardId);
     }
 
 
