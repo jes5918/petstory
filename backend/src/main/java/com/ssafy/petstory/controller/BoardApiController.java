@@ -1,6 +1,7 @@
 package com.ssafy.petstory.controller;
 
 import com.ssafy.petstory.dto.BoardQueryDto;
+import com.ssafy.petstory.dto.CreateBoardRequest;
 import com.ssafy.petstory.dto.FileDto;
 import com.ssafy.petstory.service.AwsS3Service;
 import com.ssafy.petstory.service.BoardService;
@@ -34,12 +35,20 @@ public class BoardApiController {
      *
      * http://localhost:8080/api/board/findAllPaging?offset=1&limit=5
      */
+    @GetMapping("/api/board/findAllPagingH")
+    public Result<BoardQueryDto> findAllPagingH(@RequestParam(value = "offset") int offset,
+                                               @RequestParam(value = "limit") int limit){
+        return new Result(boardService.findAllPagingH(offset, limit));
+    }
+
+    /**
+     * 게시물 전체 조회 - 페이징
+     *
+     * http://localhost:8080/api/board/findAllPaging?offset=1&limit=5
+     */
     @GetMapping("/api/board/findAllPaging")
     public Result<BoardQueryDto> findAllPaging(@RequestParam(value = "offset") int offset,
                                                @RequestParam(value = "limit") int limit){
-        System.out.println("=======================================================");
-        System.out.println(offset + "      " + limit);
-        System.out.println("=======================================================");
         return new Result(boardService.findAllPaging(offset, limit));
     }
 
@@ -62,8 +71,9 @@ public class BoardApiController {
         return new Result(boardService.findOne(boardId));
     }
 
+
     /**
-     * 게시물 생성 V2 (다중 이미지)
+     * 게시물 생성 (다중 이미지)
      */
     @PostMapping("/api/board/create")
     // @RequestBody : JSON으로 온 body를 Board로 Mapping해서 넣어줌
@@ -72,33 +82,35 @@ public class BoardApiController {
 
 //        Long id = boardService.create(profileId, request.title, request.context);
 
-        FileDto fileDto = new FileDto();
-        Long id = boardService.createV2(request.title, request.context, files, fileDto);
+        Long id = boardService.create(request.getTitle(), request.getContext(), files);
 
         return new CreateBoardResponse(id);
     }
 
     /**
-     * 게시물 생성 V1 (단일 이미지)
+     * 게시물 생성 (다중 이미지)
      */
-    @PostMapping("/api/board/createV1")
+    @PostMapping("/api/board/createH")
     // @RequestBody : JSON으로 온 body를 Board로 Mapping해서 넣어줌
-    public CreateBoardResponse createBoardV1(CreateBoardRequest request, MultipartFile file) throws IOException {
+//    public CreateBoardResponse createBoard(@RequestParam("profileId") Long profileId, @RequestBody @Valid CreateBoardRequest request) {
+    public CreateBoardResponse createBoardH(CreateBoardRequest request, List<MultipartFile> files) throws IOException {
 
 //        Long id = boardService.create(profileId, request.title, request.context);
+        System.out.println("=-------------------------------------------");
+        System.out.println(request.toString());
 
-        FileDto fileDto = new FileDto();
-        Long id = boardService.createV1(request.title, request.context, file, fileDto);
+        Long id = boardService.createH(request, files);
 
         return new CreateBoardResponse(id);
     }
 
-    @Data
-    static class CreateBoardRequest {
-        private String title;
-        private String context;
 
-    }
+//    @Data
+//    static class CreateBoardRequest {
+//        private String title;
+//        private String context;
+//
+//    }
 
     @Data
     static class CreateBoardResponse {

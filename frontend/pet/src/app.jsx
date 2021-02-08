@@ -1,34 +1,80 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Router, Route, Switch } from 'react-router-dom';
+import { history } from './utils/history';
+import { PrivateRoute } from './hoc/PrivateRoute';
+import './app.css';
 
 // Page Load
-import LandingPage from './views/LandingPage/LandingPage';
-import MainPage from './views/MainPage/MainPage';
-import Profile from './views/Profile/Profile';
 import Account from './views/Accounts/Account';
+import Create from './views/Board/Create';
+import MainPage from './views/MainPage/MainPage';
+import ProfilePage from './views/Profile/ProfilePage';
 import Map from './views/Map/Map';
-import NotFound from './views/PageNotFound/PageNotFound';
+import PageNotFound from './views/PageNotFound/PageNotFound';
 
 // Component Load
-import NavBar from './views/NavBar/NavBar';
-import Create from './views/Board/Create';
+import SelectProfileModal from './components/ProfileModal/SelectProfileModal';
+import NavBar from './components/NavBar/NavBar';
 
-// import Auth from './hoc/auth';
+const getStorageTheme = () => {
+  let theme = 'light-theme';
+  if (localStorage.getItem('theme')) {
+    theme = localStorage.getItem('theme');
+  }
+  return theme;
+};
 
 function App() {
+  const [isLogin, setIslogin] = useState(false);
+  const [theme, setTheme] = useState(getStorageTheme());
+
+  const toggleTheme = () => {
+    if (theme === 'light-theme') {
+      setTheme('dark-theme');
+    } else {
+      setTheme('light-theme');
+    }
+  };
+
+  const users = () => {
+    const user = localStorage.getItem('user');
+    console.log(user);
+    if (user === null) {
+      setIslogin(false);
+    } else {
+      setIslogin(true);
+    }
+  };
+
+  useEffect(() => {
+    document.documentElement.className = theme;
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    users();
+  }, [localStorage.getItem('user')]);
+
   return (
-    <Router>
-      <NavBar />
-      <Switch>
-        <Route exact path="/" component={LandingPage} />
-        <Route exact path="/login" component={Account} />
-        <Route exact path="/board/create" component={Create} />
-        <Route exact path="/feed" component={MainPage} />
-        <Route exact path="/Profile" component={Profile} />
-        <Route exact path="/map" component={Map} />
-        <Route component={NotFound} />
-      </Switch>
-    </Router>
+    <>
+      {/* `{' '}
+      <button className="btn" onClick={toggleTheme}>
+        toggle
+      </button>
+      ` */}
+      <Router history={history}>
+        {isLogin && <NavBar toggleTheme={toggleTheme} isLogin={isLogin} />}
+        <Switch>
+          <Route path="/login" component={Account} />
+          <PrivateRoute exact path="/" component={MainPage} />
+          <PrivateRoute path="/create" component={Create} />
+          <PrivateRoute path="/map" component={Map} />
+          <PrivateRoute path="/profile" component={ProfilePage} />
+          <PrivateRoute path="/select" component={SelectProfileModal} />
+          <Route component={PageNotFound} />
+        </Switch>
+      </Router>
+    </>
   );
 }
 
