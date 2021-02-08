@@ -6,6 +6,7 @@ import com.ssafy.petstory.domain.*;
 import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.dto.FileDto;
 import com.ssafy.petstory.dto.LikeDto;
+import com.ssafy.petstory.dto.ReadMultiProfileResponse;
 import com.ssafy.petstory.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -77,12 +78,8 @@ public class ProfileService {
      * --> memberService로 가는 게 맞을 듯
      */
     @Transactional(readOnly = true)
-    public List<Profile> showProfile(Long member_id) {
-
-        System.out.println("가져온 아이디로 검색 시작");
-        List<Profile> findProfile = profileRepository.findByMember_id(member_id); // 이름으로 조회가 되면 무언가 값이 들어온 것 -> 중복된 이름 검출
-
-        return findProfile;
+    public List<ReadMultiProfileResponse> showProfile(Long member_id) {
+       return profileRepository.findByMemberId(member_id);
     }
 
     /**

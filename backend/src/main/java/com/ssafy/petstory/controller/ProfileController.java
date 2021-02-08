@@ -6,7 +6,10 @@ import com.ssafy.petstory.domain.Member;
 import com.ssafy.petstory.domain.Profile;
 import com.ssafy.petstory.domain.Relation;
 import com.ssafy.petstory.dto.LikeDto;
+import com.ssafy.petstory.dto.ReadMultiProfileResponse;
 import com.ssafy.petstory.service.ProfileService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,12 @@ import java.util.List;
 public class ProfileController {
 
     private final ProfileService profileService;
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T>{
+        private T data;
+    }
 
     /**
      * 프로필 생성
@@ -87,27 +96,15 @@ public class ProfileController {
      * 프로필 조회2(맴버의 다중프로필 조회 - 로그인 시 사용)
      * */
     @GetMapping("/show/{member_id}")
-    public ResponseEntity<List<Profile>> show(@PathVariable("member_id") Long member_id) {
+    public ResponseEntity<Result<ReadMultiProfileResponse>> show(@PathVariable("member_id") Long member_id) {
 
-        Member member = new Member();
-        member.setId(member_id);
+        List<ReadMultiProfileResponse> profiles = profileService.showProfile(member_idg);//id 받은걸로 엔티티 검색
 
-        System.out.print("아이디 가져온거 출력: ");
-        System.out.println(member.getId());
-
-        List<Profile> profileentity = profileService.showProfile(member.getId());  //id 받은걸로 엔티티 검색
-        //해당 memid 로 검색된 프로필 리스트 -> profileentity
-        System.out.println(profileentity.size());
-
-//        for(int i=0 ; i<profileentity.size() ; i++){
-//
-//        }sS
-
-        if (profileentity.size() == 0) {//해당 맴버아이디로 검색된 프로필이 없음
+        if (profiles.size() == 0) {//해당 맴버아이디로 검색된 프로필이 없음
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(profileentity, HttpStatus.OK);
+        return new ResponseEntity(new Result<>(profiles), HttpStatus.OK);
     }//맴버정보보기를 눌러서 확인
 
     /**
@@ -117,7 +114,6 @@ public class ProfileController {
     public ResponseEntity<String> updateProfile(@PathVariable("profile_id") Long profile_id, MultipartFile image, ProfileForm form) throws IOException {
 
         profileService.update(profile_id, image, form);
-        //Member findMember = memberService.findOne(id); 수정정보 리턴할 때
 
         return new ResponseEntity<>("프로필 정보가 수정되었습니다.", HttpStatus.OK);
     }//맴버정보보기를 눌러서 확인
@@ -128,8 +124,6 @@ public class ProfileController {
     @DeleteMapping("profile/delete/{profile_id}")  //프로필 아이디를 통해 삭제한다.
     public ResponseEntity<String> deleteMember(@PathVariable("profile_id") Long profile_id ) {
 
-//        Profile profile = new Profile();
-//        profile.setId(profile_id);
         profileService.delete(profile_id);
         return new ResponseEntity<>("프로필 정보가 삭제되었습니다.", HttpStatus.OK);
     }//맴버정보보기를 눌러서 확인

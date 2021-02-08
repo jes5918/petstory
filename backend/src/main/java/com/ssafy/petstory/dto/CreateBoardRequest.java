@@ -4,13 +4,14 @@ import com.ssafy.petstory.domain.BoardHashtag;
 import com.ssafy.petstory.domain.Hashtag;
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.List;
 import java.util.Set;
 
 @Data
 public class CreateBoardRequest {
 
-    private Long profileId;
+    private Long profile_id;
     private String title;
     private String context;
 
@@ -23,8 +24,8 @@ public class CreateBoardRequest {
         this.context = context;
     }
 
-    public CreateBoardRequest(Long profileId, String title, String context, List<String> hashtags) {
-        this.profileId = profileId;
+    public CreateBoardRequest(Long profile_id, String title, String context, List<String> hashtags) {
+        this.profile_id = profile_id;
         this.title = title;
         this.context = context;
         this.hashtags = hashtags;
