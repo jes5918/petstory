@@ -11,7 +11,7 @@ import java.util.Set;
 @Data
 public class CreateBoardRequest {
 
-    private Long profile_id;
+    private Long profileId;
     private String title;
     private String context;
 
@@ -24,8 +24,8 @@ public class CreateBoardRequest {
         this.context = context;
     }
 
-    public CreateBoardRequest(Long profile_id, String title, String context, List<String> hashtags) {
-        this.profile_id = profile_id;
+    public CreateBoardRequest(Long profilId, String title, String context, List<String> hashtags) {
+        this.profileId = profileId;
         this.title = title;
         this.context = context;
         this.hashtags = hashtags;

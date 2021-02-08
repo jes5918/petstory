@@ -38,7 +38,7 @@ public class BoardService {
     public Long create(CreateBoardRequest request, List<MultipartFile> inputFiles) throws IOException {
 
         // Entity 조회
-        Profile profile = profileRepository.findOne(request.getProfile_id());
+        Profile profile = profileRepository.findOne(request.getProfileId());
         // 게시물 생성
         Board board = Board.createBoard(profile, request.getTitle(), request.getContext());
 
