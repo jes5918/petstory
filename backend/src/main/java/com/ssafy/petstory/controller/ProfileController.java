@@ -42,7 +42,7 @@ public class ProfileController {
 
         //service -> 1. 맴버 id를 이용해 member 찾고   -> 2. entity 메서드 profile 엔티티에 연관관계 지어주고 서비스에서 db에 바로 넣어준다
         //이때 relation 테이블도 함께 생성된다.
-        profileService.createprofile(proform, image);
+        profileService.createProfile(proform, image);
 
 
 //        profile.set(form.getMember_name());
@@ -95,7 +95,7 @@ public class ProfileController {
         System.out.print("아이디 가져온거 출력: ");
         System.out.println(member.getId());
 
-        List<Profile> profileentity = profileService.showprofile(member.getId());  //id 받은걸로 엔티티 검색
+        List<Profile> profileentity = profileService.showProfile(member.getId());  //id 받은걸로 엔티티 검색
         //해당 memid 로 검색된 프로필 리스트 -> profileentity
         System.out.println(profileentity.size());
 
@@ -114,9 +114,9 @@ public class ProfileController {
      * 프로필 정보 수정
      * */
     @PutMapping("profile/update/{profile_id}") // v2 mem id로 받아서 검색 후 수정, 받아오는 형식 memformdto
-    public ResponseEntity<String> updateProfile(@PathVariable("profile_id") Long profile_id , @Valid @RequestBody ProfileForm form) {
+    public ResponseEntity<String> updateProfile(@PathVariable("profile_id") Long profile_id, MultipartFile image, ProfileForm form) throws IOException {
 
-        profileService.update(profile_id, form);
+        profileService.update(profile_id, image, form);
         //Member findMember = memberService.findOne(id); 수정정보 리턴할 때
 
         return new ResponseEntity<>("프로필 정보가 수정되었습니다.", HttpStatus.OK);

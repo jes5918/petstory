@@ -116,13 +116,8 @@ public class Profile {
         //Member m1 = profile.setMember(member);
 
         profile.setMember(member); //프로필 엔티티의 맴버 -> 맴버 아이디로 찾아온 맴버
-//        profile.setId(form.getProfile_id());
         profile.setNickname(form.getNickname());
-        profile.setRank(form.getRank());
-        profile.setFollowee_num(form.getFollowee_num());
-        profile.setFollower_num(form.getFollower_num());
         profile.setState(form.getProfile_state());
-        //profile.setRelation(relation);
 
         System.out.println("프로필 엔티티에 저장 완료 후 닉네임 확인: "+profile.getNickname());
         return profile;
