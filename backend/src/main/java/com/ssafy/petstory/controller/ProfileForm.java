@@ -31,6 +31,43 @@ public class ProfileForm {  //테이블 명하고 같게
         this.followee_num = followee_num;
     }
 
+    /**
+     * 생성 스팩(request)
+     */
+    public ProfileForm(ProfileState profile_state, Long member_id, String nickname) {
+        this.profile_state = profile_state;
+        this.member_id = member_id;
+        this.nickname = nickname;
+    }
+
+    /**
+     * 생성 스팩(response)
+     */
+    public ProfileForm(ProfileState profile_state, Long member_id, String nickname, String image_full_path) {
+        this.profile_state = profile_state;
+        this.member_id = member_id;
+        this.nickname = nickname;
+        this.image_full_path = image_full_path;
+    }
+
+    /**
+     * update 스팩
+     */
+    public ProfileForm(ProfileState profile_state, String nickname, String image_full_path) {
+        this.profile_state = profile_state;
+        this.nickname = nickname;
+        this.image_full_path = image_full_path;
+    }
+
+    public ProfileForm(ProfileState profile_state, Long profile_id, String nickname, String rank, int follower_num, int followee_num) {
+        this.profile_state = profile_state;
+        this.profile_id = profile_id;
+        this.nickname = nickname;
+        this.rank = rank;
+        this.follower_num = follower_num;
+        this.followee_num = followee_num;
+    }
+
     public ProfileForm(ProfileState profile_state, Long member_id, Long profile_id, String nickname, String rank, int follower_num, int followee_num, String image_full_path) {
         this.profile_state = profile_state;
         this.member_id = member_id;
