@@ -4,13 +4,16 @@ import com.ssafy.petstory.controller.MemberForm;
 import com.ssafy.petstory.controller.ProfileForm;
 import com.ssafy.petstory.domain.*;
 import com.ssafy.petstory.dto.BoardQueryDto;
+import com.ssafy.petstory.dto.FileDto;
 import com.ssafy.petstory.dto.LikeDto;
 import com.ssafy.petstory.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -21,8 +24,10 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
+    private final AwsS3Service awsS3Service;
+    private final FileRepository fileRepository;
 
-    public void createprofile(ProfileForm proform) {
+    public void createprofile(ProfileForm proform, MultipartFile file) throws IOException {
 
         Member member = memberRepository.findOne(proform.getMember_id()); //memberId를 통해 member 엔티티를 찾아온다.(프로필에 넣어줄거임)
 
@@ -33,9 +38,22 @@ public class ProfileService {
         System.out.println("맴버 찾아온거 아이디 확인: "+member.getId());
         //프로필 별 relation 테이블 최초생성, 초기값 전부 null로 생성 엔티티로 db 접근
 
+        Profile profile = Profile.createProfile(member,proform);
+
+        // 이미지 정보 생성
+        FileDto fileDto = new FileDto();
+        if (!file.isEmpty()) { // fileService로 옮길까 고민중
+            String imgPath = awsS3Service.uploadProfileImage(file);
+            fileDto.setFilePath(imgPath);
+            fileDto.setImgFullPath("https://" + awsS3Service.CLOUD_FRONT_DOMAIN_NAME + "/" + fileDto.getFilePath());
+            Image image = Image.createImage(fileDto);
+            fileRepository.saveProfileImage(image);
+            profile.setImage(image);
+        }
+
+
         //받아온 맴버로 프로필 생성
 //        Profile profile = Profile.createProfile(member,proform,relation);
-        Profile profile = Profile.createProfile(member,proform);
         profileRepository.saveP(profile);
     }
 
@@ -59,9 +77,8 @@ public class ProfileService {
         return findProfile;
     }
     /**
-     * 회원 정보 확인
+     * 회원 정보 확인(상세조회)
      */
-
     @Transactional
     public Profile detail(Long profile_id){  //memberRepo에서 처리하고
 

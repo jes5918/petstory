@@ -14,12 +14,6 @@ import java.util.List;
 public class ProfileRepository {
     private final EntityManager em;
 
-    public void saveR(Relation relation) {  //테이블에 인서트
-        System.out.println("++++++++++++++");
-        em.persist(relation);
-        System.out.println("릴레이션 테이블 저장후 아이디 확인: "+relation.getId());
-    }
-
     public void saveP(Profile profile){
         System.out.println("+++++++++++++여기서 문제발생");
         em.persist(profile);

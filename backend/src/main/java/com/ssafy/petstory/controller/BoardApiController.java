@@ -72,32 +72,13 @@ public class BoardApiController {
         return new Result(boardService.findOne(boardId));
     }
 
-
     /**
      * 게시물 생성 (다중 이미지)
      */
     @PostMapping("/api/board/create")
-    // @RequestBody : JSON으로 온 body를 Board로 Mapping해서 넣어줌
-//    public CreateBoardResponse createBoard(@RequestParam("profileId") Long profileId, @RequestBody @Valid CreateBoardRequest request) {
     public CreateBoardResponse createBoard(CreateBoardRequest request, List<MultipartFile> files) throws IOException {
 
-//        Long id = boardService.create(profileId, request.title, request.context);
-
-        Long id = boardService.create(request.getTitle(), request.getContext(), files);
-
-        return new CreateBoardResponse(id);
-    }
-
-    /**
-     * 게시물 생성 (다중 이미지)
-     */
-    @PostMapping("/api/board/createH")
-    // @RequestBody : JSON으로 온 body를 Board로 Mapping해서 넣어줌
-//    public CreateBoardResponse createBoard(@RequestParam("profileId") Long profileId, @RequestBody @Valid CreateBoardRequest request) {
-    public CreateBoardResponse createBoardH(CreateBoardRequest request, List<MultipartFile> files) throws IOException {
-//        Long id = boardService.create(profileId, request.title, request.context);
-
-        Long id = boardService.createH(request, files);
+        Long id = boardService.create(request, files);
 
         return new CreateBoardResponse(id);
     }

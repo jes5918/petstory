@@ -10,6 +10,7 @@ import java.util.Set;
 @Data
 public class CreateBoardRequest {
 
+    private Long profileId;
     private String title;
     private String context;
 
@@ -22,6 +23,12 @@ public class CreateBoardRequest {
         this.context = context;
     }
 
+    public CreateBoardRequest(Long profileId, String title, String context, List<String> hashtags) {
+        this.profileId = profileId;
+        this.title = title;
+        this.context = context;
+        this.hashtags = hashtags;
+    }
 
     public CreateBoardRequest(String title, String context, List<String> hashtags) {
         this.title = title;

@@ -2,6 +2,7 @@ package com.ssafy.petstory.domain;
 
 import com.ssafy.petstory.controller.ProfileForm;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -36,8 +37,13 @@ public class Profile {
     private String rank;
 
     @Column(name = "profile_state")
-    @Enumerated(EnumType.ORDINAL)  //db에 저장되는 값 숫자로 , 받는건 String 으로
+    @Enumerated(EnumType.STRING)  //db에 저장되는 값 숫자로 , 받는건 String 으로
     private ProfileState state;
+
+    // Profile과 Image는 일대일 관계
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     // Member와 Profile은 일대다 관계
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,7 +55,9 @@ public class Profile {
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
+    @Column(name = "follower_num")
     private int follower_num;
+    @Column(name = "followee_num")
     private int followee_num;
 
     /**
@@ -59,6 +67,14 @@ public class Profile {
     public void setMember(Member member) { // 아래 주석친 메인 코드의 기능을 하는 메서드
         this.member = member;
         member.getProfiles().add(this);
+    }
+
+    /**
+     * Profile과 Image 연관 관계 편의 메소드
+     */
+    public void setImage(Image image) {
+        this.image = image;
+        image.setProfile(this);
     }
 
 //    public static void main(String[] args) {
