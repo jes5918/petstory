@@ -24,11 +24,6 @@ public class ProfileRepository {
     /**
      * 프로필 다중 조회
      */
-    public List<Profile> findByMember_id(Long id) {
-        return em.createQuery("select f from Profile f where f.member.id = :id", Profile.class) // ":name" 파라미터 바인딩
-                .setParameter("id", id)
-                .getResultList();
-    }
     public List<ReadMultiProfileResponse> findByMemberId(Long id) {
         return em.createQuery(
                 "select new com.ssafy.petstory.dto.ReadMultiProfileResponse(f.id, f.nickname, f.rank, f.image.imgFullPath)" +

@@ -56,9 +56,9 @@ public class Profile {
     private List<Board> boards = new ArrayList<>();
 
     @Column(name = "follower_num")
-    private int follower_num;
+    private int followerNum;
     @Column(name = "followee_num")
-    private int followee_num;
+    private int followeeNum;
 
     /**
      * Member와 Profile 연관 관계 (편의) 메서드

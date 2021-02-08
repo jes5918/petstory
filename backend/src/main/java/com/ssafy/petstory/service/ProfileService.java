@@ -34,7 +34,7 @@ public class ProfileService {
      */
     public void createProfile(ProfileForm proform, MultipartFile file) throws IOException {
 
-        Member member = memberRepository.findOne(proform.getMember_id()); //memberId를 통해 member 엔티티를 찾아온다.(프로필에 넣어줄거임)
+        Member member = memberRepository.findOne(proform.getMemberId()); //memberId를 통해 member 엔티티를 찾아온다.(프로필에 넣어줄거임)
 
         // 받아온 맴버로 프로필 생성
         Profile profile = Profile.createProfile(member, proform);
@@ -63,11 +63,10 @@ public class ProfileService {
         Profile profile = profileRepository.findOne(id);  //id로 해당하는거 찾아와서 수정하자
         //이 부분 수정
         profile.setNickname(form.getNickname());
-        profile.setState(form.getProfile_state());
+        profile.setState(form.getProfileState());
 
-        System.out.println("여기기기아ㅣ거이널ㄴ어랴ㅐㅈ더나ㅣㄹㄴ어ㅣ랑");
-        System.out.println(form.getImage_full_path());
-        if (form.getImage_full_path() == null){
+        System.out.println(form.getImgFullPath());
+        if (form.getImgFullPath() == null){
             Image image = fileService.createImage(inputImage);
             profile.setImage(image);
         }
@@ -78,25 +77,25 @@ public class ProfileService {
      * --> memberService로 가는 게 맞을 듯
      */
     @Transactional(readOnly = true)
-    public List<ReadMultiProfileResponse> showProfile(Long member_id) {
-       return profileRepository.findByMemberId(member_id);
+    public List<ReadMultiProfileResponse> showProfile(Long memberId) {
+       return profileRepository.findByMemberId(memberId);
     }
 
     /**
      * 프로필 정보 확인(상세조회)
      */
     @Transactional(readOnly = true)
-    public Profile detail(Long profile_id) {  //memberRepo에서 처리하고
+    public Profile detail(Long profileId) {  //memberRepo에서 처리하고
 
-        Profile profiledetail = profileRepository.findOne(profile_id);
-        return profiledetail;
+        Profile profile = profileRepository.findOne(profileId);
+        return profile;
     }
 
     /**
      * 프로필 삭제
      */
-    public void delete(Long profile_id) {
-        Profile profile = profileRepository.findOne(profile_id);  //id로 해당하는거 찾아와서 삭제하자
+    public void delete(Long profileId) {
+        Profile profile = profileRepository.findOne(profileId);  //id로 해당하는거 찾아와서 삭제하자
         profileRepository.delete(profile);  //id로 해당하는거 찾아와서 수정하자
     }
 
