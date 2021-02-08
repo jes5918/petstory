@@ -34,8 +34,7 @@ public class ProfileForm {  //테이블 명하고 같게
     /**
      * 생성 스팩(request)
      */
-    public ProfileForm(ProfileState profile_state, Long member_id, String nickname) {
-        this.profile_state = profile_state;
+    public ProfileForm(Long member_id, String nickname) {
         this.member_id = member_id;
         this.nickname = nickname;
     }
@@ -43,8 +42,7 @@ public class ProfileForm {  //테이블 명하고 같게
     /**
      * 생성 스팩(response)
      */
-    public ProfileForm(ProfileState profile_state, Long member_id, String nickname, String image_full_path) {
-        this.profile_state = profile_state;
+    public ProfileForm(Long member_id, String nickname, String image_full_path) {
         this.member_id = member_id;
         this.nickname = nickname;
         this.image_full_path = image_full_path;

@@ -117,7 +117,7 @@ public class Profile {
 
         profile.setMember(member); //프로필 엔티티의 맴버 -> 맴버 아이디로 찾아온 맴버
         profile.setNickname(form.getNickname());
-        profile.setState(form.getProfile_state());
+        profile.setState(ProfileState.PUBLIC); // 초기값 -> 전체공개
 
         System.out.println("프로필 엔티티에 저장 완료 후 닉네임 확인: "+profile.getNickname());
         return profile;
