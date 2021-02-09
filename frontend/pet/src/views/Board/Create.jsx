@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import SearchBar from "./SearchBar";
 import axios from 'axios';
-import {COUNTRIES} from './countries';
-
+import './Create.css';
+import {COUNTRIES} from './contries';
+// # 시작
 const suggestions = COUNTRIES.map((country) => ({
-    id: country,
-    text: country,
-  }));
+  name: country,
+}));
 export default class Create extends Component {
     fileObj = [];
     fileArray = [];
@@ -15,10 +16,12 @@ export default class Create extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [null],
+            hashtags: [null],
             focused: false,
-            input: '',
+            // input: '',
             file: [null],
+            keyword: "",
+            results: [],
             suggestions,
         };
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -46,7 +49,7 @@ export default class Create extends Component {
         const formData = new FormData();
         formData.append('title', this.titleRef.current.value);
         formData.append('context', this.contextRef.current.value);
-        formData.append('hashtag', this.state.hashtag);
+        formData.append('hashtags', this.state.hashtags);
         console.log(this.fileArray);
         for (const i of this.fileArray) {
         const img = i.Obj;
@@ -77,25 +80,54 @@ export default class Create extends Component {
         evt.preventDefault();
 
         this.setState(state => ({
-          items: [...state.items, value],
-          input: '',
+          hashtags: [...state.hashtags, value],
+          keyword: '',
         }));
       }
 
-      if (this.state.items.length && evt.keyCode === 8 && !this.state.input.length) {
+      if (this.state.hashtags.length && evt.keyCode === 8 && !this.state.keyword.length) {
         this.setState(state => ({
-          items: state.items.slice(0, state.items.length - 1),
+          hashtags: state.hashtags.slice(0, state.hashtags.length - 1),
         }));
       }
     }
     handleRemoveItem(index) {
       return () => {
         this.setState(state => ({
-          items: state.items.filter((item, i) => i !== index),
+          hashtags: state.hashtags.filter((item, i) => i !== index),
         }));
       };
     }
+    // matchName = (name, keyword) => {
+    //   const keyLen = keyword.length;
+    //   name = name.toLowerCase().substring(0, keyLen);
+    //   if (keyword === "") return false;
+    //   return name === keyword.toLowerCase();
+    // };
+
+    onSearch = async text => {
+      let stockData; let
+data;
+      try {
+        // console.log(COUNTRIES);
+        // stockData = await fetch(
+        //   `https://financialmodelingprep.com/api/v3/search?query=${text}&limit=10&exchange=NASDAQ&apikey=abf4ef28fc7fd607624d9a8941444c42`,
+        // );
+        // data = await stockData.json();
+      } catch (err) {
+        console.log(err.message);
+      }
+      // console.log(data);
+      this.setState({ results: data });
+    };
+
+    updateField = (field, value) => {
+      if (field === "keyword") this.onSearch(value);
+      this.setState({ [field]: value });
+    };
     render() {
+      const {suggestions} = this.state;
+      const { results, keyword } = this.state;
         return (
             <form onSubmit={this.uploadFiles}>
                 <div className="form-group multi-preview">
@@ -114,20 +146,25 @@ export default class Create extends Component {
                         <input ref={this.contextRef} placeholder="내용을 입력하시오" type="text"/>
 
                 </div>
-                <ul>
-                    {(this.state.items || []).map((item, i) =>
-                      <li key={i} onClick={this.handleRemoveItem(i)}>
+                <div className="input-tag">
+                <ul className="input-tag__tags">
+                    {(this.state.hashtags).map((item, i) =>
+                      <li className="input-tag__tags__li" key={i} onClick={this.handleRemoveItem(i)}>
                         {item}
+                        <span>+</span>
                       </li>,
                     )}
-                    <input
-                      width="200px"
-                      value={this.state.input}
-                      suggestions={this.suggestions}
-                      onChange={this.handleInputChange}
-                      placeholder="태그"
-                      onKeyDown={this.handleInputKeyDown} />
                     </ul>
+                    <SearchBar
+                    suggestions={suggestions}
+                    results={suggestions}
+                    keyword={keyword}
+                    updateField={this.updateField}
+                    onhandleInputKeyDown={this.handleInputKeyDown}
+                    onhandleInputChange={this.handleInputChange}
+
+                  />
+                  </div>
               <button>Upload</button>
             </form >
         );
