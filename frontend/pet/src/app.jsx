@@ -15,8 +15,8 @@ import CarToonize from './views/Cartoonize/CartoonizePage';
 
 // Component Load
 import SelectProfileModal from './components/ProfileModal/SelectProfileModal';
-<<<<<<< HEAD
 import NavBar from './components/NavBar/NavBar';
+import MbtiModal from './components/ProfileModal/MbtiModal';
 
 const getStorageTheme = () => {
   let theme = 'light-theme';
@@ -25,9 +25,6 @@ const getStorageTheme = () => {
   }
   return theme;
 };
-=======
-import MbtiModal from './components/ProfileModal/MbtiModal';
->>>>>>> 78d7caf (S04P13B204-64 [feat] : FE - MBTI)
 
 function App() {
   const [isLogin, setIslogin] = useState(false);
@@ -71,11 +68,8 @@ function App() {
           <PrivateRoute path="/map" component={Map} />
           <PrivateRoute path="/profile" component={ProfilePage} />
           <PrivateRoute path="/select" component={SelectProfileModal} />
-<<<<<<< HEAD
           <PrivateRoute path="/cartoonize" component={CarToonize} />
-=======
           <PrivateRoute path="/mbti" component={MbtiModal} />
->>>>>>> 78d7caf (S04P13B204-64 [feat] : FE - MBTI)
           <Route component={PageNotFound} />
         </Switch>
       </Router>
