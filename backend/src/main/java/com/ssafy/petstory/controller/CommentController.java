@@ -5,6 +5,8 @@ import com.ssafy.petstory.service.CommentService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +35,21 @@ public class CommentController {
 
         return new CreateCommentResponse(id);
     }
-    
+
+    /**
+     * 댓글 수정
+     */
+
+
+    /**
+     * 댓글 삭제
+     */
+    @DeleteMapping("/api/comment/delete/{commentId}")
+    public void deleteComment(@PathVariable("commentId") Long commentId) {
+
+        commentService.delete(commentId);
+
+    }
 
 
     @Data

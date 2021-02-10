@@ -28,17 +28,25 @@ public class CommentService {
     @Transactional
     public Long create(CreateCommentRequest request) throws IOException {
 
-        System.out.println("=========================================================");
-        System.out.println(request.getProfileId());
-        System.out.println(request.getBoardId());
-        System.out.println(request.getContent());
-        System.out.println("=========================================================");
-
         Board board = boardRepository.findBoard(request.getBoardId());
         Comment comment = Comment.createComment(request, board);
 
         commentRepository.save(comment);
 
         return comment.getId();
+    }
+
+    /**
+     * 댓글 수정
+     */
+
+
+    /**
+     * 댓글 삭제
+     */
+    @Transactional
+    public void delete(Long commentId) {
+        Comment comment = commentRepository.findComment(commentId);
+        commentRepository.delete(comment);
     }
 }

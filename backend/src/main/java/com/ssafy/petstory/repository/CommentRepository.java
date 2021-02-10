@@ -19,4 +19,23 @@ public class CommentRepository {
     public void save(Comment comment) {
         em.persist(comment);
     }
+
+    /**
+     * 댓글 조회
+     */
+    public Comment findComment(Long commentId) {
+        return em.find(Comment.class, commentId);
+    }
+
+    /**
+     * 댓글 수정
+     */
+    public void delete(Comment comment) {
+        em.remove(comment);
+    }
+
+
+    /**
+     * 댓글 삭제
+     */
 }
