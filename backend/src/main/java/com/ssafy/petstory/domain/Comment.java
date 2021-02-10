@@ -1,5 +1,6 @@
 package com.ssafy.petstory.domain;
 
+import com.ssafy.petstory.dto.CreateCommentRequest;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,11 +13,12 @@ import javax.persistence.*;
 public class Comment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private Long itd;
+    private Long id;
 
-    private String comment;
+    @Column(name = "comment_content")
+    private String content;
 
     private long profile_id;
 
@@ -36,8 +38,11 @@ public class Comment {
     /**
      * Comment 생성 메서드
      */
-    public static Comment createComment() {
+    public static Comment createComment(CreateCommentRequest request, Board board) {
         Comment comment = new Comment();
+        comment.setBoard(board);
+        comment.setContent(request.getContent());
+        comment.setProfile_id(request.getProfileId());
 
         return comment;
     }
