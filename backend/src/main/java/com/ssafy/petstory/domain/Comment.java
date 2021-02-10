@@ -1,6 +1,6 @@
 package com.ssafy.petstory.domain;
 
-import com.ssafy.petstory.dto.CreateCommentRequest;
+import com.ssafy.petstory.dto.CommentDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,7 +38,7 @@ public class Comment {
     /**
      * Comment 생성 메서드
      */
-    public static Comment createComment(CreateCommentRequest request, Board board) {
+    public static Comment createComment(CommentDto request, Board board) {
         Comment comment = new Comment();
         comment.setBoard(board);
         comment.setContent(request.getContent());
@@ -50,7 +50,7 @@ public class Comment {
     /**
      * Comment 수정 메서드
      */
-    public static Comment update(CreateCommentRequest request, Comment comment, Board board) {
+    public static Comment update(CommentDto request, Comment comment, Board board) {
         comment.setContent(request.getContent());
 //        comment.setBoard(board);
         return comment;

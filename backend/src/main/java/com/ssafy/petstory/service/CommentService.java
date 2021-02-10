@@ -2,14 +2,13 @@ package com.ssafy.petstory.service;
 
 import com.ssafy.petstory.domain.Board;
 import com.ssafy.petstory.domain.Comment;
-import com.ssafy.petstory.dto.CreateBoardRequest;
-import com.ssafy.petstory.dto.CreateCommentRequest;
+import com.ssafy.petstory.dto.BoardQueryDto;
+import com.ssafy.petstory.dto.CommentDto;
 import com.ssafy.petstory.repository.BoardRepository;
 import com.ssafy.petstory.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,7 +24,7 @@ public class CommentService {
     /**
      * 댓글 생성
      */
-    public Long create(CreateCommentRequest request) throws IOException {
+    public Long create(CommentDto request) throws IOException {
 
         Board board = boardRepository.findBoard(request.getBoardId());
         Comment comment = Comment.createComment(request, board);
@@ -38,12 +37,15 @@ public class CommentService {
     /**
      * 댓글 조회
      */
-//    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
+    public List<CommentDto> findAll(Long boardId) {
+        return commentRepository.findAll(boardId);
+    }
 
     /**
      * 댓글 수정
      */
-    public Long update(CreateCommentRequest request){
+    public Long update(CommentDto request){
         Board board = boardRepository.findBoard(request.getBoardId());
         Comment comment = commentRepository.findComment(request.getCommentId());
 

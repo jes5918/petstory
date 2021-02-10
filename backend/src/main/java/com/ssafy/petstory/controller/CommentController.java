@@ -1,6 +1,6 @@
 package com.ssafy.petstory.controller;
 
-import com.ssafy.petstory.dto.CreateCommentRequest;
+import com.ssafy.petstory.dto.CommentDto;
 import com.ssafy.petstory.service.CommentService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class CommentController {
      * 댓글 생성
      */
     @PostMapping("/api/comment/create")
-    public CreateCommentResponse createComment(CreateCommentRequest request) throws IOException {
+    public CreateCommentResponse createComment(CommentDto request) throws IOException {
 
         Long id = commentService.create(request);
 
@@ -34,10 +34,18 @@ public class CommentController {
     }
 
     /**
+     * 댓글 전체 조회(해당 게시물)
+     */
+    @GetMapping("/api/comment/findAll/{boardId}")
+    public Result<CommentDto> findAll(@PathVariable("boardId") Long boardId){
+        return new Result(commentService.findAll(boardId));
+    }
+
+    /**
      * 댓글 수정
      */
     @PutMapping("api/comment/update/{commentId}")
-    public void updateComment(@PathVariable("commentId") Long commentId, CreateCommentRequest request) {
+    public void updateComment(@PathVariable("commentId") Long commentId, CommentDto request) {
 
         commentService.update(request);
     }
