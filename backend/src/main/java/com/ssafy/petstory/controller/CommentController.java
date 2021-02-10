@@ -5,10 +5,7 @@ import com.ssafy.petstory.service.CommentService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -39,7 +36,11 @@ public class CommentController {
     /**
      * 댓글 수정
      */
+    @PutMapping("api/comment/update/{commentId}")
+    public void updateComment(@PathVariable("commentId") Long commentId, CreateCommentRequest request) {
 
+        commentService.update(request);
+    }
 
     /**
      * 댓글 삭제

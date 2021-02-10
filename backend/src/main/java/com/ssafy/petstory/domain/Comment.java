@@ -20,7 +20,7 @@ public class Comment {
     @Column(name = "comment_content")
     private String content;
 
-    private long profile_id;
+    private long profileId;
 
     // Board과 Comment는 일대다 관계
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,9 +42,18 @@ public class Comment {
         Comment comment = new Comment();
         comment.setBoard(board);
         comment.setContent(request.getContent());
-        comment.setProfile_id(request.getProfileId());
+        comment.setProfileId(request.getProfileId());
 
         return comment;
     }
-    
+
+    /**
+     * Comment 수정 메서드
+     */
+    public static Comment update(CreateCommentRequest request, Comment comment, Board board) {
+        comment.setContent(request.getContent());
+//        comment.setBoard(board);
+        return comment;
+    }
+
 }

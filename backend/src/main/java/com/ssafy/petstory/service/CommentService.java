@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class CommentService {
 
@@ -25,7 +25,6 @@ public class CommentService {
     /**
      * 댓글 생성
      */
-    @Transactional
     public Long create(CreateCommentRequest request) throws IOException {
 
         Board board = boardRepository.findBoard(request.getBoardId());
@@ -37,14 +36,25 @@ public class CommentService {
     }
 
     /**
+     * 댓글 조회
+     */
+//    @Transactional(readOnly = true)
+
+    /**
      * 댓글 수정
      */
+    public Long update(CreateCommentRequest request){
+        Board board = boardRepository.findBoard(request.getBoardId());
+        Comment comment = commentRepository.findComment(request.getCommentId());
 
+        Comment update = Comment.update(request, comment, board);
+
+        return update.getId();
+    }
 
     /**
      * 댓글 삭제
      */
-    @Transactional
     public void delete(Long commentId) {
         Comment comment = commentRepository.findComment(commentId);
         commentRepository.delete(comment);
