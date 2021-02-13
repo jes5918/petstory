@@ -1,6 +1,7 @@
 package com.ssafy.petstory.controller;
 
 import com.ssafy.petstory.domain.BoardHashtag;
+import com.ssafy.petstory.dto.BoardHashtagQueryDto;
 import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.service.BoardHashtagService;
 import com.ssafy.petstory.service.HashtagService;
@@ -30,14 +31,22 @@ public class HashtagController {
     /**
      * 해시태그로 게시글 검색
      */
-    @GetMapping("/api/hashtag/findOne")
-    public Result<BoardQueryDto> findOne(String hashtagName){
-
-        return new Result(hashtagService.findBoardByHashtag(hashtagName));
+    @GetMapping("/api/hashtag/findBoards")
+    public Result<BoardQueryDto> findBoardsByHashtag(String hashtagName){
+        return new Result(hashtagService.findBoardsByHashtag(hashtagName));
     }
 
     /**
      * 해시태그 자동완성
      *  : like query
      */
+    @GetMapping("/api/hashtag/findOne")
+    public Result<String> findOne(String hashtagName){
+        return new Result(hashtagService.findHashtagName(hashtagName));
+    }
+
+    /**
+     * 인기 해시태그
+     */
+
 }

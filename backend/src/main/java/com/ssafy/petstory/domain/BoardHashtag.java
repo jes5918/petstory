@@ -22,6 +22,9 @@ public class BoardHashtag {
     @Column(name = "board_hashtag_id")
     private Long id;
 
+    @Column(name = "board_hashtag_cnt")
+    private long cnt; // 해당 해시타그로의 모든 접근에 대한 횟수 -> 상위내역 카테고리로 추천목록에 보여줌
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id") // 매핑을 뭘로 할 것인지 (fk가 board_id 가 됨)

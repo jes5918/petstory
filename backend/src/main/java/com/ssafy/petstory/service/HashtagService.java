@@ -33,10 +33,10 @@ public class HashtagService {
     /**
      * 해시태그로 게시물 검색
      */
-    public List<BoardQueryDto> findBoardByHashtag(String hashtagName) {
+    public List<BoardQueryDto> findBoardsByHashtag(String hashtagName) {
 
         // 해당 이름을 가진 해시태그 엔티티 조회
-        Hashtag hashtag = hashtagRepository.findHashtag(hashtagName);
+        Hashtag hashtag = hashtagRepository.findByHashtagName(hashtagName);
 
         // 해당 해시태그를 매핑한 게시글 번호들 조회
         List<BoardHashtag> boardHashtags = boardHashtagRepository.findBoardHashtag(hashtag.getId());
@@ -47,5 +47,18 @@ public class HashtagService {
         return result;
 
     }
+
+    /**
+     * 해시태그 자동완성
+     *  (게시물 생성시)
+     */
+    public List<String> findHashtagName(String hashtagName){
+        return hashtagRepository.findByHashtagNameStartsWith(hashtagName);
+    }
+
+    /**
+     * 인기 해시태그 조회
+     */
+//    public List<PopulatHashtagDto> findPopular
 
 }

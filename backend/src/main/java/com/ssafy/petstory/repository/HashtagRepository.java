@@ -40,11 +40,19 @@ public class HashtagRepository {
                 .findFirst();
     }
 
-    public Hashtag findHashtag(String name) {
+    public Hashtag findByHashtagName(String hashtagName) {
         return em.createQuery(
                 "select h from Hashtag h" +
-                        " where h.name = :name", Hashtag.class)
-                .setParameter("name", name)
+                        " where h.name = :hashtagName", Hashtag.class)
+                .setParameter("hashtagName", hashtagName)
                 .getSingleResult();
     }
+   public List<String> findByHashtagNameStartsWith(String hashtagName) {
+        return em.createQuery(
+                "select h.name from Hashtag h" +
+                        " where h.name like :hashtagName", String.class)
+                .setParameter("hashtagName", "%" + hashtagName + "%")
+                .getResultList();
+    }
+
 }
