@@ -49,15 +49,16 @@ public class BoardService {
                 file.setBoard(board);
             }
         }
-
         // 해시태그 생성 -> 생성시 해시태그 중복체크
         List<Hashtag> hashtags = boardHashtagService.saveByNames(board, request.getHashtags());
+        System.out.println("!!!!!!!!!!!!11111111111111111111111111111");
+
         for (Hashtag hashtag : hashtags) {
             BoardHashtag boardHashtag = BoardHashtag.createBoardHashtag(hashtag);
             boardHashtag.setBoard(board);
             boardHashtagService.save(boardHashtag);
         }
-
+        System.out.println("2222222222222222222222222222222222222222222");
         // 좋아요 누른 유저 검증 및 상태유지
 
         // 게시물 저장

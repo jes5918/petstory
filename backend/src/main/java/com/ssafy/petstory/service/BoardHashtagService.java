@@ -3,10 +3,8 @@ package com.ssafy.petstory.service;
 import com.ssafy.petstory.domain.Board;
 import com.ssafy.petstory.domain.BoardHashtag;
 import com.ssafy.petstory.domain.Hashtag;
-import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.repository.BoardHashtagRepository;
 import com.ssafy.petstory.repository.BoardRepository;
-import com.ssafy.petstory.repository.HashtagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +27,6 @@ public class BoardHashtagService {
 
     public List<Hashtag> saveByNames(Board board, List<String> hashtagNames){
         List<Hashtag> hashtags = mapToHashtag(hashtagNames);
-
         return hashtags;
     }
 
@@ -60,5 +57,4 @@ public class BoardHashtagService {
 //                })
 
     }
-
 }

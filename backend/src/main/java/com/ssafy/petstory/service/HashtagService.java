@@ -3,6 +3,7 @@ package com.ssafy.petstory.service;
 import com.ssafy.petstory.domain.BoardHashtag;
 import com.ssafy.petstory.domain.Hashtag;
 import com.ssafy.petstory.dto.BoardQueryDto;
+import com.ssafy.petstory.dto.HashtagDto;
 import com.ssafy.petstory.repository.BoardHashtagRepository;
 import com.ssafy.petstory.repository.BoardRepository;
 import com.ssafy.petstory.repository.HashtagRepository;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true) // 데이터의 변경이 없는 읽기 전용 메서드에 사용, 영속성 컨텍스트를 플러시 하지 않으므로 약간의 성능 향상(읽기 전용에는 다 적용)
+@Transactional
 @RequiredArgsConstructor // final, nonnull인 field를 가지고 생성자를 만들어줌
 public class HashtagService {
 
@@ -23,9 +24,9 @@ public class HashtagService {
 
     @Transactional
     public Hashtag findOrCreateHashtag(String hashtagName) {
-
         Hashtag hashtag = hashtagRepository.findByName(hashtagName)
                 .orElse(Hashtag.createHashtag(hashtagName));
+        hashtag.setCnt(hashtag.getCnt() + 1); // 참조 1회 증가
         return hashtagRepository.save(hashtag);
     }
 
@@ -36,7 +37,7 @@ public class HashtagService {
     public List<BoardQueryDto> findBoardsByHashtag(String hashtagName) {
 
         // 해당 이름을 가진 해시태그 엔티티 조회
-        Hashtag hashtag = hashtagRepository.findByHashtagName(hashtagName);
+        Hashtag hashtag = findOrCreateHashtag(hashtagName);
 
         // 해당 해시태그를 매핑한 게시글 번호들 조회
         List<BoardHashtag> boardHashtags = boardHashtagRepository.findBoardHashtag(hashtag.getId());
@@ -58,7 +59,11 @@ public class HashtagService {
 
     /**
      * 인기 해시태그 조회
+     * @return
      */
-//    public List<PopulatHashtagDto> findPopular
+//    public List<PopulatHashtagDto> findPopularHashtags() {
+    public List<HashtagDto> findPopularHashtags() {
+        return hashtagRepository.findPopularHashtags(0, 10);
+    }
 
 }

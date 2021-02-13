@@ -1,18 +1,14 @@
 package com.ssafy.petstory.controller;
 
-import com.ssafy.petstory.domain.BoardHashtag;
-import com.ssafy.petstory.dto.BoardHashtagQueryDto;
 import com.ssafy.petstory.dto.BoardQueryDto;
+import com.ssafy.petstory.dto.HashtagDto;
 import com.ssafy.petstory.service.BoardHashtagService;
 import com.ssafy.petstory.service.HashtagService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,6 +43,12 @@ public class HashtagController {
 
     /**
      * 인기 해시태그
+     * @return
      */
+    @GetMapping("/api/hashtag/findPopulars")
+    public Result<HashtagDto> findPopulars() {
+        return new Result(hashtagService.findPopularHashtags());
+    }
+
 
 }
