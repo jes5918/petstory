@@ -24,18 +24,12 @@ public class Hashtag {
     @Column(name = "hashtag_name")
     private String name;
 
+//    @Column(name = "hashtag_cnt")
+//    private long cnt;
+
     @OneToMany(mappedBy = "hashtag", fetch = FetchType.LAZY) // cascade?
     List<BoardHashtag> boardHashtags = new ArrayList<>();
 
-    /**
-     * Hastag 중복 확인
-     */
-
-    @Builder
-    public Hashtag(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     /**
      * 생성 메서드

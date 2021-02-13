@@ -39,4 +39,12 @@ public class HashtagRepository {
                 .stream()
                 .findFirst();
     }
+
+    public Hashtag findHashtag(String name) {
+        return em.createQuery(
+                "select h from Hashtag h" +
+                        " where h.name = :name", Hashtag.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
 }

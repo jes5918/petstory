@@ -23,11 +23,11 @@ public class BoardHashtag {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id") // 매핑을 뭘로 할 것인지 (fk가 board_id 가 됨)
     private Board board;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id") // 매핑을 뭘로 할 것인지 (fk가 hashtag_id 가 됨)
     private Hashtag hashtag;
 
