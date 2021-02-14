@@ -13,6 +13,7 @@ import Map from './views/Map/Map';
 import PageNotFound from './views/PageNotFound/PageNotFound';
 import CarToonize from './views/Cartoonize/CartoonizePage';
 import UserDetail from './views/Accounts/UserDetailPage';
+import DetailPage from './views/DetailPage/DetailPage';
 
 // Component Load
 import NavBar from './components/NavBar/NavBar';
@@ -63,6 +64,7 @@ function App() {
         <Switch>
           <Route path="/login" component={LandingPage} />
           <PrivateRoute exact path="/" component={MainPage} />
+          <PrivateRoute path="/detail/:boardId" component={DetailPage} />
           <PrivateRoute path="/create" component={Create} />
           <PrivateRoute path="/map" component={Map} />
           <PrivateRoute path="/profile" component={ProfilePage} />
