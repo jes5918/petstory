@@ -7,18 +7,20 @@ import './ProfilePage.css';
 import axios from 'axios';
 
 Modal.setAppElement('#root');
-function Profile() {
+function Profile(props) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // 프로필 정보 요청
+  const profileId = props.match.params.profileId;
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setProfile(null);
         setError(null);
         setLoading(true);
-        const profileId = localStorage.getItem('profileId');
+        // const profileId = localStorage.getItem('currentProfileId');
         const headers = {
           'Access-Control-Allow-Credentials': true,
           'Access-Control-Allow-Origin': '*',
@@ -30,14 +32,14 @@ function Profile() {
             const data = res.data;
             setProfile(data);
           });
-        setProfile(response.data);
+        // setProfile(response.data);
       } catch (e) {
         setError(e);
       }
       setLoading(false);
     };
     fetchProfile();
-  }, []);
+  }, [profileId]);
   if (loading) {
     return <div>로딩중..</div>;
   }
@@ -48,11 +50,17 @@ function Profile() {
   if (!profile) {
     return <div>profiles없다</div>;
   }
-  console.log(profile);
+
+  // 프로필 수정
+  const handleModify = (modiInfo) => {
+    const { name, value } = modiInfo;
+    setProfile({ ...profile, [name]: value });
+  };
+
   return (
     <div className="profileEntire">
       <div>
-        <UserProfile profile={profile} />
+        <UserProfile profile={profile} handleModify={handleModify} />
       </div>
       <div>
         <UserFeedsTabs profile={profile} />

@@ -23,6 +23,13 @@ function Navbar({ isLogin, toggleTheme }) {
     checkedB: true,
   });
 
+  // 프로필 Id 선택
+  const [profileId, setProfileId] = useState(48);
+  const id = localStorage.getItem('profileId');
+  useEffect(() => {
+    setProfileId(id);
+  }, [id]);
+
   // 스크롤 이벤트
   const [scrolled, setScrolled] = useState(false);
   const [scrollNum, setScrollNum] = useState();
@@ -142,11 +149,24 @@ function Navbar({ isLogin, toggleTheme }) {
             </li>
             <li className="nav-item">
               <Link
+<<<<<<< HEAD
                 to="/select"
+=======
+                to={`/profile/${profileId}`}
+>>>>>>> upstream/develop
                 className="nav-links"
                 onClick={closeMobileMenu}
               >
                 프로필
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/profile/5"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                남의 프로필
               </Link>
             </li>
             <li className="nav-item">

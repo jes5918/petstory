@@ -1,10 +1,7 @@
 package com.ssafy.petstory.service;
 
 import com.ssafy.petstory.domain.*;
-import com.ssafy.petstory.dto.BoardQueryDto;
-import com.ssafy.petstory.dto.CreateBoardRequest;
-import com.ssafy.petstory.dto.FileDto;
-import com.ssafy.petstory.dto.UpdateBoardRequest;
+import com.ssafy.petstory.dto.*;
 import com.ssafy.petstory.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,14 +48,12 @@ public class BoardService {
         }
         // 해시태그 생성 -> 생성시 해시태그 중복체크
         List<Hashtag> hashtags = boardHashtagService.saveByNames(board, request.getHashtags());
-        System.out.println("!!!!!!!!!!!!11111111111111111111111111111");
 
         for (Hashtag hashtag : hashtags) {
             BoardHashtag boardHashtag = BoardHashtag.createBoardHashtag(hashtag);
             boardHashtag.setBoard(board);
             boardHashtagService.save(boardHashtag);
         }
-        System.out.println("2222222222222222222222222222222222222222222");
         // 좋아요 누른 유저 검증 및 상태유지
 
         // 게시물 저장
@@ -84,7 +79,7 @@ public class BoardService {
     /**
      * 게시물 상세 조회
      */
-    public BoardQueryDto findOne(Long boardId) {
+    public BoardDetailDto findOne(Long boardId) {
         return boardRepository.findOne(boardId);
     }
 
@@ -139,7 +134,12 @@ public class BoardService {
             }
         }
 
-        // 이미지 정보 생성 -> 중복된 데이터인지 확인 후 데이터 생성
+        // 이미 게시물의 있던 이미지의 수정 내역 확인(유지, 삭제)
+        if(!request.getImgFullPaths().get(0).isEmpty()){
+            fileService.checkImageAndUpdate(boardId, request.getImgFullPaths());
+        }
+
+        // 이미지 생성
         if (!inputFiles.get(0).isEmpty()) { // fileService로 옮길까 고민중
             FileDto fileDto = new FileDto();
             List<String> imgPathes = awsS3Service.upload(inputFiles);

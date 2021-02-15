@@ -2,15 +2,14 @@ package com.ssafy.petstory.repository;
 
 import com.ssafy.petstory.domain.Board;
 import com.ssafy.petstory.domain.BoardHashtag;
+import com.ssafy.petstory.domain.Hashtag;
 import com.ssafy.petstory.domain.Profile;
-import com.ssafy.petstory.dto.BoardHashtagQueryDto;
-import com.ssafy.petstory.dto.BoardQueryDto;
-import com.ssafy.petstory.dto.FileQueryDto;
-import com.ssafy.petstory.dto.ProfileQueryDto;
+import com.ssafy.petstory.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -92,10 +91,10 @@ public class BoardRepository {
      * 게시물 전체조회를 위한 baord Id들을 찾는 메서드
      */
     private List<Long> toBoardIds(List<BoardQueryDto> result){
-        List<Long> lists = result.stream()
+        List<Long> boardIds = result.stream()
                 .map(b -> b.getBoardId())
                 .collect(Collectors.toList());
-        return lists;
+        return boardIds;
     }
 
     /**
@@ -143,9 +142,9 @@ public class BoardRepository {
     /**
      * 게시물 상세(단건) 조회
      */
-    public BoardQueryDto findOne(Long boardId) {
+    public BoardDetailDto findOne(Long boardId) {
         Board board = em.find(Board.class, boardId);
-        BoardQueryDto result = new BoardQueryDto(board);
+        BoardDetailDto result = new BoardDetailDto(board);
 
         result.setProfileId(board.getProfile().getId());
         result.setNickname(board.getProfile().getNickname());
@@ -155,13 +154,39 @@ public class BoardRepository {
         List<FileQueryDto> fileOne = findFileOne(boardId);
         // boardHashtag 컬렉션 Map 한 방에 조회
         List<BoardHashtagQueryDto> boardhashtagOne = findBoardHashtagOne(boardId);
-        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
+
 
         // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
         result.setFiles(fileOne);
         result.setBoardHashtags(boardhashtagOne);
-
+        // 연관된(같은) 해시태그를 가진 게시물 번호들(top4) 조회
+        if(!boardhashtagOne.isEmpty()){
+            Long hashtagId = boardhashtagOne.get(0).getHashtagId();
+            List<BoardRelatedDto> relatedBoards = findRelatedBoards(boardId, hashtagId);
+            result.setRelatedBoards(relatedBoards);
+        }else{
+            List<BoardRelatedDto> empty = new ArrayList<>();
+            result.setRelatedBoards(empty);
+        }
         return result;
+    }
+
+    /**
+     * 게시물 상세보기 시
+     *  해당 게시물의 해시태그와 같은 게시물 조회
+     *  이 때, 같은 게시물은 제외
+     */
+    private List<BoardRelatedDto> findRelatedBoards(Long boardId, Long hashtagId) {
+        return em.createQuery(
+                "select new com.ssafy.petstory.dto.BoardRelatedDto(bh.board.id)" +
+                        " from BoardHashtag bh" +
+                        " where bh.hashtag.id in :hashtagId" +
+                        " and bh.board.id not in :boardId", BoardRelatedDto.class)
+                .setParameter("hashtagId", hashtagId)
+                .setParameter("boardId", boardId)
+                .setFirstResult(0)
+                .setMaxResults(4)
+                .getResultList();
     }
 
     /**
@@ -189,7 +214,7 @@ public class BoardRepository {
      */
     private List<BoardHashtagQueryDto> findBoardHashtagOne(Long boardIds) {
         List<BoardHashtagQueryDto> boardHashtagQueryDtos = em.createQuery(
-                "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
+                "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.id, h.name)" +
                         " from BoardHashtag bh" +
                         " join bh.hashtag h" +
                         " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)

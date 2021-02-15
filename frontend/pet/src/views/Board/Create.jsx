@@ -1,77 +1,135 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import SearchBar from './SearchBar';
-import './Create.css';
-import { COUNTRIES } from './contries';
-// # 시작
-const suggestions = COUNTRIES.map((country) => ({
-  name: country,
-}));
+import { createArticle } from '../../_actions/boardAction';
+import { MdCancel, MdCloudUpload } from 'react-icons/md';
+import { FaCat } from 'react-icons/fa';
+import './Create.scss';
 
 export default class Create extends Component {
   fileObj = [];
   fileArray = [];
-  fileArrayFirst = '';
-  images = [];
+  fileArrayFirst = null;
   titleRef = React.createRef();
   contextRef = React.createRef();
   constructor(props) {
     super(props);
     this.state = {
-      hashtags: [null],
-      focused: false,
-      file: [null],
+      hashtags: [],
+      file: [],
       keyword: '',
       results: [],
-      suggestions,
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleInputKeyDown = this.handleInputKeyDown.bind(this);
-    this.handleRemoveItem = this.handleRemoveItem.bind(this);
-    this.uploadFiles = this.uploadFiles.bind(this);
+    this.pushAxios = this.pushAxios.bind(this);
+    this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
     this.onDrop = this.onDrop.bind(this);
     this.onDragOver = this.onDragOver.bind(this);
+    this.handleRemoveItem = this.handleRemoveItem.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputKeyDown = this.handleInputKeyDown.bind(this);
+    this.previewHandler = this.previewHandler.bind(this);
   }
 
-  // this.setState({ img: this.tileObj });
-  // this.setState({ file: this.fileArray });
-  uploadFiles(e) {
+  pushAxios(e) {
     e.preventDefault();
     const formData = new FormData();
     formData.append('profileId', localStorage.getItem('profileId'));
     formData.append('title', this.titleRef.current.value);
     formData.append('context', this.contextRef.current.value);
     formData.append('hashtags', this.state.hashtags);
-    console.log(this.fileArray);
     for (const i of this.fileArray) {
       const img = i.Obj;
       formData.append('files', img);
     }
-    // console.log(this.state.file);
-    axios
-      .post('/api/board/create', formData, {})
-      .then((response) => console.log(response))
-      .then((result) => console.log(result))
-      .catch((error) => console.error('error', error));
+    // axios
+    const axios = createArticle(formData);
     this.titleRef.current.value = '';
     this.contextRef.current.value = '';
+    this.props.history.push('/');
   }
 
   handleDelete(image) {
-    console.log(this.fileArray);
-    const fileArray = this.fileArray.filter((item) => item.id !== image.id);
-    this.fileArray = fileArray;
-    this.setState({ file: fileArray });
+    if (this.fileArray.length === 1) {
+      this.fileArray = [];
+      this.fileArrayFirst = null;
+      this.setState({ file: this.fileArray });
+    } else {
+      const fileArray = this.fileArray.filter((item) => item.id !== image.id);
+      this.fileArray = fileArray;
+      this.fileArrayFirst = this.fileArray[0].URL;
+      this.setState({ file: fileArray });
+    }
   }
+
+  uploadMultipleFiles(e) {
+    e.preventDefault();
+    const files = e.target.files;
+    for (let i = 0; i < files.length; i++) {
+      this.fileArray = [
+        ...this.fileArray,
+        {
+          URL: URL.createObjectURL(files[i]),
+          id: i + Date.now(),
+          Obj: files[i],
+        },
+      ];
+    }
+    if (!this.fileArray[0]) {
+      return;
+    }
+    this.fileArrayFirst = this.fileArray[0].URL;
+    this.setState({ file: this.fileArray });
+  }
+
+  onDrop(e) {
+    e.preventDefault();
+    const {
+      dataTransfer: { files },
+    } = e;
+    for (let i = 0; i < files.length; i++) {
+      this.fileArray = [
+        ...this.fileArray,
+        {
+          URL: URL.createObjectURL(files[i]),
+          id: i + Date.now(),
+          Obj: files[i],
+        },
+      ];
+    }
+    this.fileArrayFirst = this.fileArray[0].URL;
+    this.setState({ file: this.fileArray });
+  }
+
+  onDragOver(e) {
+    e.preventDefault();
+  }
+
+  onSearch = async (text) => {
+    let stockData;
+    let data;
+    try {
+      stockData = await fetch(
+        `https://financialmodelingprep.com/api/v3/search?query=${text}&limit=10&exchange=NASDAQ&apikey=abf4ef28fc7fd607624d9a8941444c42`,
+      );
+      data = await stockData.json();
+    } catch (err) {
+      console.err(err.message);
+    }
+    this.setState({ results: data });
+  };
+
+  updateField = (field, value) => {
+    if (field === 'keyword') this.onSearch(value);
+    this.setState({ [field]: value });
+  };
+
   handleInputChange(evt) {
     this.setState({ input: evt.target.value });
   }
 
   handleInputKeyDown(evt) {
+    evt.preventDefault();
     if (evt.keyCode === 13) {
       const { value } = evt.target;
-      evt.preventDefault();
-
       this.setState((state) => ({
         hashtags: [...state.hashtags, value],
         keyword: '',
@@ -87,112 +145,110 @@ export default class Create extends Component {
     };
   }
 
-  onDrop(e) {
-    e.preventDefault();
-    const {
-      dataTransfer: { files },
-    } = e;
-    const fileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    this.setState({ file: files });
-
-    this.images = files;
-    this.fileObj = files;
-    for (let i = 0; i < this.fileObj.length; i++) {
-      this.fileArray = [
-        ...this.fileArray,
-        {
-          URL: URL.createObjectURL(this.fileObj[i]),
-          id: i + Date.now(),
-          Obj: this.fileObj[i],
-        },
-      ];
+  previewHandler(index) {
+    if (!this.fileArray[index]) {
+      return;
     }
-    this.fileArrayFirst = this.fileArray[0].URL;
-    this.setState({ img: this.tileObj });
-    console.log(this.fileArray);
+    this.fileArrayFirst = this.fileArray[index].URL;
     this.setState({ file: this.fileArray });
   }
-  onDragOver(e) {
-    e.preventDefault();
-  }
-
-  onSearch = async (text) => {
-    let stockData;
-    let data;
-    try {
-      console.log(COUNTRIES);
-      stockData = await fetch(
-        `https://financialmodelingprep.com/api/v3/search?query=${text}&limit=10&exchange=NASDAQ&apikey=abf4ef28fc7fd607624d9a8941444c42`,
-      );
-      data = await stockData.json();
-    } catch (err) {
-      console.log(err.message);
-    }
-    // console.log(data);
-    this.setState({ results: data });
-  };
-
-  updateField = (field, value) => {
-    if (field === 'keyword') this.onSearch(value);
-    this.setState({ [field]: value });
-  };
 
   render() {
     const { suggestions } = this.state;
     const { results, keyword } = this.state;
     return (
       <div className="contaniner">
-        <header className="header"> 글 작성하기</header>
-        <div className="img-list">
-          {(this.fileArray || {}).map((item) => (
-            <li key={item.id} className="img-able-delete">
-              <img
-                src={item.URL}
-                key={item.id}
-                width="100px"
-                height="100px"
-                alt="..."
-              />
-              <span onClick={() => this.handleDelete(item)}>삭제</span>
+        <div className="headers">
+          <div className="headers__item" onClick={this.pushAxios}>
+            <FaCat className="headers__item__icon" />글 작성하기
+          </div>
+        </div>
+        <ul className="img-list">
+          {this.fileArray.length === 0 ? (
+            <div className="preview__holder">이미지 프리뷰가 나올 공간</div>
+          ) : (
+            ''
+          )}
+          {this.fileArray.map((item, index) => (
+            <li
+              key={item.id}
+              onClick={() => this.previewHandler(index)}
+              className="img-able-delete"
+            >
+              <img className="imgPreview" src={item.URL} key={item.id} />
+              <div className="iconWrapper">
+                <MdCancel
+                  className="deleteIcon"
+                  onClick={() => this.handleDelete(item)}
+                />
+              </div>
             </li>
           ))}
-        </div>
-        <form onSubmit={this.uploadFiles} className="form-card">
-          <label htmlFor="image-loader">
-            <div
-              className="img-card"
-              onDrop={this.onDrop}
-              onDragOver={this.onDragOver}
-            >
-              <img
-                className="img-card-image"
-                src={this.fileArrayFirst}
-                alt=""
-              />
-            </div>
-          </label>
-          <input
-            type="file"
-            id="image-upload"
-            style={{ display: 'none' }}
-            onChange={this.uploadMultipleFiles}
-            multiple
-          />
+        </ul>
+        <div
+          className="form-card"
+          onDrop={this.onDrop}
+          onDragOver={this.onDragOver}
+        >
+          <div className="img-card">
+            <label className="label-image" htmlFor="imageUpload">
+              <div className="imagedroparea">
+                {!this.fileArrayFirst && (
+                  <MdCloudUpload className="image-placeholder-icon" />
+                )}
+                {!this.fileArrayFirst && (
+                  <div className="image-placeholder">
+                    여기에 이미지를 드래그 하거나 클릭해 주세요
+                  </div>
+                )}
+              </div>
+              {this.fileArrayFirst && (
+                <img className="img-card-image" src={this.fileArrayFirst} />
+              )}
+            </label>
+            <input
+              type="file"
+              id="imageUpload"
+              style={{ display: 'none' }}
+              onChange={this.uploadMultipleFiles}
+              multiple
+            />
+          </div>
           <div className="text-card">
-            <div className="title-form">
+            <div className="form__group field">
               <input
-                className="title-input"
+                className="form__field "
                 ref={this.titleRef}
-                placeholder="제목을 입력하시오"
-                type="text"
+                placeholder="title"
+                id="name"
+                type="input"
+                required
               />
-              <input
-                className="content-input"
-                ref={this.contextRef}
-                placeholder="내용을 입력하시오"
-                type="text"
-              />
+              <label htmlFor="title" className="form__label title">
+                제목입니다
+              </label>
             </div>
+            <div className="form__group field">
+              <textarea
+                className="form__field context"
+                ref={this.contextRef}
+                placeholder="context"
+                id="context"
+                type="textarea"
+                required
+              />
+              <label htmlFor="context" className="form__label context">
+                내용입니다
+              </label>
+            </div>
+            <SearchBar
+              suggestions={suggestions}
+              results={results}
+              keyword={keyword}
+              updateField={this.updateField}
+              onhandleInputKeyDown={this.handleInputKeyDown}
+              onhandleInputChange={this.handleInputChange}
+            />
             <div className="input-tag">
               <ul className="input-tag__tags">
                 {this.state.hashtags.map((item, i) => (
@@ -206,18 +262,9 @@ export default class Create extends Component {
                   </li>
                 ))}
               </ul>
-              <SearchBar
-                suggestions={suggestions}
-                results={results}
-                keyword={keyword}
-                updateField={this.updateField}
-                onhandleInputKeyDown={this.handleInputKeyDown}
-                onhandleInputChange={this.handleInputChange}
-              />
             </div>
-            <button>Upload</button>
           </div>
-        </form>
+        </div>
       </div>
     );
   }
