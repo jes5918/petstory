@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import FeedSaveContainer from './FeedSaveContainer';
 import { Menu, MenuItem, Button, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { request } from '../../utils/axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,12 +54,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FeedButton() {
+const options = ['Cats', 'Dogs', 'My Collection'];
+
+function FeedButton(props) {
   // State
   const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  // Ref
-  // const feedSaver = useRef('저장할 곳 선택');
+  // Data
+  const memberId = props.memberId;
+  const boardId = props.boardId;
+  const postList = props.postList;
 
   // 커스텀 스타일
   const classes = useStyles();
@@ -72,10 +78,23 @@ function FeedButton() {
     setAnchorEl(null);
   };
 
-  function handleSave() {
+  const handleSave = async () => {
+    const memberPostlistId = props.postList[selectedIndex].memberPostlistId;
+
+    const data = {
+      memberId,
+      boardId,
+      memberPostlistId,
+    };
+
     // 피드 세이브 요청
-    console.log('save');
-  }
+    request('GET', '/api/postlist/add', data);
+  };
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setAnchorEl(null);
+  };
 
   return (
     <Box className={`${classes.frame} active`}>
@@ -86,8 +105,13 @@ function FeedButton() {
         onClick={handleClick}
         className={`${classes.button} ${classes.left}`}
       >
-        <FeedSaveContainer></FeedSaveContainer>
-        {/* <FeedSaveContainer text={feedSaver.current}></FeedSaveContainer> */}
+        <FeedSaveContainer
+          text={
+            postList[selectedIndex]
+              ? postList[selectedIndex].postlistName
+              : '저장 위치 선택'
+          }
+        ></FeedSaveContainer>
       </Button>
       <Menu
         className="menu__frame"
@@ -106,9 +130,15 @@ function FeedButton() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Cats</MenuItem>
-        <MenuItem onClick={handleClose}>Dogs</MenuItem>
-        <MenuItem onClick={handleClose}>My Collection</MenuItem>
+        {postList.map((post, index) => (
+          <MenuItem
+            key={post.memberPostlistId}
+            selected={index === selectedIndex}
+            onClick={(event) => handleMenuItemClick(event, index)}
+          >
+            {post.postlistName}
+          </MenuItem>
+        ))}
       </Menu>
 
       {/* 피드 저장 버튼 */}

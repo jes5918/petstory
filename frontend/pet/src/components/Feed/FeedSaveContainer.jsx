@@ -17,12 +17,17 @@ const useStyles = makeStyles({
 function FeedSaveContainer(props) {
   const classes = useStyles();
   return (
-    <Fragment>
+    <>
       {/* span 부분 내용을 props.text로 대체 */}
-      <span className={classes.root}>Collection</span>
-      {/* <span className={classes.root}>{props.text}</span> */}
+      {/* <span className={classes.root}>Collection</span> */}
+      {/* <span className={classes.root}>
+        {props.text ? props.text : 'Collection'}
+      </span> */}
+      <span className={classes.root}>
+        {props.text ? props.text : '목록을 만들어보세요!'}
+      </span>
       <FontAwesomeIcon icon={faAngleDown} />
-    </Fragment>
+    </>
   );
 }
 

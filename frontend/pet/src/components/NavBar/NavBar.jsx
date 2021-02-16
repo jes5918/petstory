@@ -149,11 +149,7 @@ function Navbar({ isLogin, toggleTheme }) {
             </li>
             <li className="nav-item">
               <Link
-<<<<<<< HEAD
-                to="/select"
-=======
                 to={`/profile/${profileId}`}
->>>>>>> upstream/develop
                 className="nav-links"
                 onClick={closeMobileMenu}
               >
