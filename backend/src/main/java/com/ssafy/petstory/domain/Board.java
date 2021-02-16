@@ -1,5 +1,6 @@
 package com.ssafy.petstory.domain;
 
+import com.ssafy.petstory.dto.LikeQueryDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

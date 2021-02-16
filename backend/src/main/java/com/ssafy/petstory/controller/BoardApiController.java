@@ -29,12 +29,27 @@ public class BoardApiController {
      * 게시물 전체 조회 - 페이징
      *
      * http://localhost:8080/api/board/findAllPaging?offset=1&limit=5
+     * isLike안에 board_id 값이 있는 것이 좋아요 눌린 게시물 입니다. (profile_id는 의미없음) 프론트에서 값 있는지 없는지 체크해서
+     * 하트 색정하면 될듯 (내가 좋아요 했던 게시물인지)
      */
-    @GetMapping("/api/board/findAllPaging")
+    @GetMapping("/api/board/findAllPaging/{profile_id}")
     public Result<BoardQueryDto> findAllPaging(@RequestParam(value = "offset") int offset,
-                                               @RequestParam(value = "limit") int limit){
-        return new Result(boardService.findAllPaging(offset, limit));
+                                               @RequestParam(value = "limit") int limit,
+                                               @PathVariable("profile_id") Long profile_id){
+        return new Result(boardService.findAllPaging(offset, limit, profile_id));
     }
+
+
+//    /**
+//     * 자신이 좋아요 한 게시물 조회
+//     */
+//    @GetMapping("/api/board/findLike/{profile_id}")
+//    public Result<BoardQueryDto> findLike(@RequestParam(value = "offset") int offset,
+//                                          @RequestParam(value = "limit") int limit,
+//                                          @PathVariable("profile_id") Long profile_id){
+//
+//        return new Result(boardService.findLike(profile_id));
+//    }
 
     /**
      * 게시물 전체 조회
