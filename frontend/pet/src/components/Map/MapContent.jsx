@@ -267,8 +267,7 @@ export default function Map({ searchData, resultNum }) {
             width: '100%',
             height: '100%',
             borderRadius: '20px',
-            // position: 'relative',
-            // overflow: 'hidden',
+            boxShadow: '3px 3px 6px 4px rgba(0, 0, 0, 0.199)',
           }}
         ></div>
 

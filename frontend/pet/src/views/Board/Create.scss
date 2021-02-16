@@ -3,6 +3,10 @@ $secondary: #38ef7d;
 $white: #fff;
 $gray: #9b9b9b;
 
+label {
+  margin: 0px;
+  padding: 0px;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -13,7 +17,7 @@ $gray: #9b9b9b;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 70%;
+  width: 55%;
   margin: 16px auto;
 }
 
@@ -47,9 +51,9 @@ $gray: #9b9b9b;
 .form-card {
   display: flex;
   flex-direction: row;
-  height: 60vh;
-  width: 70%;
-  margin: 0px auto;
+  height: 62vh;
+  width: 55%;
+  margin: 0px auto 20px;
   background-color: rgba(255, 255, 255, 0.753);
   border-radius: 32px;
   box-shadow: 6px 6px 12px 0px rgba(143, 100, 100, 1);

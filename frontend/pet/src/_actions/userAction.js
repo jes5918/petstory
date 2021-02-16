@@ -7,7 +7,7 @@ import {
 } from './types';
 import { request } from '../utils/axios';
 
-const USER_URL = '/members';
+const USER_URL = 'api/members';
 
 export function registerUser(dataToSubmit) {
   const data = request('POST', `${USER_URL}/new`, dataToSubmit);
