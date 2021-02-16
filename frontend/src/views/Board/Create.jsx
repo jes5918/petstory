@@ -5,6 +5,11 @@ import { FaCat } from 'react-icons/fa';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import './Create.scss';
+import {
+  CartoonWorkerManager,
+  generateCartoonDefaultConfig,
+  generateDefaultCartoonParams,
+} from '@dannadori/white-box-cartoonization-worker-js';
 
 export default class Create extends Component {
   fileObj = [];
@@ -13,14 +18,20 @@ export default class Create extends Component {
   titleRef = React.createRef();
   contextRef = React.createRef();
   hashtagRef = React.createRef();
+  manager = new CartoonWorkerManager();
+  config = generateCartoonDefaultConfig();
+  params = generateDefaultCartoonParams();
+
   constructor(props) {
     super(props);
     this.state = {
       hashtags: [],
       file: [],
+      fileTrans: [],
       keyword: '',
       results: [],
       cursor: 0,
+      loading: false,
     };
     this.pushAxios = this.pushAxios.bind(this);
     this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
@@ -29,16 +40,14 @@ export default class Create extends Component {
     this.handleRemoveItem = this.handleRemoveItem.bind(this);
     this.hashtagsubmitHandler = this.hashtagsubmitHandler.bind(this);
     this.hashtagAutocomplete = this.hashtagAutocomplete.bind(this);
-    this.previewHandler = this.previewHandler.bind(this);
+    this.hashtagBlurHandler = this.hashtagBlurHandler.bind(this);
     this.hashtagOnkeyDown = this.hashtagOnkeyDown.bind(this);
+    this.previewHandler = this.previewHandler.bind(this);
+    this.cartoonize = this.cartoonize.bind(this);
   }
 
   pushAxios(e) {
     e.preventDefault();
-    console.log(this.fileArray);
-    console.log(this.fileArray === []);
-    console.log(this.titleRef.current.value);
-    console.log(this.fileArray);
     if (!this.titleRef.current.value) {
       toast.error('제목을 입력하세요');
       return;
@@ -51,7 +60,6 @@ export default class Create extends Component {
       toast.error('사진을 등록해주세요');
       return;
     }
-
     const formData = new FormData();
     formData.append('profileId', localStorage.getItem('profileId'));
     formData.append('title', this.titleRef.current.value);
@@ -151,10 +159,16 @@ export default class Create extends Component {
       }));
     };
   }
+  hashtagBlurHandler(e) {
+    this.setState({ results: [] });
+  }
 
   hashtagAutocomplete(e) {
     e.preventDefault();
     const temp = this.hashtagRef.current.value;
+    this.setState({
+      cursor: 0,
+    });
     if (temp) {
       axios
         .get(`/api/hashtag/findOne/${temp}`)
@@ -191,6 +205,38 @@ export default class Create extends Component {
     }
   }
 
+  cartoonize() {
+    if (this.fileArrayFirst) {
+      this.setState({ loading: true });
+      const srcImage = document.createElement('img');
+      srcImage.src = this.fileArrayFirst;
+      srcImage.onload = () => {
+        this.manager
+          .init(this.config)
+          .then(() => this.manager.predict(srcImage, this.params))
+          .then((res) => {
+            res.toBlob((blob) => {
+              this.fileArray = [
+                ...this.fileArray,
+                {
+                  URL: URL.createObjectURL(blob),
+                  id: Date.now(),
+                  Obj: blob,
+                },
+              ];
+              this.fileArrayFirst = URL.createObjectURL(blob);
+              this.setState(() => ({
+                fileTrans: this.fileArrayFirst,
+                loading: false,
+              }));
+            }, 'image/png');
+          });
+      };
+    } else {
+      toast.error('이미지를 올려주세요.');
+    }
+  }
+
   render() {
     const { cursor } = this.state;
     return (
@@ -210,6 +256,18 @@ export default class Create extends Component {
         />
         <div className="contaniner">
           <div className="headers">
+            {!this.state.loading && (
+              <div className="headers__item" onClick={this.cartoonize}>
+                <FaCat className="headers__item__icon" />
+                Cartoon으로 변환하기
+              </div>
+            )}
+            {this.state.loading && (
+              <div className="headers__item">
+                <FaCat className="headers__item__icon" />
+                이미지 변환중...
+              </div>
+            )}
             <div className="headers__item" onClick={this.pushAxios}>
               <FaCat className="headers__item__icon" />글 작성하기
             </div>
@@ -232,7 +290,9 @@ export default class Create extends Component {
                   )}
                 </div>
                 {this.fileArrayFirst && (
-                  <img className="img-card-image" src={this.fileArrayFirst} />
+                  <>
+                    <img className="img-card-image" src={this.fileArrayFirst} />
+                  </>
                 )}
               </label>
               <input
@@ -291,6 +351,7 @@ export default class Create extends Component {
                   type="input"
                   required
                   autoComplete="off"
+                  onBlur={this.hashtagBlurHandler}
                   onChange={this.hashtagAutocomplete}
                   onKeyPress={this.hashtagsubmitHandler}
                   onKeyDown={this.hashtagOnkeyDown}
@@ -299,10 +360,10 @@ export default class Create extends Component {
                   해쉬태그
                 </label>
                 {this.state.results !== [] ? (
-                  <ul htmlfor="hashtag" className="hashtag__suggest__wrapper">
+                  <ul htmlFor="hashtag" className="hashtag__suggest__wrapper">
                     {this.state.results.map((item, idx) => (
                       <li
-                        key={item.id}
+                        key={idx * 123456789}
                         className={
                           cursor === idx
                             ? 'hashtag__suggest__item active'
@@ -328,7 +389,7 @@ export default class Create extends Component {
             )}
             {this.fileArray.map((item, index) => (
               <li
-                key={item.id}
+                key={index * 987}
                 onClick={() => this.previewHandler(index)}
                 className="img-able-delete"
               >

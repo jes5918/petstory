@@ -15,7 +15,7 @@ label {
 }
 .headers {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   width: 55%;
   margin: 16px auto;
@@ -52,7 +52,7 @@ label {
   display: flex;
   flex-direction: row;
   height: 62vh;
-  width: 55%;
+  width: 60%;
   margin: 0px auto 20px;
   background-color: rgba(255, 255, 255, 0.753);
   border-radius: 32px;
