@@ -11,7 +11,7 @@
 }
 
 .light-theme {
-  --clr-bcg: rgb(255, 247, 247);
+  --clr-bcg: #ffcbf2;
   --clr-font: #282c35;
   --clr-primary: #5836d2;
 }
@@ -30,6 +30,10 @@
 
 body {
   background: var(--clr-bcg);
+  /* background-image: url('assets/note2.jpg');
+  background-repeat: repeat-y;
+  background-size: 100vw 100vh;
+  background-position: 0; */
   color: var(--clr-font);
 }
 
@@ -40,5 +44,7 @@ body {
 /* router body 부분 */
 .body__wrapper {
   padding-top: 20px;
-  padding-left: 100px;
+  padding-left: 150px;
+  padding-right: 150px;
+  width: 100%;
 }

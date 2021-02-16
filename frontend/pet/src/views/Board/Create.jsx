@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { createArticle } from '../../_actions/boardAction';
 import { MdCancel, MdCloudUpload } from 'react-icons/md';
 import { FaCat } from 'react-icons/fa';
+import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import './Create.scss';
 
@@ -34,6 +35,23 @@ export default class Create extends Component {
 
   pushAxios(e) {
     e.preventDefault();
+    console.log(this.fileArray);
+    console.log(this.fileArray === []);
+    console.log(this.titleRef.current.value);
+    console.log(this.fileArray);
+    if (!this.titleRef.current.value) {
+      toast.error('제목을 입력하세요');
+      return;
+    }
+    if (!this.contextRef.current.value) {
+      toast.error('내용을 입력하세요');
+      return;
+    }
+    if (this.fileArray.length === 0) {
+      toast.error('사진을 등록해주세요');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('profileId', localStorage.getItem('profileId'));
     formData.append('title', this.titleRef.current.value);
@@ -176,141 +194,156 @@ export default class Create extends Component {
   render() {
     const { cursor } = this.state;
     return (
-      <div className="contaniner">
-        <div className="headers">
-          <div className="headers__item" onClick={this.pushAxios}>
-            <FaCat className="headers__item__icon" />글 작성하기
+      <>
+        <Toaster
+          position="top-center"
+          reverseOrder={true}
+          toastOptions={{
+            duration: 1000,
+            style: {
+              border: '1px solid #713200',
+              padding: '16px',
+              margin: '10vh',
+              color: '#713200',
+            },
+          }}
+        />
+        <div className="contaniner">
+          <div className="headers">
+            <div className="headers__item" onClick={this.pushAxios}>
+              <FaCat className="headers__item__icon" />글 작성하기
+            </div>
           </div>
-        </div>
-        <ul className="img-list">
-          {this.fileArray.length === 0 ? (
-            <div className="preview__holder">이미지 프리뷰가 나올 공간</div>
-          ) : (
-            ''
-          )}
-          {this.fileArray.map((item, index) => (
-            <li
-              key={item.id}
-              onClick={() => this.previewHandler(index)}
-              className="img-able-delete"
-            >
-              <img className="imgPreview" src={item.URL} key={item.id} />
-              <div className="iconWrapper">
-                <MdCancel
-                  className="deleteIcon"
-                  onClick={() => this.handleDelete(item)}
+          <div
+            className="form-card"
+            onDrop={this.onDrop}
+            onDragOver={this.onDragOver}
+          >
+            <div className="img-card">
+              <label className="label-image" htmlFor="imageUpload">
+                <div className="imagedroparea">
+                  {!this.fileArrayFirst && (
+                    <MdCloudUpload className="image-placeholder-icon" />
+                  )}
+                  {!this.fileArrayFirst && (
+                    <div className="image-placeholder">
+                      여기에 이미지를 드래그 하거나 클릭해 주세요
+                    </div>
+                  )}
+                </div>
+                {this.fileArrayFirst && (
+                  <img className="img-card-image" src={this.fileArrayFirst} />
+                )}
+              </label>
+              <input
+                type="file"
+                id="imageUpload"
+                style={{ display: 'none' }}
+                onChange={this.uploadMultipleFiles}
+                multiple
+              />
+            </div>
+            <div className="text-card">
+              <div className="form__group field">
+                <input
+                  className="form__field "
+                  ref={this.titleRef}
+                  placeholder="title"
+                  id="name"
+                  type="input"
+                  autoComplete="off"
+                  required
                 />
+                <label htmlFor="title" className="form__label title">
+                  제목
+                </label>
               </div>
-            </li>
-          ))}
-        </ul>
-        <div
-          className="form-card"
-          onDrop={this.onDrop}
-          onDragOver={this.onDragOver}
-        >
-          <div className="img-card">
-            <label className="label-image" htmlFor="imageUpload">
-              <div className="imagedroparea">
-                {!this.fileArrayFirst && (
-                  <MdCloudUpload className="image-placeholder-icon" />
-                )}
-                {!this.fileArrayFirst && (
-                  <div className="image-placeholder">
-                    여기에 이미지를 드래그 하거나 클릭해 주세요
-                  </div>
+              <div className="form__group field">
+                <textarea
+                  className="form__field context"
+                  ref={this.contextRef}
+                  placeholder="context"
+                  id="context"
+                  type="textarea"
+                  required
+                />
+                <label htmlFor="context" className="form__label context">
+                  내용
+                </label>
+              </div>
+              <ul className="hashtag__container">
+                {this.state.hashtags.map((item, i) => (
+                  <li
+                    className="hashtag__item"
+                    key={i}
+                    onClick={this.handleRemoveItem(i)}
+                  >
+                    #{item}
+                  </li>
+                ))}
+              </ul>
+              <div className="form__group field">
+                <input
+                  className="form__field "
+                  placeholder="hashtag"
+                  ref={this.hashtagRef}
+                  id="hashtag"
+                  type="input"
+                  required
+                  autoComplete="off"
+                  onChange={this.hashtagAutocomplete}
+                  onKeyPress={this.hashtagsubmitHandler}
+                  onKeyDown={this.hashtagOnkeyDown}
+                />
+                <label htmlFor="hashtag" className="form__label title">
+                  해쉬태그
+                </label>
+                {this.state.results !== [] ? (
+                  <ul htmlfor="hashtag" className="hashtag__suggest__wrapper">
+                    {this.state.results.map((item, idx) => (
+                      <li
+                        key={item.id}
+                        className={
+                          cursor === idx
+                            ? 'hashtag__suggest__item active'
+                            : 'hashtag__suggest__item'
+                        }
+                        onClick={() => this.suggestionClickHandler(idx)}
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  ''
                 )}
               </div>
-              {this.fileArrayFirst && (
-                <img className="img-card-image" src={this.fileArrayFirst} />
-              )}
-            </label>
-            <input
-              type="file"
-              id="imageUpload"
-              style={{ display: 'none' }}
-              onChange={this.uploadMultipleFiles}
-              multiple
-            />
-          </div>
-          <div className="text-card">
-            <div className="form__group field">
-              <input
-                className="form__field "
-                ref={this.titleRef}
-                placeholder="title"
-                id="name"
-                type="input"
-                autoComplete="off"
-                required
-              />
-              <label htmlFor="title" className="form__label title">
-                제목
-              </label>
-            </div>
-            <div className="form__group field">
-              <textarea
-                className="form__field context"
-                ref={this.contextRef}
-                placeholder="context"
-                id="context"
-                type="textarea"
-                required
-              />
-              <label htmlFor="context" className="form__label context">
-                내용
-              </label>
-            </div>
-            <ul className="hashtag__container">
-              {this.state.hashtags.map((item, i) => (
-                <li
-                  className="hashtag__item"
-                  key={i}
-                  onClick={this.handleRemoveItem(i)}
-                >
-                  #{item}
-                </li>
-              ))}
-            </ul>
-            <div className="form__group field">
-              <input
-                className="form__field "
-                placeholder="hashtag"
-                ref={this.hashtagRef}
-                id="hashtag"
-                type="input"
-                required
-                autoComplete="off"
-                onChange={this.hashtagAutocomplete}
-                onKeyPress={this.hashtagsubmitHandler}
-                onKeyDown={this.hashtagOnkeyDown}
-              />
-              <label htmlFor="hashtag" className="form__label title">
-                해쉬태그
-              </label>
-              {this.state.results !== [] ? (
-                <ul htmlfor="hashtag" className="hashtag__suggest__wrapper">
-                  {this.state.results.map((item, idx) => (
-                    <li
-                      key={item.id}
-                      className={
-                        cursor === idx
-                          ? 'hashtag__suggest__item active'
-                          : 'hashtag__suggest__item'
-                      }
-                      onClick={() => this.suggestionClickHandler(idx)}
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                ''
-              )}
             </div>
           </div>
+          <ul className="img-list">
+            {this.fileArray.length === 0 ? (
+              <div className="preview__holder">이미지 프리뷰가 나올 공간</div>
+            ) : (
+              ''
+            )}
+            {this.fileArray.map((item, index) => (
+              <li
+                key={item.id}
+                onClick={() => this.previewHandler(index)}
+                className="img-able-delete"
+              >
+                <img className="imgPreview" src={item.URL} key={item.id} />
+                <div className="iconWrapper">
+                  <MdCancel
+                    className="deleteIcon"
+                    onClick={() => this.handleDelete(item)}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
+      </>
     );
   }
 }

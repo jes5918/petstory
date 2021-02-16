@@ -14,13 +14,17 @@ import NavbarIcons from '../ComponentUI/NavbarIcons';
 function Navbar({ isLogin, toggleTheme }) {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+  const [isFocus, setIsfoused] = useState(false);
+
+  const handleIsFocus = (val) => {
+    setIsfoused(val);
+  };
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
   const dispatch = useDispatch();
   const [theme, setState] = useState({
     checkedA: true,
-    checkedB: true,
   });
 
   // 프로필 Id 선택
@@ -120,95 +124,17 @@ function Navbar({ isLogin, toggleTheme }) {
             <img className="navbar-icon" src={peticon} />
             PetStory
           </Link>
-          {/* <div className="menu-icon" onClick={handleClick}>
-            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
-          </div> */}
           <div className="navbar__right">
-            <SearchBar></SearchBar>
-            <NavbarIcons></NavbarIcons>
+            <SearchBar
+              handleIsFocus={handleIsFocus}
+              isFocus={isFocus}
+            ></SearchBar>
+            <NavbarIcons
+              handleIsFocus={handleIsFocus}
+              isFocus={isFocus}
+            ></NavbarIcons>
           </div>
-          {/* <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-            <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                피드
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/create"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                게시글 작성
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/map" className="nav-links" onClick={closeMobileMenu}>
-                지도
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-<<<<<<< HEAD
-                to="/select"
-=======
-                to={`/profile/${profileId}`}
->>>>>>> upstream/develop
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                프로필
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/profile/5"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                남의 프로필
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/cartoonize"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                카툰
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/userdetail"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                멤버정보
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/login"
-                className="nav-links-mobile"
-                onClick={closeMobileMenu}
-              >
-                Logout
-              </Link>
-            </li>
-            <li className="nav-item">
-              {button && (
-                <Button
-                  className="nav-links"
-                  onClick={onLogoutHandler}
-                  buttonStyle="btn--outline"
-                >
-                  Logout
-                </Button>
-              )}
-            </li>
-          </ul> */}
-          <div className="theme-toggle-switch">
+          {/* <div className="theme-toggle-switch">
             <Switch
               checked={theme.checkedA}
               onChange={handleThemeChange}
@@ -216,7 +142,7 @@ function Navbar({ isLogin, toggleTheme }) {
               color="default"
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </>

@@ -10,13 +10,9 @@ import { FiBox } from 'react-icons/fi';
 function NavBarSide(props) {
   return (
     <div className={styles.navbarSide}>
-      <Link className={styles.link} to="/create">
+      <Link className={styles.linkplus} to="/create">
         <FaPlusCircle className={styles.icon}></FaPlusCircle>
         <span>새 글 작성</span>
-      </Link>
-      <Link className={styles.link} to="/postlist">
-        <FaPlusCircle className={styles.icon}></FaPlusCircle>
-        <span>저장목록 만들기</span>
       </Link>
       <Link className={styles.link} to="/">
         <FaHome className={styles.icon}></FaHome>
@@ -33,6 +29,10 @@ function NavBarSide(props) {
       <Link className={styles.link} to="/">
         <FiBox className={styles.icon}></FiBox>
         <span>Storage</span>
+      </Link>
+      <Link className={styles.linkplus} to="/postlist">
+        <FaPlusCircle className={styles.icon}></FaPlusCircle>
+        <span>저장목록 만들기</span>
       </Link>
       {/* <Link className={styles.link} to="/">
         <FiBox></FiBox>
