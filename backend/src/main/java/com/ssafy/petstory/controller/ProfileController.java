@@ -70,6 +70,8 @@ public class ProfileController {
     /**
      * 프로필 조회1(세부조회)
      * */
+    @GetMapping("/detail/profile/{profileId}")   // 프로필 아이디 받아서 findone 조회 후 폼에 담아서 객체하나 리턴
+    public ResponseEntity<ProfileQueryDto> detail(@PathVariable("profileId") Long profileId, ProfileForm form) {
 
     @GetMapping("/detail/profile/{profileId}")   // 프로필 아이디 받아서 findone 조회 후 폼에 담아서 객체하나 리턴
     public ResponseEntity<ProfileQueryDto> detail(@PathVariable("profileId") Long profileId, ProfileForm form) {
@@ -101,24 +103,21 @@ public class ProfileController {
     /**
      * 프로필 정보 수정
      * */
-    @PutMapping("profile/update/{profile_id}") // v2 mem id로 받아서 검색 후 수정, 받아오는 형식 memformdto
-    public ResponseEntity<String> updateProfile(@PathVariable("profile_id") Long profile_id , @Valid @RequestBody ProfileForm form) {
+    @PutMapping("profile/update/{profileId}") // v2 mem id로 받아서 검색 후 수정, 받아오는 형식 memformdto
+    public ResponseEntity<String> updateProfile(@PathVariable("profileId") Long profileId, MultipartFile image, ProfileForm form) throws IOException {
 
-        profileService.update(profile_id, form);
-        //Member findMember = memberService.findOne(id); 수정정보 리턴할 때
+        profileService.update(profileId, image, form);
 
         return new ResponseEntity<>("프로필 정보가 수정되었습니다.", HttpStatus.OK);
-    }//맴버정보보기를 눌러서 확인
+    } // 맴버정보보기를 눌러서 확인
 
     /**
      * 프로필 정보 삭제
      * */
-    @DeleteMapping("profile/delete/{profile_id}")  //프로필 아이디를 통해 삭제한다.
-    public ResponseEntity<String> deleteMember(@PathVariable("profile_id") Long profile_id ) {
+    @DeleteMapping("profile/delete/{profileId}")  //프로필 아이디를 통해 삭제한다.
+    public ResponseEntity<String> deleteMember(@PathVariable("profileId") Long profileId ) {
 
-//        Profile profile = new Profile();
-//        profile.setId(profile_id);
-        profileService.delete(profile_id);
+        profileService.delete(profileId);
         return new ResponseEntity<>("프로필 정보가 삭제되었습니다.", HttpStatus.OK);
     }//맴버정보보기를 눌러서 확인
 

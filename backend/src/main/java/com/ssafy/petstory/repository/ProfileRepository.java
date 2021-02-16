@@ -15,12 +15,9 @@ import java.util.List;
 public class ProfileRepository {
     private final EntityManager em;
 
-    public void saveR(Relation relation) {  //테이블에 인서트
-        System.out.println("++++++++++++++");
-        em.persist(relation);
-        System.out.println("릴레이션 테이블 저장후 아이디 확인: "+relation.getId());
-    }
-
+    /**
+     * 프로필 생성
+     */
     public void saveP(Profile profile){
         System.out.println("+++++++++++++여기서 문제발생");
         em.persist(profile);
@@ -40,12 +37,16 @@ public class ProfileRepository {
     }
 
     /**
-     *수정시 수정할 프로필 찾아오기 + 삭제 시 삭제할 프로필 찾아오기
+     * 프로필 조회
+     * 수정시 수정할 프로필 찾아오기 + 삭제 시 삭제할 프로필 찾아오기
      */
     public Profile findOne(Long id) {
         return em.find(Profile.class, id);
     }
 
+    /**
+     * 프로필 삭제
+     */
     public void delete(Profile profile){
         em.remove(profile);
     }

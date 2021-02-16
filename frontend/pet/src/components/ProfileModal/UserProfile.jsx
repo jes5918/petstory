@@ -1,130 +1,70 @@
 import React, { useState, useEffect } from 'react';
-import ProfileModal from './ProfileModal';
-import Follower from './Follower';
-import Modal from 'react-modal';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { createFollow } from '../../_actions/profileAction';
+// component, css
 import ModifyProfile from './ModifyProfile';
+import FollowerList from './FollowerList';
+// library
+import Modal from 'react-modal';
 
 function UserProfile(props) {
   // const dispatch = useDispatch();
   const [isFollowerModal, setFollowerModal] = useState(false);
   const [isFolloweeModal, setFolloweeModal] = useState(false);
   const [isModifyModal, setModifyModal] = useState(false);
-  const [test, setTest] = useState(false);
-  const [followers, setFollowers] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loginProfileId, setLoginProfileId] = useState(null);
+  const [isFollow, setIsFollow] = useState('팔로우');
+  const dispatch = useDispatch();
 
+  // profileId 가져오기
+  const jsonProfileId = localStorage.getItem('profileId');
+  const profileId = JSON.parse(jsonProfileId);
   useEffect(() => {
-    const fetchFollowers = async () => {
-      try {
-        setFollowers(null);
-        setError(null);
-        setLoading(true);
-        const response = await axios.get(
-          'https://jsonplaceholder.typicode.com/users', // `http://localhost:8080/profile/followers/${profile_id}` profile_id는 props에서 가져오기
-        );
-        // setFollowers((response.data) => {
-        //   const followerList = response.data.map((follower) => {
-        //     const obj = { followerId, nickname };
-        //     return obj;
-        //   });
-        const dummyFollowers = [
-          {
-            followerId: 1,
-            nickname: '연님이',
-          },
-          {
-            followerId: 3,
-            nickname: '길막이',
-          },
-        ];
-        setFollowers(dummyFollowers);
-        // setFollowers(response.data); // 응답: follower_id, nickname
-      } catch (e) {
-        setError(e);
-      }
-      setLoading(false);
-    };
-    fetchFollowers();
-  }, []);
-  if (loading) {
-    return <div>로딩중..</div>;
-  }
-  if (error) {
-    return <div>에러 발생</div>;
-  }
-  if (!followers) {
-    return <div>followers 없다</div>;
-  }
+    setLoginProfileId(profileId);
+  }, [jsonProfileId]);
 
-  const handleTest = () => {
-    setTest(!test);
-  };
-
-  const closeTestModal = () => {
-    setTest(false);
-  };
-
+  // 모달 - 수정
   const closeModifyModal = () => {
     setModifyModal(false);
   };
 
+  const handleModifyModal = () => {
+    setModifyModal(!isModifyModal);
+  };
+
+  const handleModify = (modiProfile) => {
+    props.handleModify(modiProfile);
+  };
+
+  // 모달 - Follower목록
   const handleFollowerModal = () => {
     setFollowerModal(!isFollowerModal);
   };
 
+  // 팔로우 신청
+  const handleFollow = (e) => {
+    e.preventDefault();
+    if (isFollow === '팔로우') {
+      const followRequest = {
+        follower_id: props.profile.profileId, // 이 프로필 주인
+        followee_id: profileId, // 팔로우 신청한 사람(로그인)
+      };
+
+      dispatch(createFollow(followRequest)).then((res) => {
+        if (res.payload === 'success') {
+          setIsFollow('팔로우 취소');
+        }
+      });
+    } else {
+      // 팔로우 취소하는 api
+      setIsFollow('팔로우');
+    }
+  };
+
+  // 모달 - Followee 목록
   const handleFolloweeModal = () => {
     setFolloweeModal(!isFolloweeModal);
   };
-
-  const handleModifyModal = () => {
-    setModifyModal(!isModifyModal);
-    console.log(`isModifyModal ${isModifyModal}`);
-  };
-
-  // dispatch(ProfileById()).then((res) => {
-  //   const profile = res.data;
-  // });
-  const followerListInModal = (
-    <div className="modal-body">
-      <h2>follower 목록</h2>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-    </div>
-  );
 
   const followeeListInModal = (
     <div className="modal-body">
@@ -140,11 +80,9 @@ function UserProfile(props) {
 
   return (
     <div className="UserProfileBox">
-      <button onClick={handleTest}>프로필 생성 모달 테스트</button>
-      <ProfileModal test={test} onClose={closeTestModal} />
       <div className="profileCard">
         <img
-          src="https://i.ytimg.com/vi/AwrFPJk_BGU/maxresdefault.jpg"
+          src={props.profile.imgFullPath}
           alt="프로필 사진"
           className="profileImg"
         />
@@ -155,29 +93,11 @@ function UserProfile(props) {
           </div>
           <div className="userProfileBody">
             <h3 className="follower" onClick={handleFollowerModal}>
-              팔로워: {props.profile.follower_num}
+              팔로워: {props.profile.followerNum}
             </h3>
-            <Modal
-              isOpen={isFollowerModal}
-              onRequestClose={handleFollowerModal}
-              style={{
-                content: {
-                  top: '20%',
-                  left: '30%',
-                  right: '30%',
-                  bottom: '20%',
-                },
-              }}
-            >
-              <ul>
-                {followers.map((follower) => (
-                  <Follower key={follower.followerId} follower={follower} />
-                ))}
-              </ul>
-              <button onClick={handleFollowerModal}>닫기</button>
-            </Modal>
+            <FollowerList />
             <h3 className="following" onClick={handleFolloweeModal}>
-              팔로잉: {props.profile.followee_num}
+              팔로잉: {props.profile.followeeNum}
             </h3>
             <Modal
               isOpen={isFolloweeModal}
@@ -197,11 +117,21 @@ function UserProfile(props) {
           </div>
         </div>
       </div>
-      <button onClick={handleModifyModal}>edit profile</button>
+      {/* 내 프로필이면 '프로필 편집', 남의 프로필이면 '팔로우' 버튼 */}
+      {props.profile.profileId === loginProfileId ? (
+        <button type="button" onClick={handleModifyModal}>
+          edit profile
+        </button>
+      ) : (
+        <button type="button" onClick={handleFollow}>
+          {isFollow}
+        </button>
+      )}
       <ModifyProfile
         profile={props.profile}
         isOpen={isModifyModal}
-        onModify={closeModifyModal}
+        closeModal={closeModifyModal}
+        handleModify={handleModify}
       />
     </div>
   );

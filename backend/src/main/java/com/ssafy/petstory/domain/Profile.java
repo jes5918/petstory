@@ -2,6 +2,7 @@ package com.ssafy.petstory.domain;
 
 import com.ssafy.petstory.controller.ProfileForm;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -68,6 +69,14 @@ public class Profile {
         member.getProfiles().add(this);
     }
 
+    /**
+     * Profile과 Image 연관 관계 편의 메소드
+     */
+    public void setImage(Image image) {
+        this.image = image;
+        image.setProfile(this);
+    }
+
 //    public static void main(String[] args) {
 //        Member member = new Member();
 //        Profile profile = new Profile();
@@ -113,7 +122,6 @@ public class Profile {
         //Member m1 = profile.setMember(member);
 
         profile.setMember(member); //프로필 엔티티의 맴버 -> 맴버 아이디로 찾아온 맴버
-//        profile.setId(form.getProfile_id());
         profile.setNickname(form.getNickname());
         profile.setRank(form.getRank());
         profile.setFolloweeNum(form.getFolloweeNum());

@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import FeedDetail from '../../components/Feed/FeedDetail';
-import FeedFrame from '../../components/Feed/FeedFrame';
-import FeedInfinite from '../../components/Feed/FeedInfinite';
-import FeedInfiniteCopy from '../../components/Feed/FeedInfiniteCopy';
 
-function MainPage(props) {
+// CSS
+import styles from './MainPage.module.css';
+
+// Components
+import FeedInfinite from '../../components/Feed/FeedInfinite';
+
+function MainPage() {
   return (
-    <div>
-      {/* <FeedFrame /> */}
-      {/* <FeedDetail /> */}
+    <div className={styles.mainPage}>
       <FeedInfinite />
     </div>
   );

@@ -7,80 +7,63 @@ import './ProfilePage.css';
 import axios from 'axios';
 
 Modal.setAppElement('#root');
-// 더미 데이터
-const PROFILES = {
-  profile_id: 1,
-  nickname: '도도',
-  rank: 'gold',
-  follower_num: 30,
-  followee_num: 50,
-  member_id: 1,
-};
-const BOARDS = [
-  {
-    board_id: 1,
-    board_title: '첫번째 글',
-    board_content: '첫번째 글 내용',
-    board_date: 20210126,
-    like_num: 3,
-    report_num: 3,
-    hashtag_id: 1,
-    profile_id: 1,
-  },
-  {
-    board_id: 2,
-    board_title: '두번째 글',
-    board_content: '두번째 글 내용',
-    board_date: 20210126,
-    like_num: 3,
-    report_num: 3,
-    hashtag_id: 1,
-    profile_id: 1,
-  },
-];
-// back에 profile 데이터 요청
-function Profile() {
+function Profile(props) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // 프로필 정보 요청
+  const profileId = props.match.params.profileId;
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setProfile(null);
         setError(null);
         setLoading(true);
-        const response = await axios.get(
-          'https://jsonplaceholder.typicode.com/users', // `http://localhost:8080/${profile_id}` profile_id는 session이나 local에서 가져오기
-        );
-        setProfile(response.data); // 응답: profile_id, rank, follower_num, followee_num
+        // const profileId = localStorage.getItem('currentProfileId');
+        const headers = {
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        };
+        const response = axios
+          .get(`/detail/profile/${profileId}`, {}, headers)
+          .then((res) => {
+            const data = res.data;
+            setProfile(data);
+          });
+        // setProfile(response.data);
       } catch (e) {
         setError(e);
       }
       setLoading(false);
     };
     fetchProfile();
-  }, []);
+  }, [profileId]);
   if (loading) {
     return <div>로딩중..</div>;
   }
   if (error) {
+    console.log(`ProfilePage에서 profile: ${profile}`);
     return <div>에러 발생</div>;
   }
   if (!profile) {
     return <div>profiles없다</div>;
   }
+
+  // 프로필 수정
+  const handleModify = (modiInfo) => {
+    const { name, value } = modiInfo;
+    setProfile({ ...profile, [name]: value });
+  };
+
   return (
     <div className="profileEntire">
-      {/* {profile.map((item) => (
-        <h2 key={item.id}>{item.name}</h2>
-      ))} */}
       <div>
-        <UserProfile profile={PROFILES} />
-        {/* <UserProfile profile={profile} /> */}
+        <UserProfile profile={profile} handleModify={handleModify} />
       </div>
       <div>
-        <UserFeedsTabs feeds={BOARDS} />
+        <UserFeedsTabs profile={profile} />
       </div>
     </div>
   );

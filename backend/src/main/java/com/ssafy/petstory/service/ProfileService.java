@@ -21,6 +21,7 @@ import java.util.List;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
+    private final BoardRepository boardRepository;
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
     private final FileService fileService;
@@ -51,8 +52,10 @@ public class ProfileService {
         return profile.getId();
     }
 
-    @Transactional
-    public void update(Long id, ProfileForm form) {
+    /**
+     * 프로필 수정
+     */
+    public void update(Long id, MultipartFile inputImage, ProfileForm form) throws IOException {
         Profile profile = profileRepository.findOne(id);  //id로 해당하는거 찾아와서 수정하자
         //이 부분 수정
         profile.setNickname(form.getNickname());
@@ -70,9 +73,15 @@ public class ProfileService {
     public List<ReadMultiProfileResponse> showProfile(Long memberId) {
         return profileRepository.findByMemberId(memberId);
     }
+
     /**
-     * 회원 정보 확인
+     * 접속할 프로필 선택
+     * --> memberService로 가는 게 맞을 듯
      */
+    @Transactional(readOnly = true)
+    public List<ReadMultiProfileResponse> showProfile(Long memberId) {
+       return profileRepository.findByMemberId(memberId);
+    }
 
     @Transactional(readOnly = true)
     public ProfileQueryDto detail(Long profileId) {  //memberRepo에서 처리하고
@@ -89,8 +98,11 @@ public class ProfileService {
         return profileQueryDto;
     }
 
-    public void delete(Long profile_id) {
-        Profile profile = profileRepository.findOne(profile_id);  //id로 해당하는거 찾아와서 삭제하자
+    /**
+     * 프로필 삭제
+     */
+    public void delete(Long profileId) {
+        Profile profile = profileRepository.findOne(profileId);  //id로 해당하는거 찾아와서 삭제하자
         profileRepository.delete(profile);  //id로 해당하는거 찾아와서 수정하자
     }
 
@@ -99,10 +111,9 @@ public class ProfileService {
         Long b_id = like.getBoard().getId();
         System.out.println("---------보드의 아이디 확인: "+like.getBoard().getId());
 
-        if(profileRepository.findlike(p_id,b_id) == 0){ // 라이크 테이블에 없으면
+        if (profileRepository.findlike(p_id, b_id) == 0) { // 라이크 테이블에 없으면
             return true;
-        }
-        else{ //이미 좋아요 눌렀으면
+        } else { //이미 좋아요 눌렀으면
             return false;
         }
     }
