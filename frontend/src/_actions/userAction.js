@@ -7,7 +7,7 @@ import {
 } from './types';
 import { request } from '../utils/axios';
 
-const USER_URL = 'api/members';
+const USER_URL = '/api/members';
 
 export function registerUser(dataToSubmit) {
   const data = request('POST', `${USER_URL}/new`, dataToSubmit);
@@ -18,7 +18,7 @@ export function registerUser(dataToSubmit) {
 }
 
 export function loginUser(dataToSubmit) {
-  const data = request('POST', `/login`, dataToSubmit);
+  const data = request('POST', `/api/login`, dataToSubmit);
 
   return {
     type: LOGIN_USER,
@@ -27,7 +27,7 @@ export function loginUser(dataToSubmit) {
 }
 
 export function logoutUser() {
-  const data = request('GET', `/logout`);
+  const data = request('GET', `/api/logout`);
 
   return {
     type: LOGOUT_USER,
@@ -36,7 +36,7 @@ export function logoutUser() {
 }
 
 export function userDetail(userId) {
-  const data = request('GET', `detail/${userId}`);
+  const data = request('GET', `/api/detail/${userId}`);
 
   return {
     type: DETAIL_USER,
@@ -45,7 +45,7 @@ export function userDetail(userId) {
 }
 
 export function userUpdate(memberId, dataToSubmit) {
-  const data = request('PUT', `member/update/${memberId}`, dataToSubmit);
+  const data = request('PUT', `/api/member/update/${memberId}`, dataToSubmit);
 
   return {
     type: UPDATE_USER,

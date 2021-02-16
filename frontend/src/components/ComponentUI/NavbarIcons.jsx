@@ -36,7 +36,7 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
     const profileId = localStorage.getItem('profileId');
 
     axios
-      .get(`/main/alarmclick/${profileId}`)
+      .get(`/api/main/alarmclick/${profileId}`)
       .then((res) => {
         console.log('알람데이터', res);
       })

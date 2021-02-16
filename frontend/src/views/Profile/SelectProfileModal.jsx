@@ -92,7 +92,7 @@ function SelectProfileModal() {
       try {
         setError(null);
         setLoading(true);
-        const response = await axios.get(`/show/${memberId}`);
+        const response = await axios.get(`/api/show/${memberId}`);
         if (response.data) {
           setProfiles(response.data);
         }

@@ -27,7 +27,7 @@ function Profile(props) {
           'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
         };
         const response = axios
-          .get(`/detail/profile/${profileId}`, {}, headers)
+          .get(`/api/detail/profile/${profileId}`, {}, headers)
           .then((res) => {
             const data = res.data;
             setProfile(data);
