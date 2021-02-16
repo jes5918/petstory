@@ -103,9 +103,9 @@ public class BoardRepository {
      */
     private Map<Long, List<FileQueryDto>> findFileMap(List<Long> boardIds) {
         List<FileQueryDto> fileDtos = em.createQuery(
-        "select new com.ssafy.petstory.dto.FileQueryDto(f.board.id, f.id, f.filePath, f.imgFullPath)" +
-                    " from File f" +
-                    " where f.board.id in :boardIds", FileQueryDto.class)
+                "select new com.ssafy.petstory.dto.FileQueryDto(f.board.id, f.id, f.filePath, f.imgFullPath)" +
+                        " from File f" +
+                        " where f.board.id in :boardIds", FileQueryDto.class)
                 .setParameter("boardIds", boardIds)
                 .getResultList();
         return fileDtos.stream()
@@ -117,10 +117,10 @@ public class BoardRepository {
      */
     private Map<Long, List<BoardHashtagQueryDto>> findBoardHashtagMap(List<Long> boardIds) {
         List<BoardHashtagQueryDto> boardHashtagQueryDtos = em.createQuery(
-        "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
-                    " from BoardHashtag bh" +
-                    " join bh.hashtag h" +
-                    " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
+                "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
+                        " from BoardHashtag bh" +
+                        " join bh.hashtag h" +
+                        " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
                 .setParameter("boardIds", boardIds)
                 .getResultList();
         return boardHashtagQueryDtos.stream()
