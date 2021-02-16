@@ -51,7 +51,7 @@ public class ProfileRepository {
         em.remove(profile);
     }
 
-    public int findlike(Long p_id,Long b_id){  //엔티티로 리턴
+    public int findlike(Long p_id,Long b_id){  //엔티티 사이즈로 리턴
 
             List<Like> likes = em.createQuery("SELECT m FROM Like m WHERE m.board.id = :board_id AND m.profileId = :profile_id", Like.class)
                     .setParameter("board_id",b_id)

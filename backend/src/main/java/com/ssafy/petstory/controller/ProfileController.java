@@ -70,8 +70,7 @@ public class ProfileController {
     /**
      * 프로필 조회1(세부조회)
      * */
-    @GetMapping("/detail/profile/{profileId}")   // 프로필 아이디 받아서 findone 조회 후 폼에 담아서 객체하나 리턴
-    public ResponseEntity<ProfileQueryDto> detail(@PathVariable("profileId") Long profileId, ProfileForm form) {
+
 
     @GetMapping("/detail/profile/{profileId}")   // 프로필 아이디 받아서 findone 조회 후 폼에 담아서 객체하나 리턴
     public ResponseEntity<ProfileQueryDto> detail(@PathVariable("profileId") Long profileId, ProfileForm form) {
@@ -83,7 +82,7 @@ public class ProfileController {
         }
 
         return new ResponseEntity<>(profile, HttpStatus.OK);
-    }//맴버정보보기를 눌러서 확인
+    }
 
     /**
      * 프로필 조회2(맴버의 다중프로필 조회 - 로그인 시 사용)
@@ -252,4 +251,5 @@ public class ProfileController {
         }
     }
 }
+
 
