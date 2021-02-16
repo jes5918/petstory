@@ -6,10 +6,10 @@ import {
 } from './types';
 import { request } from '../utils/axios';
 
-const USER_API_BASE_URL = '/profiles';
-const BOARD_API_BASE_URL = '/board';
-const RELATIONS_API_BASE_URL = '/relations';
-const PROFILE_API_BASE_URL = '/profile';
+const USER_API_BASE_URL = '/api/profiles';
+const BOARD_API_BASE_URL = '/api/board';
+const RELATIONS_API_BASE_URL = '/api/relations';
+const PROFILE_API_BASE_URL = '/api/profile';
 
 // 프로필 생성
 export function addProfile(profileForm) {

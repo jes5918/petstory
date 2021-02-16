@@ -19,7 +19,7 @@ export default class KakaoLogin extends Component {
     };
     console.log(body);
 
-    axios(`/kakaologin`, {
+    axios(`/api/kakaologin`, {
       // 백엔드에서 원하는 형태의 endpoint로 입력해서 fetch한다.
       method: 'POST',
       headers: {
