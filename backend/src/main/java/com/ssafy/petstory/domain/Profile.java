@@ -36,8 +36,13 @@ public class Profile {
     private String rank;
 
     @Column(name = "profile_state")
-    @Enumerated(EnumType.ORDINAL)  //db에 저장되는 값 숫자로 , 받는건 String 으로
+    @Enumerated(EnumType.STRING)  //db에 저장되는 값 숫자로 , 받는건 String 으로
     private ProfileState state;
+
+    // Profile과 Image는 일대일 관계
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     // Member와 Profile은 일대다 관계
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,8 +54,10 @@ public class Profile {
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
-    private int follower_num;
-    private int followee_num;
+    @Column(name = "follower_num")
+    private int followerNum;
+    @Column(name = "followee_num")
+    private int followeeNum;
 
     /**
      * Member와 Profile 연관 관계 (편의) 메서드
@@ -87,7 +94,13 @@ public class Profile {
 //        this.relation = relation;
 //        relation.setProfile(this);
 //    }
-
+    /**
+     * Profile과 Image 연관 관계 편의 메소드
+     */
+    public void setImage(Image image) {
+        this.image = image;
+        image.setProfile(this);
+    }
     /**
      * 프로필 생성 메소드
      */
@@ -103,9 +116,9 @@ public class Profile {
 //        profile.setId(form.getProfile_id());
         profile.setNickname(form.getNickname());
         profile.setRank(form.getRank());
-        profile.setFollowee_num(form.getFollowee_num());
-        profile.setFollower_num(form.getFollower_num());
-        profile.setState(form.getProfile_state());
+        profile.setFolloweeNum(form.getFolloweeNum());
+        profile.setFollowerNum(form.getFollowerNum());
+        profile.setState(form.getProfileState());
         //profile.setRelation(relation);
 
         System.out.println("프로필 엔티티에 저장 완료 후 닉네임 확인: "+profile.getNickname());

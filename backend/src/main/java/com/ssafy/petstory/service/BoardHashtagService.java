@@ -4,13 +4,12 @@ import com.ssafy.petstory.domain.Board;
 import com.ssafy.petstory.domain.BoardHashtag;
 import com.ssafy.petstory.domain.Hashtag;
 import com.ssafy.petstory.repository.BoardHashtagRepository;
-import com.ssafy.petstory.repository.HashtagRepository;
+import com.ssafy.petstory.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,20 +18,19 @@ import java.util.stream.Collectors;
 public class BoardHashtagService {
 
     private final BoardHashtagRepository boardHashtagRepository;
-    private final HashtagRepository hashtagRepository;
     private final HashtagService hashtagService;
+    private final BoardRepository boardRepository;
 
-    public List<Hashtag> save(Board board, List<String> hashtagNames){
-//        List<BoardHashtag> boardHashtags = mapToBoardHashtag(hashtagNames);
-        List<Hashtag> hashtags = mapToBoardHashtag(hashtagNames);
+    public void save(BoardHashtag boardHashtag) {
+        boardHashtagRepository.save(boardHashtag);
+    }
 
-//        for (BoardHashtag boardHashtag : boardHashtags) {
-//            boardHashtag.setBoard(board);
-//        }
+    public List<Hashtag> saveByNames(Board board, List<String> hashtagNames){
+        List<Hashtag> hashtags = mapToHashtag(hashtagNames);
         return hashtags;
     }
 
-    private List<Hashtag> mapToBoardHashtag(List<String> hashtagNames){
+    private List<Hashtag> mapToHashtag(List<String> hashtagNames){
         List<Hashtag> hashtags = hashtagNames.stream()
                 .map(name -> {
                     Hashtag hashtag = hashtagService.findOrCreateHashtag(name);
@@ -41,23 +39,22 @@ public class BoardHashtagService {
                 .collect(Collectors.toList());
         return hashtags;
     }
-//    private List<BoardHashtag> mapToBoardHashtag(List<String> hashtags){
-//        List<BoardHashtag> boardHashtags = hashtags.stream()
-//                .map(name -> {
-//                    Hashtag hashtag = hashtagService.findOrCreateHashtag(name);
-//                    return findOrCreateBoardHashtag(hashtag);
-//                })
-//                .collect(Collectors.toList());
-//        return boardHashtags;
-//    }
 
-    @Transactional
-    private BoardHashtag findOrCreateBoardHashtag(Hashtag hashtag) {
-        BoardHashtag boardHashtag = boardHashtagRepository.findByHashtag(hashtag.getId())
-                .orElse(BoardHashtag.builder()
-                        .hashtag(hashtag)
-                        .build());
-//        return boardHashtag;
-        return boardHashtagRepository.save(boardHashtag);
+    /**
+     * Board의 Hashtag가 변경되어
+     * -> 변경되지 않은 부분을 제외하고(boardHashtag에 boardId가 매핑 후 hashtagName이 같은 row)
+     * -> 변경이 없는 부분을 boardHashtag에서 삭제 후 request에서 같은 부분에 매핑된 적 없는 이름들을 추가
+     *
+     * 일단, 걍 다 지워
+     */
+    public void update(Long boardId, List<BoardHashtag> boardHashtags, List<String> hashtags) {
+
+        boardHashtagRepository.delete(boardId);
+//        boardHashtags.stream()
+//                .map((bh) ->{
+//                    boardHashtagRepository.findByBoardId(boardId)
+//
+//                })
+
     }
 }

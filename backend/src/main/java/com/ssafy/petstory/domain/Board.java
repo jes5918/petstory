@@ -42,7 +42,6 @@ public class Board {
 
     // Board와 BoardHashtag는 일대다 관계
     // BoardHashtag table에 있는 board field에 의해서 매핑됨(이 값의 변경이 fk에 영향을 미치지 않음)
-//    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // orphanRemoval = true
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // orphanRemoval = true
     private List<BoardHashtag> boardHashtags = new ArrayList<>();
 
@@ -51,6 +50,13 @@ public class Board {
     // 영속성 전이(cascade)란 쉽게 말해 부모 엔티티가 영속화될때, 자식 엔티티도 같이 영속화되고 부모 엔티티가 삭제 될때, 자식 엔티티도 삭제되는 등 부모의 영속성 상태가 전이되는 것을 이야기한다.
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
+
+    // Board와 Like는 일대다 관계
+    // 영속성 전이(cascade)란 쉽게 말해 부모 엔티티가 영속화될때, 자식 엔티티도 같이 영속화되고 부모 엔티티가 삭제 될때, 자식 엔티티도 삭제되는 등 부모의 영속성 상태가 전이되는 것을 이야기한다.
+    // 보드 삭제 되면 like board_id 로 연결된 자식 엔티티 삭제
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Like> like = new ArrayList<>();
 
     // Board와 file는 일대다 관계
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -65,6 +71,7 @@ public class Board {
         profile.getBoards().add(this);
     }
 
+
     /**
      * Board와 BoardHashtag 연관 관계 (편의) 메서드
      */
@@ -74,20 +81,11 @@ public class Board {
     }
 
     /**
-     * Board와 BoardHashtag 연관 관계 (편의) 메서드
-     */
-//    public void addFiles(File file) {
-//        files.add(file);
-//        file.setBoard(this);
-//    }
-
-    /**
      * Board 생성 메서드
      */
-//    public static Board createBoard(Profile profile, String title, String context, BoardHashtag... boardHashtags) {
-    public static Board createBoard(String title, String context, BoardHashtag... boardHashtags) {
+    public static Board createBoard(Profile profile, String title, String context, BoardHashtag... boardHashtags) {
         Board board = new Board();
-//        board.setProfile(profile);
+        board.setProfile(profile);
 
         board.setTitle(title);
         board.setContext(context);
@@ -99,6 +97,14 @@ public class Board {
         }
 
         return board;
+    }
+
+
+    public void update(String title, String context) {
+        this.title = title;
+        this.context = context;
+        this.boardDate = LocalDateTime.now();
+
     }
 
 }
