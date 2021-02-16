@@ -25,7 +25,6 @@ public class ProfileService {
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
     private final FileService fileService;
-    private final BoardRepository boardRepository;
 
     public Long createProfile(ProfileForm proform, MultipartFile file) throws IOException {
 
@@ -74,14 +73,6 @@ public class ProfileService {
         return profileRepository.findByMemberId(memberId);
     }
 
-    /**
-     * 접속할 프로필 선택
-     * --> memberService로 가는 게 맞을 듯
-     */
-    @Transactional(readOnly = true)
-    public List<ReadMultiProfileResponse> showProfile(Long memberId) {
-       return profileRepository.findByMemberId(memberId);
-    }
 
     @Transactional(readOnly = true)
     public ProfileQueryDto detail(Long profileId) {  //memberRepo에서 처리하고
