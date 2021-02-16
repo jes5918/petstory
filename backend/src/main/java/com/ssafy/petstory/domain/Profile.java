@@ -69,14 +69,6 @@ public class Profile {
         member.getProfiles().add(this);
     }
 
-    /**
-     * Profile과 Image 연관 관계 편의 메소드
-     */
-    public void setImage(Image image) {
-        this.image = image;
-        image.setProfile(this);
-    }
-
 //    public static void main(String[] args) {
 //        Member member = new Member();
 //        Profile profile = new Profile();
