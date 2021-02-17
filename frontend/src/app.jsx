@@ -15,7 +15,7 @@ import CarToonize from './views/Cartoonize/CartoonizePage';
 import UserDetail from './views/Accounts/UserDetailPage';
 import DetailPage from './views/DetailPage/DetailPage';
 import SelectProfileModal from './views/Profile/SelectProfileModal';
-import FeedListMakePage from './views/FeedListMakePage/FeedListMakePage';
+import PostListMakePage from './views/PostListMakePage/PostListMakePage';
 
 // Component Load
 import NavBar from './components/NavBar/NavBar';
@@ -65,13 +65,13 @@ function App() {
       <div className="app__wrapper">
         {isLogin && <NavBar toggleTheme={toggleTheme} isLogin={isLogin} />}
         {isLogin && <NavBarSide></NavBarSide>}
-        <div className={isLogin && 'body__wrapper'}>
+        <div className={isLogin ? 'body__wrapper' : ''}>
           <Switch>
             <Route path="/login" component={LandingPage} />
             {/* <PrivateRoute exact path="/main/:storage" component={MainPage} /> */}
             <PrivateRoute exact path="/" component={MainPage} />
             <PrivateRoute path="/detail/:boardId" component={DetailPage} />
-            <PrivateRoute path="/list" component={FeedListMakePage} />
+            <PrivateRoute path="/list" component={PostListMakePage} />
             <PrivateRoute path="/create" component={Create} />
             <PrivateRoute path="/map" component={Map} />
             <PrivateRoute path="/profile/:profileId" component={ProfilePage} />

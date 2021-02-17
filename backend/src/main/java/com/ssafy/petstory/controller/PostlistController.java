@@ -28,8 +28,8 @@ public class PostlistController {
     /**
      * 저장목록 생성
      */
-    @PostMapping("/api/memberPostlist/create")
-    public CreatePostlistResponse createMemberPostlist(MemberPostlistDto request) throws IOException {
+    @PostMapping("/memberPostlist/create")
+    public CreatePostlistResponse createMemberPostlist(@RequestBody MemberPostlistDto request) throws IOException {
         Long id = memberPostlistService.create(request);
 
         return new CreatePostlistResponse(id);
@@ -38,7 +38,7 @@ public class PostlistController {
     /**
      * 저장목록 전체조회
      */
-    @GetMapping("/api/memberPostlist/findAll/{memberId}")
+    @GetMapping("/memberPostlist/findAll/{memberId}")
     public Result<MemberPostlistDto> findAllMemberPostLists(@PathVariable("memberId") Long memberId){
         return new Result(memberPostlistService.findAll(memberId));
     }
@@ -46,15 +46,15 @@ public class PostlistController {
     /**
      * 저장목록 수정(이름)
      */
-    @PutMapping("/api/memberPostlist/update/{memberPostlistId}")
-    public void updateMemberPostlist(@PathVariable("memberPostlistId") Long memberPostlistId, MemberPostlistDto request) {
+    @PutMapping("/memberPostlist/update/{memberPostlistId}")
+    public void updateMemberPostlist(@PathVariable("memberPostlistId") Long memberPostlistId, @RequestBody MemberPostlistDto request) {
         memberPostlistService.update(memberPostlistId, request);
     }
 
     /**
      * 저장목록 삭제
      */
-    @DeleteMapping("/api/memberPostlist/delete/{memberPostlistId}")
+    @DeleteMapping("/memberPostlist/delete/{memberPostlistId}")
     public void deleteMemberPostlist(@PathVariable("memberPostlistId") Long memberPostlistId) {
         memberPostlistService.delete(memberPostlistId);
     }
@@ -62,8 +62,8 @@ public class PostlistController {
     /**
      * 저장목록에 게시물 추가
      */
-    @PostMapping("/api/postlist/add")
-    public CreatePostlistResponse addPostlist(PostlistDto request) throws IOException {
+    @PostMapping("/postlist/add")
+    public CreatePostlistResponse addPostlist(@RequestBody PostlistDto request) throws IOException {
 
         Long id = postlistService.save(request);
 
@@ -73,7 +73,7 @@ public class PostlistController {
     /**
      * 저장목록에 게시물 전체조회
      */
-    @GetMapping("/api/postlist/findAll/{memberPostlistId}")
+    @GetMapping("/postlist/findAll/{memberPostlistId}")
     public Result<PostlistDto> findAllPostLists(@PathVariable("memberPostlistId") Long memberPostlistId){
         return new Result(postlistService.findAll(memberPostlistId));
     }
@@ -81,7 +81,7 @@ public class PostlistController {
     /**
      * 저장목록에 게시물 삭제
      */
-    @DeleteMapping("/api/postlist/delete/{postlistId}")
+    @DeleteMapping("/postlist/delete/{postlistId}")
     public void deletePostlist(@PathVariable("postlistId") Long postlistId) {
         postlistService.delete(postlistId);
     }
