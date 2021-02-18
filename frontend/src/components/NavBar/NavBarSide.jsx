@@ -23,7 +23,7 @@ function NavBarSide(props) {
 
   useEffect(() => {
     getPostList();
-  }, []);
+  });
   // }, [postListReload]);
 
   return (
@@ -36,7 +36,11 @@ function NavBarSide(props) {
         <FaHome className={styles.icon}></FaHome>
         <span>홈</span>
       </Link>
-      <Link className={styles.link} to="/">
+      <Link
+        className={styles.link}
+        to="/"
+        onClick={() => (window.location.href = '/')}
+      >
         <ImFire className={styles.icon}></ImFire>
         <span>최신</span>
       </Link>
@@ -45,7 +49,7 @@ function NavBarSide(props) {
         <span>우리 동네</span>
       </Link>
 
-      {postList &&
+      {/* {postList &&
         postList.map((item) => (
           <Link
             key={item.memberPostlistId}
@@ -58,10 +62,10 @@ function NavBarSide(props) {
             <FiBox className={styles.icon}></FiBox>
             <span>{item.postlistName}</span>
           </Link>
-        ))}
+        ))} */}
       <Link className={styles.linkplus} to="/list">
         <FaPlusCircle className={styles.icon}></FaPlusCircle>
-        <span>피드 목록 생성</span>
+        <span>내 저장 피드</span>
       </Link>
     </div>
   );

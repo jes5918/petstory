@@ -63,9 +63,9 @@ function UserDetail() {
         <div className={styles.email}>{user.email}</div>
         <div className={styles.name}>{user.member_name}</div>
         <div className={styles.buttonWrapper}>
-          <button className={styles.button} onClick={onUpdateMember}>
+          {/* <button className={styles.button} onClick={onUpdateMember}>
             회원정보 수정
-          </button>
+          </button> */}
           <button className={styles.button} onClick={exfireMember}>
             회원탈퇴
           </button>
