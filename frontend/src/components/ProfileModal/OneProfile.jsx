@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { saveAlarmNum } from '../../_reducers/alarmReducer';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+// import { saveAlarmNum } from '../../_reducers/alarmReducer';
 import { deleteProfile, getAlarmNumdddd } from '../../_actions/profileAction';
 import { confirmAlert } from 'react-confirm-alert';
 import '../ComponentUI/ConfirmAlert.css';
@@ -37,21 +38,33 @@ function OneProfile(props) {
   const classes = useStyles();
   const [isModal, setIsModal] = useState(false);
   const [check, setCheck] = useState(false);
-
-  // 프로필ID에 해당하는 알람수 요청 -> redux에 값 저장
   const dispatch = useDispatch();
-  const getAlarm = async (profileId) => {
-    await dispatch(getAlarmNumdddd(profileId)).then((res) => {
-      dispatch(saveAlarmNum(res.payload)); // store의 state 바꾸는 함수 실행
-    });
-  };
+
+  const init = (profileId) => {};
+
+  // // 프로필ID에 해당하는 알람수 요청 -> redux에 값 저장
+  // const getAlarm = async (profileId) => {
+  //   await dispatch(getAlarmNumdddd(profileId)).then((res) => {
+  //     dispatch(saveAlarmNum(res.payload)); // store의 state 바꾸는 함수 실행
+  //   });
+  // };
 
   // local에 profileId 저장
-  const saveProfileId = (profileId) => {
+  const saveProfileId = async (profileId) => {
     localStorage.removeItem('profileId'); // 기존 id 삭제
     localStorage.setItem('profileId', profileId); // 새로 저장
-
-    getAlarm(profileId);
+    const temp = await axios
+      .get(`/api/main/${profileId}`)
+      .then((res) => {
+        localStorage.removeItem('alarmNum');
+        localStorage.setItem('alarmNum', res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    console.log(temp);
+    window.location.href = '/';
+    // getAlarm(profileId);
     // props.handleChangeProfileId(profileId); // app에 profileId 변한 걸 알려주기
   };
 
@@ -95,10 +108,9 @@ function OneProfile(props) {
       {/* 프로필 이미지 */}
       <Link
         className={styles.link}
-        to={'/'}
+        // to={'/'}
         onClick={() => {
           saveProfileId(props.item.profileId);
-          window.location.href = '/';
         }}
       >
         <img
