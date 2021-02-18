@@ -32,7 +32,6 @@ function CreateProfile(props) {
   // 프로필 생성 : 미리보기를 위해 이미지 인코딩
   const convertImg = (e) => {
     setImgFile(e.target.files[0]);
-    console.log(e.target.files[0]);
     const imageUrl = URL.createObjectURL(e.target.files[0]);
     setEncodingImage(imageUrl);
 
@@ -71,7 +70,6 @@ function CreateProfile(props) {
         props.onSubmit(id);
       })
       .catch((err) => console.log(err));
-    console.log(imgFile);
     setEncodingImage(null);
   };
 

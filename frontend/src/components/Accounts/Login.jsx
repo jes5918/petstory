@@ -49,8 +49,8 @@ function LoginPage(props) {
     console.log(body);
     dispatch(loginUser(body))
       .then((res) => {
-        console.log(res);
         if (res.payload !== undefined) {
+          localStorage.clear();
           localStorage.setItem('user', JSON.stringify(res.payload));
           props.history.push('/select');
           window.location.reload();

@@ -25,8 +25,6 @@ function SelectProfileModal({ onChangeProfileId }) {
 
   // // 프로필ID 변한 걸 app에 알려주기
   // const handleChangeProfileId = () => {
-  //   console.log('select');
-  //   console.log(onChangeProfileId);
   //   onChangeProfileId();
   // };
 
@@ -102,12 +100,9 @@ function SelectProfileModal({ onChangeProfileId }) {
         setLoading(true);
         const response = await axios.get(`/api/show/${memberId}`);
         if (response.data) {
-          console.log('resData');
-          console.log(response.data);
           setProfiles(response.data);
         }
       } catch (e) {
-        console.log('catch');
         setError(e);
       }
       setLoading(false);
@@ -115,7 +110,7 @@ function SelectProfileModal({ onChangeProfileId }) {
     fetchProfiles();
   }, []);
   if (loading) {
-    return <div>로딩중..</div>;
+    return <div></div>;
   }
   if (error) {
     return <div>에러 발생</div>;
@@ -136,24 +131,26 @@ function SelectProfileModal({ onChangeProfileId }) {
       />
       <ul>
         <div className={styles.entireProfilesBox}>
-          <h1 className={styles.title}>프로필을 선택하세요.</h1>
+          {!profiles ? (
+            <h1 className={styles.title}>프로필을 만들어보세요.</h1>
+          ) : (
+            <h1 className={styles.title}>프로필을 선택하세요.</h1>
+          )}
           <div className={styles.profileBox}>
-            {!profiles ? (
-              <li className={styles.info}>프로필을 만들어보세요</li>
-            ) : (
-              profiles.map((item) => (
-                <OneProfile
-                  key={item.profileId}
-                  item={item}
-                  onDelete={handleDelete}
-                  handleModify={handleModify}
-                  // handleChangeProfileId={handleChangeProfileId}
-                  // handleModiInput={handleModiInput}
-                />
-              ))
-            )}
-            <li className={styles.li}>
-              <div className={styles.link} onClick={handleAddProfile}>
+            {!profiles
+              ? ''
+              : profiles.map((item) => (
+                  <OneProfile
+                    key={item.profileId}
+                    item={item}
+                    onDelete={handleDelete}
+                    handleModify={handleModify}
+                    // handleChangeProfileId={handleChangeProfileId}
+                    // handleModiInput={handleModiInput}
+                  />
+                ))}
+            <li className={styles.li} onClick={handleAddProfile}>
+              <div className={styles.link}>
                 <img
                   className={styles.img}
                   src={plusSign}
@@ -161,17 +158,17 @@ function SelectProfileModal({ onChangeProfileId }) {
                 />
                 <span className={styles.nickname}>새 가족 추가</span>
               </div>
-              <CreateProfile
-                newProfile={isNewProfile}
-                onClose={closeAddProfile}
-                onSubmit={handleCreate}
-                memberId={memberId}
-                handleInput={handleInput}
-                nickname={nickname}
-                profileId={profileId}
-                imgFullPath={imgFullPath}
-              />
             </li>
+            <CreateProfile
+              newProfile={isNewProfile}
+              onClose={closeAddProfile}
+              onSubmit={handleCreate}
+              memberId={memberId}
+              handleInput={handleInput}
+              nickname={nickname}
+              profileId={profileId}
+              imgFullPath={imgFullPath}
+            />
           </div>
         </div>
       </ul>

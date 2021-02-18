@@ -24,8 +24,6 @@ function Comment(props) {
       {},
       {},
     );
-
-    console.log(response);
     setLoading(true);
     setProfileData(() => response);
   };

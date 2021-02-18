@@ -53,3 +53,17 @@ body {
   padding-right: 150px;
   width: 100%;
 }
+
+.react-confirm-alert-body {
+  width: auto !important;
+  display: flex;
+  flex-direction: column !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-confirm-alert-button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between !important;
+}

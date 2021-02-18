@@ -15,12 +15,7 @@ function test() {
         const jsonProfileId = localStorage.getItem('profileId');
         // const profileId = JSON.parse(jsonProfileId);
         const profileId = 20;
-        console.log(profileId);
-        await dispatch(getFollowerList(profileId)).then((res) => {
-          console.log(res);
-          console.log(res.payload);
-          console.log('팔로워목록응답');
-        });
+        await dispatch(getFollowerList(profileId)).then((res) => {});
       } catch (e) {
         console.log(e);
       }

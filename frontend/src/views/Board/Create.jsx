@@ -53,7 +53,6 @@ export default class Create extends Component {
   }
 
   pushAxios = async (e) => {
-    console.log(this.fileArray);
     e.preventDefault();
     if (!this.titleRef.current.value) {
       toast.error('제목을 입력하세요');
@@ -72,7 +71,6 @@ export default class Create extends Component {
     formData.append('title', this.titleRef.current.value);
     formData.append('context', this.contextRef.current.value);
     formData.append('hashtags', this.state.hashtags);
-    console.log('오류난다', this.fileArray);
     for (let i = 0; i < this.fileArray.length; i++) {
       formData.append('files', this.fileArray[i].Obj);
     }
@@ -80,7 +78,6 @@ export default class Create extends Component {
     axios
       .post('/api/board/create', formData)
       .then((res) => {
-        console.log(res);
         this.titleRef.current.value = '';
         this.contextRef.current.value = '';
         this.hashtagRef.current.value = '';
@@ -99,7 +96,6 @@ export default class Create extends Component {
     } else {
       const fileArray = this.fileArray.filter((item) => item.id !== image.id);
       this.fileArray = fileArray;
-      console.log(this.fileArray);
       this.fileArrayFirst = this.fileArray[0].URL;
       this.setState({ file: fileArray });
     }
@@ -188,7 +184,6 @@ export default class Create extends Component {
       axios
         .get(`/api/hashtag/findOne/${temp}`)
         .then((res) => {
-          console.log(res.data.data);
           this.setState((state) => ({ results: res.data.data }));
         })
         .catch((err) => {
@@ -225,7 +220,6 @@ export default class Create extends Component {
       this.setState({ loading: true });
       const srcImage = document.createElement('img');
       srcImage.src = this.fileArrayFirst;
-      console.log(this.fileArray);
       srcImage.onload = () => {
         this.manager
           .init(this.config)
@@ -240,7 +234,6 @@ export default class Create extends Component {
                   Obj: blob,
                 },
               ];
-              console.log(this.fileArray);
               this.fileArrayFirst = URL.createObjectURL(blob);
               this.setState(() => ({
                 fileTrans: this.fileArrayFirst,
@@ -254,18 +247,6 @@ export default class Create extends Component {
       toast.error('이미지를 올려주세요.');
     }
   }
-
-  _handleUpdate = (evt, updated) => {
-    console.log(evt); // tslint:disable-line
-    console.log(updated); // tslint:disable-line
-    // this.setState({
-    //   dataSource: [...updated, {
-    //     color: '#FFAA00',
-    //     title: 'Added Engineer',
-    //     text: 'Added Engineer',
-    //   }]
-    // })
-  };
 
   render() {
     const { cursor } = this.state;

@@ -26,8 +26,6 @@ function FeedInfinite(props) {
         Number(localStorage.getItem('profileId')),
       ),
     );
-    console.log(`무한 스크롤 : ${response.payload}`);
-    console.log(`무한 스크롤 : ${response.payload.data}`);
     return response.payload && response.payload.data;
   }
 

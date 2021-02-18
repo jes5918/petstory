@@ -110,11 +110,15 @@ function OneProfile(props) {
         {/* 수정, 삭제 아이콘 */}
       </Link>
       <div className={styles.icons}>
-        <Fab className={styles.icon} color="primary">
-          <EditIcon onClick={handleModifyModal} />
+        <Fab
+          className={styles.icon}
+          onClick={handleModifyModal}
+          color="primary"
+        >
+          <EditIcon />
         </Fab>
-        <Fab className={styles.icon} color="secondary">
-          <ClearIcon onClick={deletemodal} />
+        <Fab className={styles.icon} onClick={deletemodal} color="secondary">
+          <ClearIcon />
         </Fab>
         {/* 수정 모달 */}
         <ModifyProfile

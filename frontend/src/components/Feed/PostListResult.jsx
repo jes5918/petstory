@@ -32,7 +32,6 @@ function PostListResult(props) {
 
   async function loadItems(groupKey, num) {
     const getItems = await getFeedData(startIdx, num);
-    console.log(getItems);
     const newItems = [...getItems].map(
       (item) =>
         item.files && (
