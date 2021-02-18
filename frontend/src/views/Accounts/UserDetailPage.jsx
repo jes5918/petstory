@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { confirmAlert } from 'react-confirm-alert';
 import { userDetail } from '../../_actions/userAction';
 import styles from './UserDetailPage.module.css';
 import axios from 'axios';
@@ -21,22 +22,34 @@ function UserDetail() {
       });
   };
 
-  const onUpdateMember = (e) => {
-    console.log(e);
-  };
+  const onUpdateMember = (e) => {};
   const onDeleteMember = (e) => {
     const userId = JSON.parse(localStorage.getItem('user')).id;
     axios
       .delete(`/api/member/delete/${userId}`)
       .then((res) => {
-        console.log(res);
-        localStorage.removeItem('profileId');
-        localStorage.removeItem('user');
+        localStorage.clear();
         window.location.href = '/login';
       })
       .catch((err) => {
         console.error(err);
       });
+  };
+
+  const exfireMember = () => {
+    confirmAlert({
+      title: '회원탈퇴',
+      message: '정말 떠나시겠습니까?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => onDeleteMember(),
+        },
+        {
+          label: 'No',
+        },
+      ],
+    });
   };
 
   useEffect(() => {
@@ -53,7 +66,7 @@ function UserDetail() {
           <button className={styles.button} onClick={onUpdateMember}>
             회원정보 수정
           </button>
-          <button className={styles.button} onClick={onDeleteMember}>
+          <button className={styles.button} onClick={exfireMember}>
             회원탈퇴
           </button>
         </div>

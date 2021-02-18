@@ -51,7 +51,6 @@ function App() {
   };
 
   const isSeletPage = () => {
-    console.log('tlqkf', history.location.pathname);
     if (history.location.pathname === '/select') {
       setIsLocatedInSelect(true);
     } else {
@@ -90,8 +89,7 @@ function App() {
     if (profileId) {
       const fetchAlarm = async () => {
         await dispatchForAlarm(getAlarmNumdddd(profileId)).then((res) => {
-          console.log(res.payload);
-          console.log(`app에서 ${profileId}의 알람수를 받는다.`);
+          console.log(`app에서 ${profileId}의 알람수를 받는다.`, res);
           setAlarmNum(res.payload);
         });
       };

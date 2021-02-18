@@ -80,8 +80,6 @@ function FeedButton(props) {
       boardId,
     };
 
-    console.log(data);
-
     // 피드 세이브 요청
     request('POST', '/api/postlist/add', data);
     toast.success('저장을 완료했습니다.');

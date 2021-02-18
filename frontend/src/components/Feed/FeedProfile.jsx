@@ -31,7 +31,6 @@ function FeedProfile(props) {
       board: { id: boardId },
     };
     request('POST', '/api/profile/like', data);
-    console.log('좋아요');
   };
 
   // Method

@@ -92,7 +92,7 @@ export function MyStoryById(profileId) {
 
 // 팔로워 목록 (나를 팔로우 하는 사람 목록)
 export function getFollowerList(profileId) {
-  const data = request('GET', `/pollow/followee/${profileId}`);
+  const data = request('GET', `/api/pollow/followee/${profileId}`);
   return {
     type: FOLLOWERLIST,
     payload: data,
@@ -109,7 +109,7 @@ export function FolloweeList(profileId) {
 
 // 알람수 요청
 export function getAlarmNumdddd(profileId) {
-  const data = request('GET', `main/${profileId}`);
+  const data = request('GET', `/api/main/${profileId}`);
   return {
     type: PROFILE_USER,
     payload: data,

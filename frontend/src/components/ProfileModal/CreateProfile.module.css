@@ -56,6 +56,7 @@
   opacity: 0.2;
   margin: 10px;
   padding: 10%;
+  background-size: cover;
 }
 
 .img2 {
@@ -64,6 +65,7 @@
   border: 0;
   border-radius: 50%;
   margin: 10px;
+  background-size: cover;
 }
 
 .nicknameWrapper {

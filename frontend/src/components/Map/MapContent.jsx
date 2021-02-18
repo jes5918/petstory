@@ -235,7 +235,6 @@ export default function Map({ searchData }) {
 
     // 키워드 검색을 요청하는 함수입니다
     function searchPlaces() {
-      console.log(myPosition);
       if (myPosition) {
         const keyword = `동물병원`;
         const searchoptions = {

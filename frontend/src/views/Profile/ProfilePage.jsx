@@ -17,10 +17,8 @@ function Profile(props) {
 
   // 프로필 정보 요청
   const profileId = props.match.params.profileId;
-  console.log(`프로필ID ${profileId}`);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('useEffect, profileId변한거 감지');
     const fetchProfile = async () => {
       try {
         setProfile(null);
@@ -34,8 +32,6 @@ function Profile(props) {
         // };
         await dispatch(getProfileList(profileId))
           .then((res) => {
-            console.log(res);
-            console.log(res.payload);
             setProfile(res.payload);
           })
           .catch((err) => console.log(err));
@@ -59,7 +55,6 @@ function Profile(props) {
     return <div>로딩중..</div>;
   }
   if (error) {
-    console.log(`ProfilePage에서 profile: ${profile}`);
     return <div>에러 발생</div>;
   }
   if (!profile) {

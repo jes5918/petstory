@@ -45,7 +45,6 @@ function NavbarIcons({ handleIsFocus, isFocus, history, alarmNum }) {
     axios
       .get(`/api/main/alarmclick/${profileId}`)
       .then((res) => {
-        console.log('알람데이터', res);
         setAlarm(res.data);
       })
       .catch((err) => {
@@ -60,11 +59,9 @@ function NavbarIcons({ handleIsFocus, isFocus, history, alarmNum }) {
   };
 
   const onfocusHandler = (e) => {
-    console.log(e);
     setIsAlarmData(true);
   };
   const onblurHandler = (e) => {
-    console.log(e);
     setIsAlarmData(false);
   };
   const myProfileHandler = (e) => {

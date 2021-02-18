@@ -18,14 +18,12 @@ function SearchBar({ handleIsFocus, isFocus }) {
   // Input 제출 이벤트 발생
   const onsubmitHandler = (e) => {
     e.preventDefault();
-    console.log('Search!!!!!');
     handleIsFocus(false);
     searchRef.current.value = '';
   };
 
   // 태그 클릭 이벤트 발생
   const tagClicked = (val, idx) => {
-    console.log(val, idx);
     if (val === 'first') {
       searchRef.current.value = results[idx];
     } else if (val === 'second') {

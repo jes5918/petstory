@@ -69,7 +69,10 @@ function FeedDetail(props) {
 
   // 태그 검색 결과로 이동
   const handleTag = () => {
+<<<<<<< HEAD
     // console.log('태그 검색 결과로 이동');
+=======
+>>>>>>> ad5f990... [hotFix] FE- console 삭제
     // history.push()
   };
 

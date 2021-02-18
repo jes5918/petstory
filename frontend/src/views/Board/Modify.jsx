@@ -242,7 +242,6 @@ export default class Modify extends Component {
       axios
         .get(`/api/hashtag/findOne/${temp}`)
         .then((res) => {
-          console.log(res.data.data);
           this.setState((state) => ({ results: res.data.data }));
         })
         .catch((err) => {

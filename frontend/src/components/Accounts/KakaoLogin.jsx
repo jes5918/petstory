@@ -35,7 +35,6 @@ export default class KakaoLogin extends Component {
       email: response.profile.kakao_account.email,
       member_name: response.profile.kakao_account.profile.nickname,
     };
-    console.log(body);
 
     axios(`/api/kakaologin`, {
       // 백엔드에서 원하는 형태의 endpoint로 입력해서 fetch한다.
@@ -48,6 +47,7 @@ export default class KakaoLogin extends Component {
     })
       .then(
         (res) => {
+          localStorage.clear();
           localStorage.setItem('user', JSON.stringify(res.data));
           window.location.href = 'http://localhost:3000/select';
         },

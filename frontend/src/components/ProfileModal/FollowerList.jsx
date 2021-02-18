@@ -25,12 +25,8 @@ function FollowerList(props) {
         setLoading(true);
         const profileId = props.profile.profileId;
         await dispatch(getFollowerList(profileId)).then((res) => {
-          console.log(res);
-          console.log(res.payload);
-          console.log('팔로워목록응답');
           setFollowers(res.payload); // 응답: id, nickname, rank, state, member, follower_num, followee_num
         });
-        console.log(followers);
       } catch (e) {
         setError(e);
       }
