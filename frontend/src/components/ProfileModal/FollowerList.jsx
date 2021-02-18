@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { useDispatch } from 'react-redux';
-import { getFollowerList } from '../../_actions/profileAction';
 
 // components
 import Follower from './Follower';
+
+import axios from 'axios';
 
 function FollowerList(props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [followers, setFollowers] = useState(null);
-  const [isFollowerModal, setFollowerModal] = useState(false);
+  // const [isFollowerModal, setFollowerModal] = useState(false);
 
   const handleFollowerModal = () => {
-    setFollowerModal(!isFollowerModal);
+    props.onCloseFollowerList();
   };
 
-  const dispatch = useDispatch();
   useEffect(() => {
     const fetchFollowers = async () => {
       try {
@@ -24,8 +23,8 @@ function FollowerList(props) {
         setError(null);
         setLoading(true);
         const profileId = props.profile.profileId;
-        await dispatch(getFollowerList(profileId)).then((res) => {
-          setFollowers(res.payload); // 응답: id, nickname, rank, state, member, follower_num, followee_num
+        await axios.get(`/api/pollow/followee/${profileId}`).then((res) => {
+          setFollowers(res.data); // 응답: id, nickname, rank, state, member, followerNum, followeeNum, image:null
         });
       } catch (e) {
         setError(e);

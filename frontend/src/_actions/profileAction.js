@@ -60,7 +60,19 @@ export function deleteProfile(profileId) {
 }
 // 팔로우 신청
 export function createFollow(idInfo) {
-  const data = request('POST', `${USER_API_BASE_URL}/follow`, idInfo);
+  const data = request('POST', `${PROFILE_API_BASE_URL}/follow`, idInfo);
+  return {
+    type: PROFILE_USER,
+    payload: data,
+  };
+}
+// 좋아요 한 게시물 조회
+export function getLikeBoard(profileId) {
+  const data = request(
+    'GET',
+    `/api/board/findLike/${profileId}?offset=0&limit=3`,
+    profileId,
+  );
   return {
     type: PROFILE_USER,
     payload: data,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { modifyProfile } from '../../_actions/profileAction';
 // component, css
-import style from './ModifyProfile.module.css';
+import styles from './ModifyProfile.module.css';
 // library
 import Modal from 'react-modal';
 
@@ -11,9 +11,6 @@ function ModifyProfile(props) {
   const [image, setImage] = useState(null);
   const [imgFullPath, setImgFullPath] = useState(props.profile.imgFullPath);
   const [profileState, setProfileState] = useState(props.profile.profileState);
-
-  // const userInfo = localStorage.getItem('user');
-  // const memberId = JSON.parse(userInfo);
 
   const inputRef = React.createRef();
   // 수정 모달
@@ -64,20 +61,27 @@ function ModifyProfile(props) {
     props.closeModal();
   };
   const body = (
-    <div className={style.modal_body}>
-      <form onSubmit={handleModify}>
-        <h2>프로필 수정</h2>
-        <p>사진과 닉네임, 공개여부를 변경할 수 있습니다</p>
-        <div className={style.imgBox}>
-          <img
-            className={style.profileImageInModify}
-            src={imgFullPath}
-            alt="프로필이미지"
-          />
+    <div className={styles.body}>
+      <h2>프로필 수정</h2>
+      <p>사진과 닉네임, 공개여부를 변경할 수 있습니다</p>
+      <form className={styles.form} onSubmit={handleModify}>
+        <div className={styles.wrapper}>
+          <label htmlFor="profileImg">
+            <img className={styles.img2} src={imgFullPath} alt="프로필이미지" />
+          </label>
           {/* defaultvalue로 기존값넣어두면 에러, type="file"일때 defaultvalue넣는거 자체가 문제라고 함 */}
-          <input type="file" onChange={convertImage} />
+          <input
+            className={styles.input}
+            type="file"
+            files={props.imgFullPath}
+            id="profileImg"
+            style={{ display: 'none' }}
+            name="imgFullPath"
+            onChange={convertImage}
+          />
         </div>
         <input
+          className={styles.name}
           ref={inputRef}
           type="text"
           placeholder="닉네임"
@@ -85,7 +89,7 @@ function ModifyProfile(props) {
           onChange={handleModiInfo}
         />
         {/* 프로필 상태 */}
-        <div className={style.stateBox}>
+        <div className={styles.stateBox}>
           <label>
             전체공개
             <input
@@ -123,29 +127,27 @@ function ModifyProfile(props) {
             />
           </label>
         </div>
-        <button onSubmit={handleModify}>완료</button>
-        <button type="button" onClick={handleModifyClose}>
-          취소
-        </button>
+        <div className={styles.btnWrap}>
+          <button className={styles.btn} onSubmit={handleModify}>
+            완료
+          </button>
+          <button
+            className={styles.btn}
+            type="button"
+            onClick={handleModifyClose}
+          >
+            취소
+          </button>
+        </div>
       </form>
     </div>
   );
 
   return (
     <Modal
-      className={style.modal}
+      className={styles.modal}
       isOpen={props.isOpen}
       onRequestClose={handleModifyClose}
-      style={{
-        content: {
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(15%, 50%)',
-        },
-      }}
     >
       {body}
     </Modal>

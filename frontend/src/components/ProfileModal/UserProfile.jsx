@@ -4,9 +4,9 @@ import { createFollow } from '../../_actions/profileAction';
 // component, css
 import ModifyProfile from './ModifyProfile';
 import FollowerList from './FollowerList';
+import FolloweeList from './FolloweeList';
 import styles from './UserProfile.module.css';
-// library
-import Modal from 'react-modal';
+
 // import { SiBaidu } from 'react-icons/si';
 
 function UserProfile(props) {
@@ -69,81 +69,53 @@ function UserProfile(props) {
     setFolloweeModal(!isFolloweeModal);
   };
 
-  const followeeListInModal = (
-    <div className={styles.modalBody}>
-      <h2>followee 목록</h2>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-    </div>
-  );
-
-  // rank
-  // const [rankInfo, setRankInfo] = useState(null);
-  // if (props.profile.follwerNum > 20) {
-  //   setRankInfo(<SiBaidu color="gold" />);
-  // } else if (props.profile.follwerNum > 10) {
-  //   setRankInfo(<SiBaidu color="silver" />);
-  // } else {
-  //   setRankInfo(<SiBaidu color="white" />);
-  // }
   return (
-    // <div className={styles.UserProfileBox}>
     <div>
       <div className={styles.profileCard}>
-        <img
-          src={props.profile.imgFullPath}
-          alt="프로필 사진"
-          className={styles.profileImg}
-        />
+        <div className={styles.imgBox}>
+          <img
+            src={props.profile.imgFullPath}
+            alt="프로필 사진"
+            className={styles.profileImg}
+          />
+        </div>
         <div className={styles.profileInfo}>
-          <div className={styles.userProfileHeader}>
-            <div className={styles.rank}>
-              {/* rank: {props.profile.rank},{rankInfo} */}
-            </div>
-            <h2 className={styles.nickname}>
-              닉네임: {props.profile.nickname}
-            </h2>
+          <div>
+            <h2 className={styles.nickname}>{props.profile.nickname}</h2>
           </div>
           <div className={styles.userProfileBody}>
-            <h3 className={styles.follower} onClick={handleFollowerModal}>
-              팔로워: {props.profile.followerNum}
-            </h3>
+            <div className={styles.text} onClick={handleFollowerModal}>
+              <p className={styles.p}>{props.profile.followeeNum}</p>
+              <p className={styles.pTag}>날 좋아해요 </p>
+            </div>
             <FollowerList
               profile={props.profile}
               isFollowerModal={isFollowerModal}
+              onCloseFollowerList={handleFollowerModal}
             />
-            <h3 className={styles.following} onClick={handleFolloweeModal}>
-              팔로잉: {props.profile.followeeNum}
-            </h3>
-            <Modal
-              isOpen={isFolloweeModal}
-              onRequestClose={handleFolloweeModal}
-              style={{
-                content: {
-                  top: '20%',
-                  left: '30%',
-                  right: '30%',
-                  bottom: '20%',
-                },
-              }}
-            >
-              {followeeListInModal}
-              <button onClick={handleFolloweeModal}>닫기</button>
-            </Modal>
+            <div className={styles.text} onClick={handleFolloweeModal}>
+              <p className={styles.p}>{props.profile.followerNum}</p>
+              <p className={styles.pTag}>내가 좋아해요</p>
+            </div>
+            <FolloweeList
+              profile={props.profile}
+              isFolloweeModal={isFolloweeModal}
+              onCloseFolloweeList={handleFolloweeModal}
+            />
           </div>
         </div>
       </div>
       {/* 내 프로필이면 '프로필 편집', 남의 프로필이면 '팔로우' 버튼 */}
       {props.profile.profileId === loginProfileId ? (
-        <button type="button" onClick={handleModifyModal}>
+        <button
+          type="button"
+          className={styles.btn}
+          onClick={handleModifyModal}
+        >
           edit profile
         </button>
       ) : (
-        <button type="button" onClick={handleFollow}>
+        <button type="button" className={styles.btn} onClick={handleFollow}>
           {isFollow}
         </button>
       )}
