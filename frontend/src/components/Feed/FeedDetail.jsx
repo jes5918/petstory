@@ -21,6 +21,10 @@ import Avatar from '../ComponentUI/AvatarImage';
 import Comment from '../ComponentUI/Comment';
 import MenuDropdown from '../ComponentUI/MenuDropdown';
 
+// library
+import Slider from 'react-slick';
+import styled from 'styled-components';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     color: 'black',
@@ -100,6 +104,45 @@ function FeedDetail(props) {
     commentRef.current.value = '';
   };
 
+  // 다중 이미지 슬라이드
+  const settings = {
+    dots: true,
+    dotsClass: 'slick-dots slick-thumb',
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+  // 다중 이미지 슬라이드 - styled components
+  const Wrap = styled.div`
+    margin: 0;
+    width: 100%;
+    .slick-arrow {
+      margin: 8px;
+    }
+    .slick-prev:before {
+      opacity: 0.8;
+      color: white;
+      left: 4px;
+    }
+    .slick-prev {
+      z-index: 1;
+      left: 0;
+    }
+    .slick-next:before {
+      opacity: 0.8;
+      color: white;
+    }
+    .slick-next {
+      z-index: 1;
+      right: -1px;
+    }
+    div {
+      display: flex;
+      align-items: center;
+    }
+  `;
+
   // useEffect
   useEffect(() => {
     fetchDetail();
@@ -111,11 +154,18 @@ function FeedDetail(props) {
         {/* 메인 이미지 */}
         <div className={styles.images}>
           {loading ? (
-            <img // 여기가 다중 이미지 들어가야 할 곳===================
-              className={styles.image}
-              src={feedItem.files[0] && feedItem.files[0].imgFullPath}
-              alt="img"
-            />
+            <Wrap>
+              <Slider {...settings}>
+                {feedItem.files.map((article, idx) => (
+                  <img
+                    key={idx}
+                    className={styles.image}
+                    src={article.imgFullPath && article.imgFullPath}
+                    alt="img"
+                  />
+                ))}
+              </Slider>
+            </Wrap>
           ) : (
             <Skeleton variant="rect" width={'30vw'} height={'30vw'}></Skeleton>
           )}
