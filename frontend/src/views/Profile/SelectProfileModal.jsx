@@ -23,11 +23,6 @@ function SelectProfileModal({ onChangeProfileId }) {
     imgFullPath: '',
   });
 
-  // // 프로필ID 변한 걸 app에 알려주기
-  // const handleChangeProfileId = () => {
-  //   onChangeProfileId();
-  // };
-
   // 프로필 생성용 input
   const { profileId, nickname, imgFullPath } = inputs;
   const handleInput = (e) => {
@@ -132,9 +127,9 @@ function SelectProfileModal({ onChangeProfileId }) {
       <ul>
         <div className={styles.entireProfilesBox}>
           {!profiles ? (
-            <h1 className={styles.title}>프로필을 만들어보세요.</h1>
+            <h1 className={styles.info}>프로필을 만들어보세요.</h1>
           ) : (
-            <h1 className={styles.title}>프로필을 선택하세요.</h1>
+            <h1 className={styles.info}>프로필을 선택하세요.</h1>
           )}
           <div className={styles.profileBox}>
             {!profiles
