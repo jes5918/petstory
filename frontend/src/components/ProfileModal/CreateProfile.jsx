@@ -141,15 +141,6 @@ function CreateProfile(props) {
       onRequestClose={onCloseModal}
       className={styles.modal}
       overlayClassName={styles.overLay}
-      // style={{
-      //   content: {
-      //     // 모달과 브라우저 간 여백
-      //     top: '15%',
-      //     left: '35%',
-      //     right: '35%',
-      //     bottom: '15%',
-      //   },
-      // }}
     >
       {body}
     </Modal>

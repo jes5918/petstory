@@ -75,9 +75,6 @@
 
 .name {
   height: 40px;
-  /* outline: none; */
-  /* display: flex; */
-  /* width: 225px; */
 }
 .btnWrap {
   display: flex;

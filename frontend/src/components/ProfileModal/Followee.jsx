@@ -1,7 +1,7 @@
 import React from 'react';
 
-function Follower({ follower }) {
+function Followee({ followee }) {
   // follower : id, nickname, rank, state, member, follower_num, followee_num
-  return <li>{follower.nickname}</li>;
+  return <li>{followee.nickname}</li>;
 }
-export default Follower;
+export default Followee;
