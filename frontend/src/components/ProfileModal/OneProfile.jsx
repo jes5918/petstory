@@ -62,7 +62,6 @@ function OneProfile(props) {
       .catch((err) => {
         console.error(err);
       });
-    console.log(temp);
     window.location.href = '/';
     // getAlarm(profileId);
     // props.handleChangeProfileId(profileId); // app에 profileId 변한 걸 알려주기
