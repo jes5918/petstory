@@ -68,8 +68,11 @@ function FeedDetail(props) {
   };
 
   // 태그 검색 결과로 이동
-  const handleTag = () => {
-    // history.push()
+  const handleTag = (keyword) => {
+    history.push({
+      pathname: '/search',
+      search: `?query=${keyword}`,
+    });
   };
 
   // 댓글 작성 요청
@@ -158,8 +161,8 @@ function FeedDetail(props) {
                 {feedItem.boardHashtags &&
                   feedItem.boardHashtags.map((tag, index) => (
                     <li
-                      key={index * 10000}
-                      onClick={handleTag}
+                      key={index * 52363}
+                      onClick={() => handleTag(tag.hashtagName)}
                       className={styles.tag}
                     >
                       #{tag.hashtagName}

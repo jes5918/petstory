@@ -21,6 +21,7 @@ import DetailPage from './views/DetailPage/DetailPage';
 import SelectProfileModal from './views/Profile/SelectProfileModal';
 import PostListMakePage from './views/PostListMakePage/PostListMakePage';
 import PostListPage from './views/PostListPage/PostListPage';
+import SearchPage from './views/SearchPage/SearchPage';
 
 // Component Load
 import NavBar from './components/NavBar/NavBar';
@@ -119,6 +120,7 @@ function App() {
             <Route path="/login" component={LandingPage} />
             {/* <PrivateRoute exact path="/main/:storage" component={MainPage} /> */}
             <PrivateRoute exact path="/" component={MainPage} />
+            <PrivateRoute exact path="/search" component={SearchPage} />
             <PrivateRoute path="/detail/:boardId" component={DetailPage} />
             <PrivateRoute path="/list" component={PostListMakePage} />
             <PrivateRoute

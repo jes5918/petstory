@@ -30,8 +30,8 @@ bg[bg.length] = photo11;
 bg[bg.length] = photo12;
 
 function SearchSuggest({ results, popular, tagClicked }) {
-  const onClickHandler = (val, idx) => {
-    tagClicked(val, idx);
+  const onClickHandler = (keyword) => {
+    tagClicked(keyword);
   };
   // const size = Math.floor(Math.random() * bg.length);
 
@@ -45,7 +45,7 @@ function SearchSuggest({ results, popular, tagClicked }) {
               <li
                 className={styles.li}
                 key={index * 999}
-                onClick={() => onClickHandler('first', index)}
+                onClick={() => onClickHandler(items)}
               >
                 #{items}
               </li>
@@ -61,7 +61,7 @@ function SearchSuggest({ results, popular, tagClicked }) {
                 key={idx}
                 className={styles.liPopular}
                 style={{ backgroundImage: `url(${bg[idx]})` }}
-                onClick={() => onClickHandler('second', idx)}
+                onClick={() => onClickHandler(item.hashtagName)}
               >
                 <div className={styles.span}>{item.hashtagName}</div>
               </li>

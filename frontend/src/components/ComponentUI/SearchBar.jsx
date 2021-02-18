@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 // Component
@@ -14,21 +15,27 @@ function SearchBar({ handleIsFocus, isFocus }) {
   const searchRef = useRef(null);
   const [results, setResults] = useState(null);
   const [popular, setPopular] = useState(null);
+  const history = useHistory();
 
   // Input 제출 이벤트 발생
   const onsubmitHandler = (e) => {
     e.preventDefault();
     handleIsFocus(false);
-    searchRef.current.value = '';
+    const keyword = searchRef.current.value;
+    history.push({
+      pathname: '/search',
+      search: `?query=${keyword}`,
+    });
   };
 
   // 태그 클릭 이벤트 발생
-  const tagClicked = (val, idx) => {
-    if (val === 'first') {
-      searchRef.current.value = results[idx];
-    } else if (val === 'second') {
-      searchRef.current.value = popular[idx].hashtagName;
-    }
+  const tagClicked = (keyword) => {
+    console.log(keyword);
+    searchRef.current.value = keyword;
+    history.push({
+      pathname: '/search',
+      search: `?query=${keyword}`,
+    });
   };
 
   // 인기태그 검색
@@ -46,6 +53,7 @@ function SearchBar({ handleIsFocus, isFocus }) {
   // Input 값 변화 될 때마다 호출
   const onchangeHandler = (e) => {
     e.preventDefault();
+    initPopular();
     if (!isFocus) {
       handleIsFocus(true);
     }
@@ -77,10 +85,6 @@ function SearchBar({ handleIsFocus, isFocus }) {
   // initPopular hook
   useEffect(() => {
     initPopular();
-  }, []);
-
-  useEffect(() => {
-    tagClicked();
   }, []);
 
   window.addEventListener('scroll', (e) => {

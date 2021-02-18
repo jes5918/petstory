@@ -185,7 +185,7 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
             </li>
             <li className={styles.item2} onClick={memberHandler}>
               <CgProfile className={styles.icon} />
-              <span className={styles.span}>회원정보 수정</span>
+              <span className={styles.span}>회원정보</span>
             </li>
             <li className={styles.item3} onClick={logoutalert}>
               <RiLogoutBoxRLine className={styles.icon2} />
