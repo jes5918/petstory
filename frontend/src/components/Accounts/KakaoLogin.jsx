@@ -49,7 +49,7 @@ export default class KakaoLogin extends Component {
         (res) => {
           localStorage.clear();
           localStorage.setItem('user', JSON.stringify(res.data));
-          window.location.href = 'http://localhost:3000/select';
+          window.location.href = '/select';
         },
         // 백엔드에서 요구하는 key 값(token)으로 저장해서 localStorage에 저장한다.
         // 여기서 중요한것은 처음에 console.log(res)해서 들어오는
