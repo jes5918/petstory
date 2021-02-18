@@ -87,6 +87,20 @@ public class BoardService {
         return boardRepository.findLikeBoard(offset, limit,profileId);
     }
 
+    /**
+     * 헤쉬태그로 게시물 조회 -> join 안쓸거
+     */
+    public List<BoardQueryDto> findHashtagBoard(String hashtagName, Long profileId) {
+        //1. 헤쉬테그 아이디 뽑아 내기
+        List<Long> hashtagIds = boardRepository.findHashtagId(hashtagName);
+
+        //2. 보드 아이디 뽑아 내기
+        List<Long> boardIds = boardRepository.findBoardId(hashtagIds);
+
+        //3. 보드 아이디로 보드 객체 리스트 반환
+        return boardRepository.findHashtagBoard(boardIds,profileId);
+    }
+
 
     private class ItemParam {
         private Long id;
