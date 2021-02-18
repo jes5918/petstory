@@ -38,8 +38,8 @@ function OneProfile(props) {
   const classes = useStyles();
   const [isModal, setIsModal] = useState(false);
   const [check, setCheck] = useState(false);
+  const [name, setName] = useState(props.item.nickname);
   const dispatch = useDispatch();
-
   const init = (profileId) => {};
 
   // // 프로필ID에 해당하는 알람수 요청 -> redux에 값 저장
@@ -67,9 +67,17 @@ function OneProfile(props) {
     // props.handleChangeProfileId(profileId); // app에 profileId 변한 걸 알려주기
   };
 
+  const saveProId = async (profileId) => {
+    localStorage.removeItem('profileId'); // 기존 id 삭제
+    localStorage.setItem('profileId', profileId); // 새로 저장
+    // getAlarm(profileId);
+    // props.handleChangeProfileId(profileId); // app에 profileId 변한 걸 알려주기
+  };
+
   // 수정
-  const handleModifyModal = () => {
-    saveProfileId(props.item.profileId);
+  const handleModifyModal = (e) => {
+    e.preventDefault();
+    saveProId(props.item.profileId);
     setIsModal(true);
   };
 
@@ -103,43 +111,46 @@ function OneProfile(props) {
     });
   };
   return (
-    <li className={styles.li}>
-      {/* 프로필 이미지 */}
-      <Link
-        className={styles.link}
-        // to={'/'}
-        onClick={() => {
-          saveProfileId(props.item.profileId);
-        }}
-      >
-        <img
-          className={styles.img}
-          src={props.item.imgFullPath}
-          alt="프로필이미지"
-        />
-        <span className={styles.nickname}>{props.item.nickname}</span>
-        {/* 수정, 삭제 아이콘 */}
-      </Link>
-      <div className={styles.icons}>
-        <Fab
-          className={styles.icon}
-          onClick={handleModifyModal}
-          color="primary"
+    <>
+      <li className={styles.li}>
+        {/* 프로필 이미지 */}
+        <Link
+          className={styles.link}
+          to={'/'}
+          onClick={() => {
+            saveProfileId(props.item.profileId);
+          }}
         >
-          <EditIcon />
-        </Fab>
-        <Fab className={styles.icon} onClick={deletemodal} color="secondary">
-          <ClearIcon />
-        </Fab>
-        {/* 수정 모달 */}
-        <ModifyProfile
-          isOpen={isModal}
-          profile={props.item}
-          closeModal={closeModifyModal}
-          handleModify={handleModify}
-        />
-      </div>
-    </li>
+          <img
+            className={styles.img}
+            src={props.item.imgFullPath}
+            alt="프로필이미지"
+          />
+          <span className={styles.nickname}>{name}</span>
+        </Link>
+        {/* 수정, 삭제 아이콘 */}
+        <div className={styles.icons}>
+          <Fab
+            className={styles.icon}
+            onClick={handleModifyModal}
+            color="primary"
+          >
+            <EditIcon />
+          </Fab>
+          <Fab className={styles.icon} onClick={deletemodal} color="secondary">
+            <ClearIcon />
+          </Fab>
+        </div>
+      </li>
+      {/* 수정 모달 */}
+      <ModifyProfile
+        isOpen={isModal}
+        profile={props.item}
+        closeModal={closeModifyModal}
+        handleModify={handleModify}
+        setName={setName}
+      />
+    </>
   );
 }
 export default OneProfile;
