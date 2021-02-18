@@ -4,6 +4,7 @@ import {
   FOLLOWERLIST,
   FOLLOWEELIST,
 } from './types';
+
 import { request } from '../utils/axios';
 
 const USER_API_BASE_URL = '/api/profiles';
@@ -111,7 +112,7 @@ export function FolloweeList(profileId) {
 export function getAlarmNumdddd(profileId) {
   const data = request('GET', `/api/main/${profileId}`);
   return {
-    type: PROFILE_USER,
+    type: 'ALARM_NUM',
     payload: data,
   };
 }

@@ -27,9 +27,6 @@ function Navbar({ isLogin, toggleTheme }) {
     checkedA: true,
   });
 
-  // 알람수 받기 (store에 접근하여 state 가져오기)
-  const { alarmNum } = useSelector((state) => state.alarmer);
-
   // 프로필 Id 선택
   const [profileId, setProfileId] = useState(48);
   const id = localStorage.getItem('profileId');
@@ -134,7 +131,6 @@ function Navbar({ isLogin, toggleTheme }) {
             <NavbarIcons
               handleIsFocus={handleIsFocus}
               isFocus={isFocus}
-              alarmNum={alarmNum}
             ></NavbarIcons>
           </div>
           {/* <div className="theme-toggle-switch">

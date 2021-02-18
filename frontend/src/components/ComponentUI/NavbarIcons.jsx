@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styles from './NavbarIcons.module.css';
 import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert';
@@ -12,7 +13,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 // React Icon
 import { GiBirdHouse } from 'react-icons/gi';
 import { CgSelectR, CgProfile } from 'react-icons/cg';
-import { RiLogoutBoxRLine } from 'react-icons/ri';
+import { RiLogoutBoxRLine, RiNurseFill } from 'react-icons/ri';
 
 const useStyle = makeStyles(() => ({
   icon: {
@@ -29,12 +30,25 @@ const useStyle = makeStyles(() => ({
   },
 }));
 
-function NavbarIcons({ handleIsFocus, isFocus, history, alarmNum }) {
+function NavbarIcons({ handleIsFocus, isFocus, history }) {
   const classes = useStyle();
   const [isAlarmData, setIsAlarmData] = useState(false);
   const [isProfileData, setIsProfileData] = useState(false);
   const [alarm, setAlarm] = useState([]);
-  const [isAlarmNum, setIsAlarmNum] = useState(false);
+  const [alarmNum, setAlarmNum] = useState(null);
+
+  const getAlarmNum = () => {
+    const temp = localStorage.getItem('alarmNum');
+    if (temp === 0) {
+      setAlarmNum(null);
+    } else if (temp > 0) {
+      setAlarmNum(temp);
+    }
+  };
+
+  useEffect(() => {
+    getAlarmNum();
+  });
 
   const getAlarmData = () => {
     setIsAlarmData(!isAlarmData);
@@ -46,6 +60,8 @@ function NavbarIcons({ handleIsFocus, isFocus, history, alarmNum }) {
       .get(`/api/main/alarmclick/${profileId}`)
       .then((res) => {
         setAlarm(res.data);
+        localStorage.removeItem('alarmNum');
+        setAlarmNum(null);
       })
       .catch((err) => {
         console.log(err);
@@ -85,8 +101,7 @@ function NavbarIcons({ handleIsFocus, isFocus, history, alarmNum }) {
     history.push('/userdetail');
   };
   const logoutHandler = (e) => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('profileId');
+    localStorage.clear();
     window.location.replace('/login');
   };
   const logoutalert = () => {
@@ -122,7 +137,7 @@ function NavbarIcons({ handleIsFocus, isFocus, history, alarmNum }) {
     <>
       <div className={styles.frame}>
         {/* 알림 */}
-        {alarmNum && (
+        {alarmNum !== null && (
           <div className={styles.alarmNumContainer}>
             <div className={styles.alramNum}>{alarmNum}</div>
           </div>
