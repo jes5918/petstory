@@ -96,7 +96,10 @@ function ModifyProfile(props) {
               type="radio"
               name="state"
               value="PUBLIC"
-              checked={profileState === 'PUBLIC' && 'checked'}
+              checked={
+                (profileState === 'PUBLIC' || profileState === null) &&
+                'checked'
+              }
               onChange={(e) => {
                 onStateChange(e);
               }}

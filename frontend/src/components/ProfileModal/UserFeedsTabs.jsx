@@ -1,7 +1,7 @@
 import React, { useState, Component } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { getLikeBoard } from '../../_actions/profileAction';
+import UserFeedsTabsItem from './UserFeedsTabsItem';
 
 // css
 import styles from './UserFeedsTabs.module.css';
@@ -48,13 +48,7 @@ function UserFeedsTabs(props) {
           props.profile.boardQueryDtos.map((article, index) => (
             <div className={styles.allImg} key={article.boardId}>
               {article.files ? (
-                <Link to={`/detail/${article.boardId}`}>
-                  <img
-                    className={styles.img}
-                    src={article.files[0].imgFullPath}
-                    alt="게시물 이미지"
-                  />
-                </Link>
+                <UserFeedsTabsItem article={article} />
               ) : (
                 <p>이미지가 없는 게시물</p>
               )}
@@ -69,11 +63,7 @@ function UserFeedsTabs(props) {
           likeBoard.map((article, index) => (
             <div className={styles.allImg} key={article.boardId}>
               {article.files ? (
-                <img
-                  className={styles.img}
-                  src={article.files[0].imgFullPath}
-                  alt="게시물 이미지"
-                />
+                <UserFeedsTabsItem article={article} />
               ) : (
                 <p>이미지가 없는 게시물</p>
               )}
