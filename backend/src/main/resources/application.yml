@@ -10,7 +10,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://ubuntu@i4b204.p.ssafy.io:3306/petstory?serverTimezone=UTC&characterEncoding=UTF-8
-    url: jdbc:mysql://petstory.c0pmibo6dwxp.ap-northeast-2.rds.amazonaws.com:3306/petstory?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://petstory.c0pmibo6dwxp.ap-northeast-2.rds.amazonaws.com:3306/petstory_erd?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: ssafy204!!
 
