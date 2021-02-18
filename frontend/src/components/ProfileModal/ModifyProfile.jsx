@@ -51,7 +51,7 @@ function ModifyProfile(props) {
     } else {
       profileForm.append('imgFullPath', '');
     }
-
+    props.setName(inputRef.current.value);
     profileForm.append('image', image);
     profileForm.append('nickname', inputRef.current.value);
     profileForm.append('profileState', profileState);
