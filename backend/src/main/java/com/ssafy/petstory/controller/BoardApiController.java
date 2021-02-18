@@ -51,6 +51,18 @@ public class BoardApiController {
         return new Result(boardService.findLike(offset, limit, profileId));
     }
 
+    /**
+     * 헤쉬태그 이름 받고 게시물 반환
+     * 1. 헤쉬테그 아이디 뽑아 내기
+     * 2. 보드 아이디 뽑아 내기
+     * 3. 보드 아이디로 보드 객체 리스트 반환
+     */
+    @GetMapping("/board/findLike/{profile_id}")
+    public Result<BoardQueryDto> findHashtagBoard(@PathVariable("profile_id") Long profileId,
+                                                  @RequestParam(value = "hashtag_name") String hashtagName){
+
+        return new Result(boardService.findHashtagBoard(hashtagName,profileId));
+    }
 
     /**
      * 게시물 전체 조회

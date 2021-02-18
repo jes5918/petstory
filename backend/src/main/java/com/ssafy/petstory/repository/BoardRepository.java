@@ -456,4 +456,59 @@ public class BoardRepository {
         return pBoardId;
     }
 
+    public List<Long> findHashtagId(String hashtagName) {
+
+        return  em.createQuery("SELECT p.id FROM Hashtag p WHERE p.name = :hashtagName ")
+                .setParameter("hashtagName",hashtagName)
+                .getResultList();
+    }
+
+
+    public List<Long> findBoardId(List<Long> hashtagIds) {
+
+        return   em.createQuery(
+                "SELECT  m.board.id FROM BoardHashtag m WHERE m.board.id in :board_id AND m.hashtag.id in :hashtagIds")
+                .setParameter("hashtagIds",hashtagIds)
+                .getResultList();
+
+    }
+
+    public List<BoardQueryDto> findHashtagBoard(List<Long> boardIds,Long profileId) {
+        // 루트 조회(XToOne 코드 모두 한 번에 조회)
+        List<BoardQueryDto> result = findBoardsByHashtag(boardIds);
+
+        // file 컬렉션을 Map 한 방에 조회
+        Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
+
+        // boardHashtag 컬렉션 Map 한 방에 조회
+        Map<Long, List<BoardHashtagQueryDto>> boardhashtagMap = findBoardHashtagMap(toBoardIds(result));
+
+        //해당 게시글 like 여부 조회
+        //게시글 리스트를 가지고 매핑하고 각각의 게시물에 넣어주자 id - like 여부
+        Map<Long, List<LikeQueryDto>> likeMap = findlike(toBoardIds(result),profileId);
+
+
+        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
+        result.forEach(b ->
+                b.setFiles(fileMap.get(b.getBoardId()))
+        );
+        result.forEach(b ->
+                b.setBoardHashtags(boardhashtagMap.get(b.getBoardId()))
+        );
+        result.forEach(b ->
+                b.setIsLike(likeMap.get(b.getBoardId()))
+        );
+        return result;
+    }
+
+    private List<BoardQueryDto> findBoardsByHashtag(List<Long> boardIds) {
+        return em.createQuery(
+                "select new com.ssafy.petstory.dto.BoardQueryDto" +
+                        "(p.id, p.nickname, p.image.imgFullPath, b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
+                        " from Board b " +
+                        " join b.profile p"+
+                        " where b.id in :boardIds", BoardQueryDto.class)
+                .setParameter("boardIds",boardIds)
+                .getResultList();
+    }
 }
