@@ -467,7 +467,7 @@ public class BoardRepository {
     public List<Long> findBoardId(List<Long> hashtagIds) {
 
         return   em.createQuery(
-                "SELECT  m.board.id FROM BoardHashtag m WHERE m.board.id in :board_id AND m.hashtag.id in :hashtagIds")
+                "SELECT  m.board.id FROM BoardHashtag m WHERE m.hashtag.id in :hashtagIds")
                 .setParameter("hashtagIds",hashtagIds)
                 .getResultList();
 
