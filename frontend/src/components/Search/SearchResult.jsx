@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styles from './SearchResult.module.css';
 import FeedProfile from '../Feed/FeedProfile';
 import { useHistory } from 'react-router-dom';
-import { request } from '../../utils/axios';
 
 function SearchResult({ items }) {
   const history = useHistory();
-  const [commentCount, setCommentCount] = useState(0);
   const handleDetail = (feedItem) => {
     history.push(`/detail/${feedItem.boardId}`, feedItem);
   };
