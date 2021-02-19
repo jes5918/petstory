@@ -57,7 +57,7 @@ public class BoardApiController {
      * 2. 보드 아이디 뽑아 내기
      * 3. 보드 아이디로 보드 객체 리스트 반환
      */
-    @GetMapping("/board/findLike/{profile_id}")
+    @GetMapping("/board/findHashtag/{profile_id}")
     public Result<BoardQueryDto> findHashtagBoard(@PathVariable("profile_id") Long profileId,
                                                   @RequestParam(value = "hashtag_name") String hashtagName){
 
