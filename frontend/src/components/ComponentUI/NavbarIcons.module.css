@@ -24,7 +24,7 @@
 }
 
 .alarmspan {
-  font-size: 22px;
+  font-size: 20px;
   color: #ff00dd;
 }
 
@@ -45,8 +45,9 @@
 
 .item {
   position: relative;
-  margin: auto;
-  font-size: 17px;
+  margin: 15px 15px;
+  word-break: keep-all;
+  font-size: 15px;
   transition: all 0.1s ease-in-out;
 }
 
@@ -86,17 +87,17 @@
   align-items: center;
   justify-self: center;
   margin: auto;
-  font-size: 16px;
+  font-size: 15px;
   color: red;
   transition: all 0.1s ease-in-out;
 }
 
 .span {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .span:hover {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 900;
 }
 
