@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styles from './FeedProfile.module.css';
 
@@ -23,6 +23,7 @@ function FeedProfile(props) {
   // State
   const [likeToggle, setLikeToggle] = useState(item.isLike);
   const [countLike, setCountLike] = useState(item.likeNum);
+  const [commentCnt, setcommentCnt] = useState(0);
 
   // Fetch - 좋아요 추가, 취소 요청
   const fetchLikeToggle = () => {
@@ -45,6 +46,23 @@ function FeedProfile(props) {
 
     setLikeToggle((prev) => !prev);
   };
+
+  const fetchDetail = async () => {
+    const comment = await request(
+      'GET',
+      `/api/comment/findAll/${props.feedItem.boardId}`,
+      {},
+      {},
+    );
+
+    if (comment && comment.data) {
+      setcommentCnt(() => comment.data.length);
+    }
+  };
+
+  useEffect(() => {
+    fetchDetail();
+  }, [props]);
 
   return (
     <div className={styles.profile}>
@@ -71,7 +89,7 @@ function FeedProfile(props) {
 
         <div className={styles.report}>
           <GoCommentDiscussion className={styles.icon} />
-          {props.commentCount}
+          {props.commentCount || commentCnt}
         </div>
       </div>
     </div>
