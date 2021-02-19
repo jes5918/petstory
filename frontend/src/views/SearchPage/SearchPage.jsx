@@ -47,7 +47,7 @@ function SearchPage(props) {
           <SearchResult items={feedItems} />
         </>
       ) : (
-        <h1 className={styles.title}>검색 결과가 없습니다.</h1>
+        <h1 className={styles.title}>검색 결과가 없습니다...</h1>
       )}
     </div>
   );
