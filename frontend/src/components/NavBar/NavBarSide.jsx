@@ -36,14 +36,14 @@ function NavBarSide(props) {
         <FaHome className={styles.icon}></FaHome>
         <span>홈</span>
       </Link>
-      <Link
+      {/* <Link
         className={styles.link}
         to="/"
         onClick={() => (window.location.href = '/')}
       >
         <ImFire className={styles.icon}></ImFire>
         <span>최신</span>
-      </Link>
+      </Link> */}
       <Link className={styles.link} to="/map">
         <FaMapMarkerAlt className={styles.icon}></FaMapMarkerAlt>
         <span>우리 동네</span>
