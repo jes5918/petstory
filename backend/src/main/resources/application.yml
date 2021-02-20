@@ -9,8 +9,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    #    url: jdbc:mysql://ubuntu@i4b204.p.ssafy.io:3306/petstory?serverTimezone=UTC&characterEncoding=UTF-8
-    url: jdbc:mysql://petstory.c0pmibo6dwxp.ap-northeast-2.rds.amazonaws.com:3306/petstory_erd?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://[YOUR DB SERVER:PORT]/[YOUR DB NAME]?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: ssafy204!!
 
@@ -31,14 +30,6 @@ spring:
       prefix: classpath:/templates/
       suffix: .html
 
-#  servlet:
-#    multipart:
-#      enabled: true
-#      file-size-threshold: 2KB
-#      max-file-size: 200MB
-#      max-request-size: 215MB
-
-
 logging:
   level:
     org.hibernate.SQL: debug
@@ -48,11 +39,11 @@ logging:
 cloud:
   aws:
     credentials:
-      accessKey: AKIAYL2LDM2UK3HZVJ6Y
-      secretKey: Wj+wfdBgG8lsT07VM35wlfDbynYTP4dnzfF8IOhb
+      accessKey: "YOUR AWS S3 ACCESSKEY"
+      secretKey: "YOUR AWS S3 SECRETKEY"
     s3:
-      bucket: petstory-image
+      bucket: "YOUR AWS S3 BUCKET NAME"
     region:
-      static: ap-northeast-2
+      static: "YOUR AWS S3 REGION"
     stack:
       auto: false
