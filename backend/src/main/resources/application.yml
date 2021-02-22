@@ -10,8 +10,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://[YOUR DB SERVER:PORT]/[YOUR DB NAME]?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: ssafy204!!
+    username: [Your Username]
+    password: [Your Password]
 
   jpa:
     #generate-ddl: true
